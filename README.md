@@ -7,40 +7,60 @@
 اگر در برنامه نویسی پایتون و جنگو مهارت دارید در صورت علاقه در توسعه این شبکه اجتماعی کمک کنید.
 
 
+
 ## دستورالعمل استفاده
 نصب محیط ایزوله:
+</div>
+
 ```
 pip3 install virtualenv
 ```
+<div dir="rtl">
 
 ایجاد محیط ایزوله:
+</div>
+
 ```
 vitualenv -p python3 venv
 ```
+<div dir="rtl">
 
 وارد شدن به محیط ایزوله:
+</div>
+
 ```
 source venv/bin/activate
 ```
+<div dir="rtl">
 
 در ویندوز: `venv\Scripts\activate`
 
 نصب نیازمندی‌ها:
+</div>
+
 ```
 pip install -r requirements.txt
 ```
+<div dir="rtl">
 
 پیکربندی پروژه:
+</div>
+
 ```
 python manage.py migrate
 ```
+<div dir="rtl">
 
 اجرای پروژه:
+</div>
+
 ```
 python manage.py runserver
 ```
+<div dir="rtl">
 
 اکنون با وارد کردن آدرس `localhost:8000` در مرورگر وارد سایت می‌شوید.
+
 
 
 - اگر مشکل یا باگی پیدا کردید در بخش [Issues](https://github.com/mskf1383/Programmers-Social/issues) مطرح کنید
