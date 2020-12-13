@@ -1,0 +1,47 @@
+{% extends 'main.html' %}
+
+{% block title %}
+    {{ super }} تصاویر آپلود شده
+{% endblock %}
+
+
+{% block body %}
+    <div class="body shadow-ms border-gray">
+        <h2>تصاویر آپلود شده</h2><br/>
+        <div class="progress">
+            <div class="progress-bar progress-bar-striped progress-bar-animated" role="progressbar" style="width: {{ cloud.used_percent }}%;"></div>
+        </div>
+        <small class="text-muted"><strong>{{ cloud.used_space }} مگابایت</strong> از <strong>{{ cloud.space }} مگابایت</strong> استفاده شده</small>
+        <br/>
+        <h1 style="text-align: center;"><i class="icofont-cloud icofont-5x"></i></h1>
+        <ul class="infinite-container" style="list-style-type: none; padding-right: 0px; display: flex; overflow-x: auto;">
+            {% for file in files %}
+                <li style="text-align: center; padding: 10px;">
+                    <div style="height: 100px; width: 200px;">
+                        <img style="object-fit: cover; width: 100%; height: 100%;" src="{{ file.file.url }}">
+                        <input id="inputText_{{ file.id }}" value="http://192.168.1.100:8000{{ file.file.url }}"><br/><br/>
+                        <button id="copyText_{{ file.id }}" type="button" class="btn btn-light  border-gray">کپی لینک</button>
+                    </div><br/><br/><br/><br/><br/>
+                </li>
+                <script>
+                    /* return input field to variable text */
+                    var text_{{ file.id }} = document.getElementById("inputText_{{ file.id }}");
+
+                    /* return button to variable btn */
+                    var btn_{{ file.id }} = document.getElementById("copyText_{{ file.id }}");
+
+                    /* call function on button click */
+                    btn_{{ file.id }}.onclick = function() {
+                    text_{{ file.id }}.select();    
+                    document.execCommand("copy");
+                    }
+                </script>
+                
+            {% endfor %}
+        </ul>
+
+        <div style="text-align: center;">
+            <a href="{% url 'cloud:upload_file' %}"><button class="btn btn-success my-2 my-sm-0  border-gray" type="button"><i class="icofont-upload-alt"></i> آپلود تصویر</button></a>
+        </div>
+    </div>
+{% endblock %}

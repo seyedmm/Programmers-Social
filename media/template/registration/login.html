@@ -1,0 +1,43 @@
+{% extends 'main.html' %}
+{% load static %}
+
+{% block title %}
+    {{ super }} ورود
+{% endblock %}
+
+
+{% block body %}
+<div class="body shadow-ms border-gray">
+<h2>ورود</h2><br/>
+<form method="post">
+    {% csrf_token %}
+    {% if form.errors %}
+        <div class="alert alert-danger" role="alert">
+            {{ form.non_field_errors }}
+            {% if form.username.errors %}
+                <p><strong>نام کاربری</strong>{{ form.username.errors }}</p>
+            {% endif %}
+            {% if form.password.errors %}
+                <p><strong>رمز عبور</strong>{{ form.password.errors }}</p>
+            {% endif %}
+        
+        </div>
+    {% endif %}
+    <label>نام کاربری:</label>
+    <input class="form-control" name="username">
+    <br/>
+    <label>رمز عبور:</label>
+    <input class="form-control" name="password" type="password">
+    <br/>
+    <p><a href="{% url 'password_reset' %}">رمزم را فراموش کردم</a></p>
+    <button type="submit" class="btn btn-success  border-gray">ورود</button>
+</form>
+
+<hr/>
+<a href="{% url 'social:begin' 'github' %}"><button type="button" class="btn btn-github  border-gray"><img class="logo" src="{% static 'img/Github_logo.png' %}" height="32px"> ورود با حساب گیت‌هاب</button></a>
+<a href="{% url 'social:begin' 'gitlab' %}"><button type="button" class="btn btn-gitlab  border-gray"><img class="logo" src="{% static 'img/Gitlab_logo.png' %}" height="32px"> ورود با حساب گیت‌لب</button></a>
+<hr/>
+
+<p>عضو نیستید؟ <a href="{% url 'signup' %}">عضویت</a></p>
+</div>
+{% endblock %}

@@ -1,0 +1,125 @@
+{% extends 'main.html' %}
+
+{% block title %}
+    {{ super }} ویرایش مطلب
+{% endblock %}
+
+
+{% block body %}
+    <div class="body shadow-ms border-gray">
+        <div class="dropdown" style="float: left;">
+            <a class="text-muted" type="button" data-toggle="modal" data-target="#setting">
+                <p class="options"><i class="icofont-gear"></i></p>
+            </a>
+        </div>
+
+        <h2>ویرایش مطلب</h2><br/>
+        <form method="post">
+            {% csrf_token %}
+            {% if form.errors %}
+                <div class="alert alert-danger" role="alert">
+                    {{ form.non_field_errors }}
+                    {% if form.title.errors %}
+                        <p><strong>عنوان</strong>{{ form.title.errors }}</p>
+                    {% endif %}
+                    {% if form.body.errors %}
+                        <p><strong>متن</strong>{{ form.body.errors }}</p>
+                    {% endif %}
+                    {% if form.cover.errors %}
+                        <p><strong>کاور</strong>{{ form.cover.errors }}</p>
+                    {% endif %}
+                    {% if form.short_description.errors %}
+                        <p><strong>توضیح کوتاه</strong>{{ form.short_description.errors }}</p>
+                    {% endif %}
+                    {% if form.category.errors %}
+                        <p><strong>دسته بندی</strong>{{ form.category.errors }}</p>
+                    {% endif %}
+                </div>
+            {% endif %}
+    
+            <label>عنوان:</label>
+            {{ form.title }}
+            <br/>
+            <label>متن:</label><br/>
+            {{ form.body }}
+            <br/>
+            <button type="button" class="btn btn-info  border-gray" data-toggle="modal" data-target="#help">
+                راهنما
+            </button>
+            <br/><hr/>
+    
+            <!-- Help -->
+            <div class="modal fade" id="help" tabindex="-1" role="dialog" aria-hidden="true">
+                <div class="modal-dialog modal-dialog-scrollable">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <h5 class="modal-title" id="exampleModalLabel">راهنما</h5>
+                        </div>
+                        <div class="modal-body">
+                            {% include 'post_help.html' %}
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Setting -->
+        <div class="modal fade" id="setting" tabindex="-1" role="dialog" aria-hidden="true">
+            <div class="modal-dialog modal-dialog-scrollable">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="exampleModalLabel">تنظیمات</h5>
+                    </div>
+                    <div class="modal-body">
+                        هیچی
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary  border-gray" data-dismiss="modal">تائید</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    
+            <!-- <div id="post-menu" class="post-bar border-gray"> -->
+                <button type="button" class="btn btn-success  border-gray" data-toggle="modal" data-target="#publish">
+                    انتشار
+                </button>
+                <a href="{% url 'person:profile_detail' user.username %}"><button type="button" class="btn btn-danger  border-gray">بازگشت</button></a>
+            <!-- </div> -->
+    
+            <!-- Publish options -->
+            <div class="modal fade" id="publish" tabindex="-1" role="dialog" aria-hidden="true">
+                <div class="modal-dialog modal-dialog-scrollable">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <h5 class="modal-title" id="exampleModalLabel">تنظیمات مطلب</h5>
+                        </div>
+                        <div class="modal-body">
+                            <label>کاور:</label>
+                            <div style="display: table; width: 100%;">
+                                <div style="display: inline-block; width: 100%;">
+                                    {{ form.cover }}
+                                </div>
+                                        
+                                <div style="display: table-cell; vertical-align: middle; padding-right: 20px;">
+                                    <a href="{% url 'cloud:upload_file' %}" target="_blank"><button type="button" class="btn btn-success  border-gray">آپلود تصویر جدید</button></a>
+                                </div>
+                            </div>
+                            
+                            <br/>
+                            <label>توضیح کوتاه:</label><br/>
+                            {{ form.short_description }}
+                            <small id="desc_help" class="form-text text-muted">حداکثر 156 حرف</small>
+                            <br/>
+                            <label>دسته بندی:</label><br/>
+                            {{ form.category }}
+                            <br/>
+                        </div>
+                        <div class="modal-footer">
+                            <button type="submit" class="btn btn-success  border-gray">انتشار</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </form>
+    </div>
+    {% endblock %}

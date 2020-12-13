@@ -1,0 +1,558 @@
+{% extends 'main.html' %}
+{% load jformat %}
+{% load static %}
+
+{% block title %}
+{{ super }} {{ post.title }}
+{% endblock %}
+
+
+{% block body %}
+<div class="body shadow-ms border-gray">
+    <!-- Post options for post author -->
+    {% if user.is_authenticated %}
+    {% if user.username == post.author.username %}
+    <div class="dropdown" style="float: left;">
+        <a class="text-muted" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true"
+            aria-expanded="false">
+            <p class="options">•••</p>
+        </a>
+        <div class="dropdown-menu shadow-ms border-gray" aria-labelledby="dropdownMenuButton"
+            style="text-align: center;">
+            <a class="dropdown-item" href="{% url 'person:post:edit_post' post.id %}">ویرایش</a>
+            <button class="dropdown-item" type="button" class="btn btn-danger  border-gray"
+                data-toggle="modal" data-target="#delete_post">حذف</button>
+        </div>
+    </div>
+
+    <!-- Delete Post -->
+    <div class="modal fade" id="delete_post" tabindex="-1" role="dialog" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="exampleModalLabel">هشدار - حذف مطلب</h5>
+                </div>
+                <div class="modal-body">
+                    با اینکار مطلب حذف می‌شود و دیگر قابل بازیابی نیست.<br />آیا مطمئن هستید؟
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary  border-gray"
+                        data-dismiss="modal">خیر</button>
+                    <a href="{% url 'person:post:delete_post' user.username post.id %}"><button type="button"
+                            class="btn btn-danger  border-gray">بله</button></a>
+                </div>
+            </div>
+        </div>
+    </div>
+    {% endif %}
+    {% endif %}
+
+    <!-- Post Author -->
+    <div style="display: table;">
+        <div style="display: inline-block;">
+            <a href="{% url 'person:profile_detail' post.author.username %}">
+                {% if post.author.avatar.url != None %}
+                <img class="avatar border-gray " src="{{ post.author.avatar.url }}" width="48px" height="48px"
+                    class=" border-gray" style="border-style: solid; border-width: 1px;">
+
+                {% else %}
+                <img class="avatar  border-gray" type="button" src="/media/avatars/default_avatar.png/"
+                    width="48px" height="48px" style="border-style: solid; border-width: 1px;">
+                {% endif %}
+            </a>
+
+        </div>
+
+        <div style="display: table-cell; vertical-align: middle; padding-right: 20px;">
+            <p style="margin-bottom: 0px;">
+                <a class="person-name" href="{% url 'person:profile_detail' post.author.username %}">
+
+                    {{ post.author.name }}
+                </a>
+                {% if post.author.work != None %}
+                - {{ post.author.work }}
+                {% endif %}
+            </p>
+            <small class="text-muted"><svg width="1em" height="1em" viewBox="0 0 16 16" class="bi bi-calendar-fill"
+                    fill="currentColor" xmlns="http://www.w3.org/2000/svg">
+                    <path
+                        d="M3.5 0a.5.5 0 0 1 .5.5V1h8V.5a.5.5 0 0 1 1 0V1h1a2 2 0 0 1 2 2v11a2 2 0 0 1-2 2H2a2 2 0 0 1-2-2V5h16V4H0V3a2 2 0 0 1 2-2h1V.5a.5.5 0 0 1 .5-.5z" />
+                </svg> {{ post.publish_time | jformat:'%Y/%m/%d' }} <svg width="1em" height="1em" viewBox="0 0 16 16"
+                    class="bi bi-clock-fill" fill="currentColor" xmlns="http://www.w3.org/2000/svg">
+                    <path fill-rule="evenodd"
+                        d="M16 8A8 8 0 1 1 0 8a8 8 0 0 1 16 0zM8 3.5a.5.5 0 0 0-1 0V9a.5.5 0 0 0 .252.434l3.5 2a.5.5 0 0 0 .496-.868L8 8.71V3.5z" />
+                </svg> {{ post.publish_time | jformat:'%H:%M' }}</small>
+        </div>
+    </div>
+    <hr />
+
+    <!-- Post -->
+    <h2>{{ post.title }}</h2><br />
+
+    {% if post.cover != None %}
+    <div class="img"><img src="{{ post.cover }}"></div>
+    {% endif %}
+
+    <p>{{ post_body | safe }}</p>
+
+    {% if post.project == True %}
+    <div class="jumbotron "
+        style="padding: 1rem 1rem; background: #f5f5f5; border: 1px solid rgba(0,0,0,.125);">
+        <div class="btn-group-vertical" style="float: left; text-align: left; align-items: flex-end;">
+            <span class="badge badge-dark"
+                style="float: left; font-size: 1em; font-weight: lighter; margin-bottom: 10px;"><i
+                    class="icofont-code-alt"></i> {{ post.project_lang }}</span>
+            <span class="badge badge-dark" style="float: left; font-size: 1em; font-weight: lighter;"><i
+                    class="icofont-law"></i> {{ post.project_license }}</span>
+        </div>
+
+        <h1 class="display-4">
+            <div style="display: table">
+                <div style="display: inline-block">
+                    <i class="icofont-rounded-left" style="vertical-align: middle;"></i>
+                </div>
+                <div style="display: table-cell">
+                    {{ post.project_name }}
+                </div>
+            </div>
+
+        </h1>
+
+        <hr class="my-4">
+        <p>{{ post.project_description }}</p>
+        <div style="text-align: center;">
+            {% if post.project_github != None %}
+            <a href="{{ post.project_github }}"><button type="button" class="btn btn-github border-gray"><img
+                        class="logo" src="{% static 'img/Github_logo.png' %}" height="32px"> لینک در
+                    گیت‌هاب</button></a>
+            {% endif %}
+
+            {% if post.project_gitlab != None %}
+            <a href="{{ post.project_gitlab }}"><button type="button" class="btn btn-gitlab border-gray"><img
+                        class="logo" src="{% static 'img/Gitlab_logo.png' %}" height="32px"> لینک در گیت‌لب</button></a>
+            {% endif %}
+        </div>
+    </div>
+    {% endif %}
+
+    <hr />
+
+    <p>
+        این مطلب را در
+        <a
+            href="https://telegram.me/share/url?url=http://192.168.1.100:8000/user/{{ post.author.username }}/post/{{ post.id }}"><button
+                class="btn btn-light border-gray "><i class="icofont-telegram"></i></button></a> ،
+        <a
+            href="http://twitter.com/share?text=http://192.168.1.100:8000/user/{{ post.author.username }}/post/{{ post.id }}"><button
+                class="btn btn-light border-gray "><i class="icofont-twitter"></i></button></a> و
+        <a href="whatsapp://send?text=http://192.168.1.100:8000/user/{{ post.author.username }}/post/{{ post.id }}"><button
+                class="btn btn-light border-gray "><i class="icofont-whatsapp"></i></button></a>
+        با دوستان خود به اشتراک بگذارید!
+    </p>
+
+    <div id="post-menu" class="post-bar border-gray">
+        <!-- Like -->
+        {% if user.is_authenticated %}
+        {% if post in person.likes.all %}
+        <a dir="ltr" href="{% url 'person:post:post_like' post.author.username post.id %}"><button
+                type="button" class="btn btn-light text-danger  border-gray">{{ post.likes }} <svg width="1em" height="1em" viewBox="0 0 16 16" class="bi bi-heart-fill" fill="currentColor" xmlns="http://www.w3.org/2000/svg">
+                    <path fill-rule="evenodd" d="M8 1.314C12.438-3.248 23.534 4.735 8 15-7.534 4.736 3.562-3.248 8 1.314z"/>
+                  </svg></button></a>
+
+        {% else %}
+        <a dir="ltr" href="{% url 'person:post:post_like' post.author.username post.id %}"><button
+                type="button" class="btn btn-light  border-gray">{{ post.likes }} <svg width="1em"
+                    height="1em" viewBox="0 0 16 16" class="bi bi-heart" fill="currentColor"
+                    xmlns="http://www.w3.org/2000/svg">
+                    <path fill-rule="evenodd"
+                        d="M8 2.748l-.717-.737C5.6.281 2.514.878 1.4 3.053c-.523 1.023-.641 2.5.314 4.385.92 1.815 2.834 3.989 6.286 6.357 3.452-2.368 5.365-4.542 6.286-6.357.955-1.886.838-3.362.314-4.385C13.486.878 10.4.28 8.717 2.01L8 2.748zM8 15C-7.333 4.868 3.279-3.04 7.824 1.143c.06.055.119.112.176.171a3.12 3.12 0 0 1 .176-.17C12.72-3.042 23.333 4.867 8 15z" />
+                </svg></button></a>
+        {% endif %}
+
+        {% else %}
+        <a dir="ltr" href="{% url 'person:post:post_like' post.author.username post.id %}"><button
+                type="button" class="btn btn-light  border-gray">{{ post.likes }} <svg width="1em"
+                    height="1em" viewBox="0 0 16 16" class="bi bi-heart" fill="currentColor"
+                    xmlns="http://www.w3.org/2000/svg">
+                    <path fill-rule="evenodd"
+                        d="M8 2.748l-.717-.737C5.6.281 2.514.878 1.4 3.053c-.523 1.023-.641 2.5.314 4.385.92 1.815 2.834 3.989 6.286 6.357 3.452-2.368 5.365-4.542 6.286-6.357.955-1.886.838-3.362.314-4.385C13.486.878 10.4.28 8.717 2.01L8 2.748zM8 15C-7.333 4.868 3.279-3.04 7.824 1.143c.06.055.119.112.176.171a3.12 3.12 0 0 1 .176-.17C12.72-3.042 23.333 4.867 8 15z" />
+                </svg></button></a>
+        {% endif %}
+
+        <!-- Comments -->
+        <a dir="ltr"
+            href="{% url 'person:post:post_detail' post.author.username post.id %}#comments"><button
+                class="btn btn-light  border-gray" type="button">
+                {{ post.comments }} <svg width="1em" height="1em" viewBox="0 0 16 16"
+                    class="bi bi-chat-left-text-fill" fill="currentColor"
+                    xmlns="http://www.w3.org/2000/svg">
+                    <path fill-rule="evenodd"
+                        d="M0 2a2 2 0 0 1 2-2h12a2 2 0 0 1 2 2v8a2 2 0 0 1-2 2H4.414a1 1 0 0 0-.707.293L.854 15.146A.5.5 0 0 1 0 14.793V2zm3.5 1a.5.5 0 0 0 0 1h9a.5.5 0 0 0 0-1h-9zm0 2.5a.5.5 0 0 0 0 1h9a.5.5 0 0 0 0-1h-9zm0 2.5a.5.5 0 0 0 0 1h5a.5.5 0 0 0 0-1h-5z" />
+                </svg>
+            </button></a>
+
+        <!-- Views -->
+            <button type="button" class="btn btn-light border-gray " dir="ltr">{{ post.views }}
+                <svg width="1em" height="1em" viewBox="0 0 16 16" class="bi bi-eye-fill" fill="currentColor"
+                    xmlns="http://www.w3.org/2000/svg">
+                    <path d="M10.5 8a2.5 2.5 0 1 1-5 0 2.5 2.5 0 0 1 5 0z" />
+                    <path fill-rule="evenodd"
+                        d="M0 8s3-5.5 8-5.5S16 8 16 8s-3 5.5-8 5.5S0 8 0 8zm8 3.5a3.5 3.5 0 1 0 0-7 3.5 3.5 0 0 0 0 7z" />
+                </svg></button>
+    </div>
+
+    <div id="comments"></div>
+</div>
+
+
+<div class="body shadow-ms border-gray">
+    {% if user.is_authenticated %}
+    {% if authenticated_user != post.author %}
+    <div class="dropdown" style="float: left;">
+
+        <a class="text-muted" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true"
+            aria-expanded="false">
+            <p class="options">
+                •••
+            </p>
+        </a>
+
+        <div class="dropdown-menu shadow-ms border-gray" aria-labelledby="dropdownMenuButton"
+            style="text-align: center;">
+            {% if post.author in authenticated_user.following.all %}
+            <a class="dropdown-item" href="{% url 'person:follow_person' post.author.username current_url %}">لغو
+                دنبال</a>
+
+            {% else %}
+            <a class="dropdown-item" href="{% url 'person:follow_person' post.author.username current_url %}">دنبال
+                کنید</a>
+            {% endif %}
+        </div>
+    </div>
+    {% endif %}
+    {% endif %}
+
+    <div style="display: table;">
+        <div style="display: inline-block;">
+            <a href="{% url 'person:profile_detail' post.author.username %}">
+                {% if post.author.avatar.url != None %}
+                <img class="avatar border-gray " src="{{ post.author.avatar.url }}" width="48px" height="48px"
+                    class=" border-gray" style="border-style: solid; border-width: 1px;">
+
+                {% else %}
+                <img class="avatar  border-gray" type="button" src="/media/avatars/default_avatar.png/"
+                    width="48px" height="48px" style="border-style: solid; border-width: 1px;">
+                {% endif %}
+            </a>
+
+        </div>
+
+        <div style="display: table-cell; vertical-align: middle; padding-right: 20px;">
+            <p style="margin-bottom: 0px;">
+                <a class="person-name" href="{% url 'person:profile_detail' post.author.username %}">
+
+                    {{ post.author.name }}
+                </a>
+                {% if post.author.work != None %}
+                - {{ post.author.work }}
+                {% endif %}
+
+                {% if post.author in authenticated_user.following.all %}
+                <i class="text-muted" style="font-style: normal;"> - دنبال شده</i>
+                {% endif %}
+            </p>
+            {% if post.author.description != None %}
+            <small class="text-muted">{{ post.author.description }}</small>
+            {% endif %}
+        </div>
+    </div>
+</div>
+<hr />
+
+<ul style="list-style-type: none; padding-right: 0px; display: flex; overflow-x: auto;">
+    {% for ad in ads_list %}
+    <li style="text-align: center; padding: 10px;">
+        {% if ad == None %}
+        <div class="card shadow-ms border-gray" style="width: 18rem;height: 100%;">
+            <img src="{% static 'img/rocket.jpg' %}" class="card-img-top" alt="سیستم افزایش بازدید شبکه اجتماعی برنامه نویسان">
+            <div class="card-body">
+                <h5 class="card-title">مطلبت رو به پرواز در بیار!</h5>
+                <p class="card-text">با سیستم افزایش بازدید شبکه اجتماعی برنامه نویسان، می‌تونی مطلبت رو راحت‌تر به دست بقیه برسونی</p>
+                <a href="#" class="btn btn-primary">اطلاعات بیشتر</a>
+            </div>
+        </div>
+        {% else %}
+        <div class="card shadow-ms border-gray" style="width: 18rem;height: 100%;">
+            <img src="{{ ad.post.cover }}" class="card-img-top" alt="{{ ad.post.title }}">
+            <div class="card-body">
+                <div style="display: table;">
+                    <div style="display: inline-block;">
+                        <a href="{% url 'person:profile_detail' ad.post.author.username %}">
+                            {% if ad.post.author.avatar.url != None %}
+                            <img class="avatar border-gray " src="{{ ad.post.author.avatar.url }}" width="48px" height="48px"
+                                class=" border-gray" style="border-style: solid; border-width: 1px;">
+            
+                            {% else %}
+                            <img class="avatar  border-gray" type="button" src="/media/avatars/default_avatar.png/"
+                                width="48px" height="48px" style="border-style: solid; border-width: 1px;">
+                            {% endif %}
+                        </a>
+            
+                    </div>
+            
+                    <div style="display: table-cell; vertical-align: middle; padding-right: 20px;">
+                        <p style="margin-bottom: 0px;">
+                            <a class="person-name" href="{% url 'person:profile_detail' ad.post.author.username %}">
+            
+                                {{ ad.post.author.name }}
+                            </a>
+                        </p>
+                        <small class="text-muted"><svg width="1em" height="1em" viewBox="0 0 16 16" class="bi bi-calendar-fill"
+                            fill="currentColor" xmlns="http://www.w3.org/2000/svg">
+                            <path
+                                d="M3.5 0a.5.5 0 0 1 .5.5V1h8V.5a.5.5 0 0 1 1 0V1h1a2 2 0 0 1 2 2v11a2 2 0 0 1-2 2H2a2 2 0 0 1-2-2V5h16V4H0V3a2 2 0 0 1 2-2h1V.5a.5.5 0 0 1 .5-.5z" />
+                        </svg> {{ ad.post.publish_time | jformat:'%Y/%m/%d' }} <svg width="1em" height="1em" viewBox="0 0 16 16"
+                            class="bi bi-clock-fill" fill="currentColor" xmlns="http://www.w3.org/2000/svg">
+                            <path fill-rule="evenodd"
+                                d="M16 8A8 8 0 1 1 0 8a8 8 0 0 1 16 0zM8 3.5a.5.5 0 0 0-1 0V9a.5.5 0 0 0 .252.434l3.5 2a.5.5 0 0 0 .496-.868L8 8.71V3.5z" />
+                        </svg> {{ ad.post.publish_time | jformat:'%H:%M' }}</small>
+                    </div>
+                </div>
+                <hr/>
+                <h5 class="card-title"><i class="icofont-rocket"></i> {{ ad.post.title }}</h5>
+                <p class="card-text">{{ ad.post.short_description }}</p>
+                <a href="{% url 'person:post:post_detail' ad.post.author ad.post.id %}" class="btn btn-primary">مشاهده مطلب</a>
+                
+            </div>
+        </div>
+        {% endif %}
+    </li>
+
+    {% endfor %}
+</ul>
+
+
+<hr />
+<!-- Comments -->
+
+<div id="add_comment" class="body shadow-ms border-gray">
+    {% if request.user.is_authenticated %}
+    <form method="post">
+        {% csrf_token %}
+        {% if form.errors %}
+        <div class="alert alert-danger" role="alert">
+            لطفا فیلد را پر کنید!
+        </div>
+        {% endif %}
+        <input style="display: none;" type="text" value="comment" name="mode">
+            <label>نظر شما:</label><br/>
+            <textarea class="form-control" type="text" rows="3" name="text" aria-describedby="text_help"></textarea>
+            <small id=" text_help" class="form-text text-muted">حداکثر ۱۰۰۰ حرف</small>
+
+        <br />
+        <button type="button" class="btn btn-secondary  border-gray"
+            data-dismiss="modal">انصراف</button>
+        <button type="submit" class="btn btn-success  border-gray">ارسال</button>
+    </form>
+    {% else %}
+        برای ارسال نظر ابتدا <a href="{% url 'login' %}">وارد</a> شوید
+    {% endif %}
+</div>
+
+{% if len_comments > 0 %}
+{% for comment in comments %}
+<div id="comment_{{ comment.id }}" class="body shadow-ms border-gray">
+    {% if user.is_authenticated %}
+    {% if user.username == post.author.username %}
+    <div class="dropdown" style="float: left;">
+        <a class="text-muted" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true"
+            aria-expanded="false">
+            <p class="options">•••</p>
+        </a>
+        <div class="dropdown-menu shadow-ms border-gray" aria-labelledby="dropdownMenuButton"
+            style="text-align: center;">
+            <button class="dropdown-item" type="button" class="btn btn-danger  border-gray"
+                data-toggle="modal" data-target="#delete_comment_{{ comment.id }}">حذف</button>
+
+            {% if comment.replay == None %}
+            <button class="dropdown-item" type="button" class="btn btn-primary  border-gray"
+                data-toggle="modal" data-target="#replay_comment_{{ comment.id }}">پاسخ دهید</button>
+            {% endif %}
+        </div>
+    </div>
+    {% elif user.username == comment.author.username %}
+    <div class="dropdown" style="float: left;">
+        <a class="text-muted" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true"
+            aria-expanded="false">
+            <p class="options">•••</p>
+        </a>
+        <div class="dropdown-menu shadow-ms border-gray" aria-labelledby="dropdownMenuButton"
+            style="text-align: center;">
+            <button class="dropdown-item" type="button" class="btn btn-danger  border-gray"
+                data-toggle="modal" data-target="#delete_comment_{{ comment.id }}">حذف</button>
+        </div>
+    </div>
+    {% endif %}
+    {% endif %}
+
+    <div style="display: table;">
+        <div style="display: inline-block;">
+            <a href="{% url 'person:profile_detail' comment.author.username %}">
+                {% if comment.author.avatar.url != None %}
+                <img class="avatar  border-gray" src="{{ comment.author.avatar.url }}" width="48px"
+                    height="48px" class=" border-gray"
+                    style="border-radius: 100%; border-style: solid; border-width: 1px;">
+
+                {% else %}
+                <img class="avatar  border-gray" type="button" src="/media/avatars/default_avatar.png/"
+                    width="48px" height="48px" style="border-style: solid; border-width: 1px;">
+                {% endif %}
+            </a>
+
+        </div>
+
+        <div style="display: table-cell; vertical-align: middle; padding-right: 20px;">
+            <p style="margin-bottom: 10px; color: #212529;">
+                <a href="{% url 'person:profile_detail' comment.author.username %}"
+                    style="color: #212529; font-family: Vazir Black FD; font-weight: 900; text-decoration: none;">
+
+                    {{ comment.author.name }}
+                </a>
+                - {{ comment.author.work }}
+            </p>
+        </div>
+    </div>
+    <hr />
+    {{ comment.text | safe }}
+
+    <!-- Delete Comment -->
+    <div class="modal fade" id="delete_comment_{{ comment.id }}" tabindex="-1" role="dialog" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="exampleModalLabel">هشدار - حذف نظر</h5>
+                </div>
+                <div class="modal-body">
+                    آیا مطمئن هستید؟
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary  border-gray"
+                        data-dismiss="modal">خیر</button>
+                    <a href="{% url 'person:post:delete_post_comment' post.author.username post.id comment.id %}"><button
+                            type="button" class="btn btn-danger  border-gray">بله</button></a>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Comment Replay -->
+    <div class="modal fade" id="replay_comment_{{ comment.id }}" tabindex="-1" role="dialog" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="exampleModalLabel">پاسخ به نظر</h5>
+                </div>
+                <div class="modal-body">
+                    <Form method="post">
+                        {% csrf_token %}
+                        {% if form.errors %}
+                        <div class="alert alert-danger" role="alert">
+                            لطفا فیلد را پر کنید!
+                        </div>
+                        {% endif %}
+                        <input style="display: none;" type="text" value="{{ comment.id }}" name="mode">
+                                <label>پاسخ شما:</label><br/>
+                                <textarea class="form-control" type="text" rows="3" name="text" aria-describedby="text_help"></textarea>
+                                <small id=" text_help" class="form-text text-muted">حداکثر ۱۰۰۰ حرف</small>
+                        <br /><br />
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-secondary  border-gray"
+                                data-dismiss="modal">انصراف</button>
+                            <button type="submit" class="btn btn-success  border-gray">ارسال</button>
+                        </div>
+                    </Form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+{% if comment.replay != None %}
+<div id="comment_{{ comment.id }}" style="width: 95%; margin-right: 5%;" class="body shadow-ms border-gray">
+    {% if user.is_authenticated %}
+    {% if user.username == post.author.username %}
+    <div class="dropdown" style="float: left;">
+        <a class="text-muted" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true"
+            aria-expanded="false">
+            <p class="options">•••</p>
+        </a>
+        <div class="dropdown-menu shadow-ms border-gray" aria-labelledby="dropdownMenuButton"
+            style="text-align: center;">
+            <button class="dropdown-item" type="button" class="btn btn-danger  border-gray"
+                data-toggle="modal" data-target="#delete_comment_{{ comment.id }}_replay">حذف</button>
+        </div>
+    </div>
+    {% endif %}
+    {% endif %}
+
+    <div style="display: table;">
+        <div style="display: inline-block;">
+            <a href="{% url 'person:profile_detail' post.author.username %}">
+                {% if post.author.avatar.url != None %}
+                <img class="avatar  border-gray" src="{{ post.author.avatar.url }}" width="48px" height="48px"
+                    class=" border-gray" style="border-radius: 100%; border-style: solid; border-width: 1px;">
+
+                {% else %}
+                <img class="avatar  border-gray" type="button" src="/media/avatars/default_avatar.png/"
+                    width="48px" height="48px" style="border-style: solid; border-width: 1px;">
+                {% endif %}
+            </a>
+        </div>
+
+        <div style="display: table-cell; vertical-align: middle; padding-right: 20px;">
+            <p style="margin-bottom: 0px;">
+                <a class="person-name" href="{% url 'person:profile_detail' post.author.username %}">
+
+                    {{ post.author.name }}
+                </a>
+                {% if post.author.work != None %}
+                - {{ post.author.work }}
+                {% endif %}
+            </p>
+        </div>
+    </div>
+    <hr />
+
+    {{ comment.replay | safe }}
+
+</div>
+{% endif %}
+
+
+<!-- Delete Comment Replay -->
+<div class="modal fade" id="delete_comment_{{ comment.id }}_replay" tabindex="-1" role="dialog" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="exampleModalLabel">هشدار - حذف پاسخ</h5>
+            </div>
+            <div class="modal-body">
+                آیا مطمئن هستید؟
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary  border-gray"
+                    data-dismiss="modal">خیر</button>
+                <a href="{% url 'person:post:delete_post_comment_replay' post.author.username post.id comment.id %}"><button
+                        type="button" class="btn btn-danger  border-gray">بله</button></a>
+            </div>
+        </div>
+    </div>
+</div>
+{% endfor %}
+{% else %}
+<div class="body shadow-ms border-gray">
+    <p>هیچ نظری وجود ندارد!</p>
+</div>
+{% endif %}
+{% endblock %}

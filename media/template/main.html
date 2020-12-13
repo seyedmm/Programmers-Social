@@ -1,0 +1,93 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="fa" dir="rtl">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="theme-color" content="#43168d">
+    <meta name="language" content="FA">
+    <meta name="description" content="{% block description %}{% endblock %}">
+    <meta name="keywords" content="شبکه اجتماعی برنامه نویسان, {% block keywords %}{% endblock %}">
+    <meta name="author" content="{% block author %}{% endblock %}">
+    <meta name="application-name" content="شبکه اجتماعی برنامه نویسان">
+    <meta name="mobile-web-app-capable" content="yes">
+    <meta name="application-icon" >
+
+    <link rel="stylesheet" href="{% static 'css/bootstrap.min.css' %}">
+    <link rel="stylesheet" href="{% static 'css/style.css' %}" />
+    <link rel="stylesheet" href="{% static 'css/icofont.min.css' %}">
+    <link rel="stylesheet" href="{% static 'css/animate.min.css' %}" />
+
+    <link rel="manifest" href="{% static 'manifest.json' %}">
+
+    <link rel="icon" href="{% static 'img/programmers-social_logo.svg' %}">
+    <link rel="shortcut icon" href="{% static 'img/programmers-social_logo.svg' %}">
+    <link rel="apple-touch-icon" href="{% static 'img/programmers-social_logo.svg' %}">
+
+    <title>{% block title %}{% endblock %}- شبکه اجتماعی برنامه نویسان</title>
+</head>
+
+<body>
+    {% include 'partials/navigation.html' %}
+
+    <div class="wrp">
+        {% block body %}{% endblock %}
+        {% include 'partials/footer.html' %}
+        <br />
+    </div>
+
+    <script src="{% static 'js/jquery.min.js' %}"></script>
+    <script src="{% static 'js/bootstrap.bundle.min.js' %}"></script>
+    <script>
+        $(document).ready(function () {
+            $('[data-toggle="tooltip"]').tooltip();
+        });
+
+        // Select the button
+        const btn = document.querySelector(".btn-toggle");
+        // Check for dark mode preference at the OS level
+        const prefersDarkScheme = window.matchMedia("(prefers-color-scheme: dark)");
+
+        // Get the user's theme preference from local storage, if it's available
+        const currentTheme = localStorage.getItem("theme");
+        // If the user's preference in localStorage is dark...
+        if (currentTheme == "dark") {
+            // ...let's toggle the .dark-theme class on the body
+            document.body.classList.toggle("dark-mode");
+            // Otherwise, if the user's preference in localStorage is light...
+        } else if (currentTheme == "light") {
+            // ...let's toggle the .light-theme class on the body
+            document.body.classList.toggle("light-mode");
+        } else {
+            // ...let's toggle the .light-theme class on the body
+            document.body.classList.toggle("light-mode");
+        }
+
+        // Listen for a click on the button 
+        btn.addEventListener("click", function () {
+            // If the user's OS setting is dark and matches our .dark-mode class...
+            if (prefersDarkScheme.matches) {
+                // ...then toggle the light mode class
+                document.body.classList.toggle("light-mode");
+                // ...but use .dark-mode if the .light-mode class is already on the body,
+                var theme = document.body.classList.contains("light-mode") ? "light" : "dark";
+            } else {
+                // Otherwise, let's do the same thing, but for .dark-mode
+                document.body.classList.toggle("dark-mode");
+                var theme = document.body.classList.contains("dark-mode") ? "dark" : "light";
+            }
+            // Finally, let's save the current preference to localStorage to keep using it
+            localStorage.setItem("theme", theme);
+        });
+    </script>
+
+    <script src="https://cdn.payping.ir/statics/donate.min.js" type="text/javascript" charset="utf-8"
+        pp-userName="programmers-social"
+        pp-description="آیا می‌دانید هزینه‌های سرور بسیار بالاست؟ با پرداخت مبلغ دلخواه از خدمات رایگان <strong>شبکه اجتماعی برنامه نویسان</strong> حمایت کنید!"
+        pp-amounts="1000,2000,5000"
+        pp-avatar="{% static 'img/programmers-social_logo.svg' %}">
+    </script>
+</body>
+
+</html>

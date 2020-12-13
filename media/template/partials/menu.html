@@ -1,0 +1,19 @@
+{% if user.is_authenticated %}
+    <div class="list-group ">
+        <a href="{% url 'person:profile_detail' user.username %}" class="list-group-item list-group-item-action btn-primary border-gray" data-toggle="tooltip" data-placement="left" title="مشاهده پروفایل"><i class="icofont-user-alt-4" style="font-size: 1.4em;"></i><i class="just-in-mobile" style="font-style: normal;"> مشاهده پروفایل</i></a>     
+
+        <a href="{% url 'person:edit_profile' %}" class="list-group-item list-group-item-action btn-primary border-gray" data-toggle="tooltip" data-placement="left" title="ویرایش پروفایل"><i class="icofont-settings-alt" style="font-size: 1.4em;"></i><i class="just-in-mobile" style="font-style: normal;"> ویرایش پروفایل</i></a>
+        
+        <a href="{% url 'person:post:new_post' %}" class="list-group-item list-group-item-action btn-primary border-gray" data-toggle="tooltip" data-placement="left" title="نوشتن مطلب"><i class="icofont-pen-nib" style="font-size: 1.4em;"></i><i class="just-in-mobile" style="font-style: normal;"> نوشتن مطلب</i></a>
+
+        <a href="{% url 'cloud:cloud_index' %}" class="list-group-item list-group-item-action btn-primary border-gray" data-toggle="tooltip" data-placement="left" title="فضای ابری"><i class="icofont-cloud" style="font-size: 1.4em;"></i><i class="just-in-mobile" style="font-style: normal;"> فضای ابری</i></a>
+
+        <a href="{% url 'person:friends' 1 %}" class="list-group-item list-group-item-action btn-primary border-gray" data-toggle="tooltip" data-placement="left" title="دوستان شما"><i class="icofont-users-alt-5" style="font-size: 1.4em;"></i><i class="just-in-mobile" style="font-style: normal;"> دوستان شما</i></a>
+
+        <!-- <a href="#" class="list-group-item list-group-item-action btn-primary border-gray" data-toggle="tooltip" data-placement="left" title="گزارش باگ"><i class="icofont-bug" style="font-size: 20px;"></i><i class="just-in-mobile" style="font-style: normal;"> گزارش باگ</i></a> -->
+    </div>
+
+    {% if url == 'profile_edit' %}
+        <p>hello</p>
+    {% endif %}
+{% endif %}

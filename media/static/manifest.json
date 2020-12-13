@@ -1,0 +1,45 @@
+
+ {
+    "short_name": "شبکه اجتماعی برنامه نویسان",
+    "name": "شبکه اجتماعی برنامه نویسان",
+    "description": "دورهمی برنامه نویس‌ها و گیک‌های پارسی زبان",
+    "dir": "rtl",
+    "lang": "fa-IR",
+    "display": "browser",
+    "start_url": "/%3Fpage=1/",
+    "background_color": "#f6f8fa",
+    "theme_color": "#43168d",
+    "icons": [
+      {
+        "src": "/static/img/programmers-social_logo_512x512.png",
+        "sizes": "512x512",
+        "type": "image/png",
+        "purpose": "any maskable"  
+      },
+      {
+        "src": "/static/img/programmers-social_logo_512x512.png",
+        "sizes": "512x512",
+        "type": "image/png"
+      },
+      {
+        "src": "/static/img/programmers-social_logo_256x256.png",
+        "sizes": "256x256",
+        "type": "image/png"
+      },
+      {
+        "src": "/static/img/programmers-social_logo_128x128.png",
+        "sizes": "128x128",
+        "type": "image/png"
+      },
+      {
+        "src": "/static/img/programmers-social_logo_64x64.png",
+        "sizes": "64x64",
+        "type": "image/png"
+      },
+      {
+        "src": "/static/img/programmers-social_logo_32x32.png",
+        "sizes": "32x32",
+        "type": "image/png"
+      }
+    ]
+  }

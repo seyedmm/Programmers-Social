@@ -1,0 +1,28 @@
+{% extends 'main.html' %}
+
+{% block title %}
+    {{ super }} ویرایش رزومه
+{% endblock %}
+
+
+{% block body %}
+    <div class="body shadow-ms border-gray">
+        <h2>ویرایش رزومه</h2><br/>
+        <form method="post">
+            {% csrf_token %}
+            {% if form.errors %}
+                <div class="alert alert-danger" role="alert">
+                    {{ form.non_field_errors }}
+                    {% if form.body.errors %}
+                        <p><strong>رزومه</strong>{{ form.rezome.errors }}</p>
+                    {% endif %}
+                </div>
+            {% endif %}
+            <label>متن:</label><br/>
+            {{ form.rezome }}
+            <br/><br/>
+            <button type="submit" class="btn btn-success  border-gray">ذخیره</button>
+            <a href="{% url 'person:profile_detail' user.username %}"><button type="button" class="btn btn-danger  border-gray">انصراف</button></a>
+        </form>
+    </div>
+{% endblock %}

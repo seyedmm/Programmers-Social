@@ -1,0 +1,72 @@
+{% load static %}
+
+
+
+<nav class="navbar navbar-expand-lg navbar-light shadow-ms border-gray">
+    <div class="wrp">
+    <a class="navbar-brand" href="{% url 'index' %}">
+        <img src="{% static 'img/programmers-social_logo.svg' %}" width="30" height="30" class="programmers-social_logo d-inline-block align-top" alt="شبکه اجتماعی برنامه نویسان" loading="lazy">
+        شبکه اجتماعی برنامه نویسان
+    </a>
+    
+    
+    <!-- <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarText" aria-controls="navbarText" aria-expanded="false" aria-label="Toggle navigation">
+        <span class="navbar-toggler-icon"></span>
+    </button> -->
+    <div class="collapse navbar-collapse" id="navbarText">
+        <ul class="navbar-nav mr-auto">
+            <li class="nav-item">
+                <a class="nav-link" href="{% url 'person:all_persons' 1 %}">کاربران</a>
+            </li>
+
+            {% if perms.admin %}
+                <li class="nav-item">
+                    <a class="nav-link" href="/admin/">پنل ادمین</a>
+                </li>
+            {% endif %}
+        </ul>
+        
+    </div>
+    <form class="form-inline">
+
+        {% if user.is_authenticated %}
+            <a href="{% url 'person:profile_detail' user.username %}">
+                {% if new_notif %}
+                    <a class="notification my-2 my-sm-0" style="margin-left: 10px;" href="{% url 'person:new_notifications' %}" data-toggle="tooltip" data-placement="right" title="{{ notif_len }} پیام جدید موجود است!"><i class="icofont-alarm animated infinite flash" style="font-size: 1.2em; vertical-align: middle;"></i></a>
+
+                {% else %}
+                    <a class="notification my-2 my-sm-0" style="margin-left: 10px;" href="{% url 'person:all_notifications' 1 %}" data-toggle="tooltip" data-placement="right" title="پیام جدیدی موجود نیست"><i class="icofont-alarm" style="font-size: 1.2em; vertical-align: middle;"></i></a>
+                {% endif %}
+            </a>
+
+            <div class="dropdown">
+                    <a data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                        {% if authenticated_user.avatar.url != None %}
+                            <img class="avatar mr-sm-2 border-gray" type="button" src="{{ authenticated_user.avatar.url }}" width="38px" height="38px" style="border-style: solid; border-width: 1px;">
+                        
+                        {% else %}
+                            <img class="avatar mr-sm-2 border-gray" type="button" src="/media/avatars/default_avatar.png/" width="38px" height="38px" style="border-style: solid; border-width: 1px;">
+                        {% endif %}
+                    </a>
+                <!-- </button> -->
+                <div class="dropdown-menu shadow-ms border-gray" aria-labelledby="dropdownMenuButton" style="text-align: center;">
+                    <a class="dropdown-item" href="{% url 'person:profile_detail' user.username %}">{{ authenticated_user.name }}<br/><small>{{ authenticated_user.username }}@</small></a>
+                    <div class="dropdown-divider"></div>
+                    <a class="dropdown-item" href="{% url 'person:post:new_post' %}"><i class="icofont-pen-nib"></i> نوشتن مطلب</a>
+                    <a class="dropdown-item" href="{% url 'cloud:cloud_index' %}"><i class="icofont-cloud"></i> فضای ابری</a>
+                    <a class="dropdown-item" href="{% url 'person:friends' 1 %}"><i class="icofont-users-alt-5"></i> دوستان شما</a>
+                    <a class="dropdown-item" href="{% url 'person:edit_profile' %}"><i class="icofont-settings-alt"></i> تنظیمات</a>
+                    <div class="dropdown-divider"></div>
+                    <a href="" class="btn-toggle"><i class="icofont-moon"></i> حالت شب</a>
+                    <div class="dropdown-divider"></div>
+                    <a class="dropdown-item" href="{% url 'logout' %}"><i class="icofont-sign-out"></i> خروج</a>
+                </div>
+            </div>
+
+        {% else %}
+            <a href="{% url 'login' %}"><button class="btn btn-primary my-2 my-sm-0 border-gray" type="button">ورود</button></a>
+            <a href="{% url 'signup' %}"><button class="btn btn-primary mr-sm-2 border-gray" type="button">عضویت</button></a>
+        {% endif %}
+    </form></div>
+</nav>
+<br/><br/>

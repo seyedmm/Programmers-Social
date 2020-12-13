@@ -1,0 +1,38 @@
+{% extends 'main.html' %}
+
+{% block title %}
+    {{ super }} آپلود تصویر
+{% endblock %}
+
+
+{% block body %}
+    <div class="body shadow-ms border-gray">
+        <h2>آپلود تصویر</h2><br/>
+        <h1 style="text-align: center;"><i class="icofont-cloud-upload icofont-5x"></i></h1>
+        {% if available_space == True %}
+            <form method="post" enctype="multipart/form-data">
+                {% csrf_token %}
+                {% if form.errors %}
+                    <div class="alert alert-danger" role="alert">
+                        {{ form.non_field_errors }}
+                        {% if form.image.errors %}
+                            <p><strong>تصویر</strong>{{ form.image.errors }}</p>
+                        {% endif %}
+                    </div>
+                {% endif %}
+                <lable>تصویر:</lable>
+                {{ form.image }}
+                <br/><br/>
+                {{ form.compress }}
+                <lable>فشرده سازی تصویر (افت کیفیت کم)</lable>
+                <br/><br/>
+                
+                <button type="submit" class="btn btn-success my-2 my-sm-0  border-gray">آپلود</button>
+                <a href="{% url 'cloud:cloud_index' %}"><button class="btn btn-info mr-sm-2  border-gray" type="button">بازگشت</button></a>
+            </form>
+
+        {% else %}
+            <p>برای آپلود فایل حداقل باید 10 مگابایت فضای خالی داشته باشید. جهت تهیه فضای بیشتر با پشتیبانی تماس بگیرید.</p>
+        {% endif %}
+    </div>
+{% endblock %}
