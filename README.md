@@ -2,6 +2,10 @@
 
 # شبکه اجتماعی برنامه نویسان
 [![CodeFactor](https://www.codefactor.io/repository/github/mskf1383/programmers-social/badge)](https://www.codefactor.io/repository/github/mskf1383/programmers-social)
+[![FOSSA Status](https://app.fossa.com/api/projects/git%2Bgithub.com%2Fmskf1383%2FProgrammers-Social.svg?type=shield)](https://app.fossa.com/projects/git%2Bgithub.com%2Fmskf1383%2FProgrammers-Social?ref=badge_shield)
+
+
+
 
 این یک  شبکه اجتماعی متن باز و رایگان است که با پایتون و جنگو نوشته شده است. هدف این شبکه اجتماعی برنامه نویسان هستند. در تاریخ 01/01/1400 منتظر افتتاح این شبکه اجتماعی باشید.
 اگر در برنامه نویسی پایتون و جنگو مهارت دارید در صورت علاقه در توسعه این شبکه اجتماعی کمک کنید.
@@ -68,4 +72,10 @@ python manage.py runserver
 
 
 ### نام و لوگو از پیش انتخاب شده و در 01/01/1400 رونمایی می‌شود
+
+
+## مجوز
+این پروژه تحت مجوز [MPL-2](https://github.com/mskf1383/Programmers-Social/blob/main/LICENSE) منشتر شده است.
+بررسی دقیق مجوز پروژه و تمام کتابخانه‌های استفاده شده در پروژه:
+[![FOSSA Status](https://app.fossa.com/api/projects/git%2Bgithub.com%2Fmskf1383%2FProgrammers-Social.svg?type=large)](https://app.fossa.com/projects/git%2Bgithub.com%2Fmskf1383%2FProgrammers-Social?ref=badge_large)
 </div>
