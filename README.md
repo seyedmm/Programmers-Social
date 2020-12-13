@@ -61,7 +61,7 @@ python manage.py runserver
 
 اکنون با وارد کردن آدرس `localhost:8000` در مرورگر وارد سایت می‌شوید.
 
-
+<hr/>
 
 - اگر مشکل یا باگی پیدا کردید در بخش [Issues](https://github.com/mskf1383/Programmers-Social/issues) مطرح کنید
 - اگر سوال، پیشنهاد یا انتقادی داشتید در بخش [Discussions](https://github.com/mskf1383/Programmers-Social/discussions) مطرح کنید
