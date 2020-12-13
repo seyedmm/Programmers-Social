@@ -76,6 +76,4 @@ python manage.py runserver
 
 ## مجوز
 این پروژه تحت مجوز [MPL-2](https://github.com/mskf1383/Programmers-Social/blob/main/LICENSE) منشتر شده است.
-بررسی دقیق مجوز پروژه و تمام کتابخانه‌های استفاده شده در پروژه:
-[![FOSSA Status](https://app.fossa.com/api/projects/git%2Bgithub.com%2Fmskf1383%2FProgrammers-Social.svg?type=large)](https://app.fossa.com/projects/git%2Bgithub.com%2Fmskf1383%2FProgrammers-Social?ref=badge_large)
 </div>
