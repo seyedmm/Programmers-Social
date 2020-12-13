@@ -64,7 +64,7 @@
         </div>
 
         <div style="display: table-cell; vertical-align: middle; padding-right: 20px;">
-            <p style="margin-bottom: 0px;">
+            <p style="margin-bottom: 0;">
                 <a class="person-name" href="{% url 'person:profile_detail' post.author.username %}">
 
                     {{ post.author.name }}
@@ -97,7 +97,7 @@
 
     {% if post.project == True %}
     <div class="jumbotron "
-        style="padding: 1rem 1rem; background: #f5f5f5; border: 1px solid rgba(0,0,0,.125);">
+        style="padding: 1rem; background: #f5f5f5; border: 1px solid rgba(0,0,0,.125);">
         <div class="btn-group-vertical" style="float: left; text-align: left; align-items: flex-end;">
             <span class="badge badge-dark"
                 style="float: left; font-size: 1em; font-weight: lighter; margin-bottom: 10px;"><i
@@ -248,7 +248,7 @@
         </div>
 
         <div style="display: table-cell; vertical-align: middle; padding-right: 20px;">
-            <p style="margin-bottom: 0px;">
+            <p style="margin-bottom: 0;">
                 <a class="person-name" href="{% url 'person:profile_detail' post.author.username %}">
 
                     {{ post.author.name }}
@@ -269,7 +269,7 @@
 </div>
 <hr />
 
-<ul style="list-style-type: none; padding-right: 0px; display: flex; overflow-x: auto;">
+<ul style="list-style-type: none; padding-right: 0; display: flex; overflow-x: auto;">
     {% for ad in ads_list %}
     <li style="text-align: center; padding: 10px;">
         {% if ad == None %}
@@ -301,7 +301,7 @@
                     </div>
             
                     <div style="display: table-cell; vertical-align: middle; padding-right: 20px;">
-                        <p style="margin-bottom: 0px;">
+                        <p style="margin-bottom: 0;">
                             <a class="person-name" href="{% url 'person:profile_detail' ad.post.author.username %}">
             
                                 {{ ad.post.author.name }}
@@ -511,7 +511,7 @@
         </div>
 
         <div style="display: table-cell; vertical-align: middle; padding-right: 20px;">
-            <p style="margin-bottom: 0px;">
+            <p style="margin-bottom: 0;">
                 <a class="person-name" href="{% url 'person:profile_detail' post.author.username %}">
 
                     {{ post.author.name }}
