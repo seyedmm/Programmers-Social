@@ -254,13 +254,12 @@ def delete_post(request, username, post_id):
         return HttpResponseRedirect('/' + 'user/' + username)
 
     # If registered user not post author
-    else:
-        context = {}
+    context = {}
 
-        mskf.add_notification_availability_to_context(request, context)
-        mskf.add_authenticated_user_to_context(request, context)
+    mskf.add_notification_availability_to_context(request, context)
+    mskf.add_authenticated_user_to_context(request, context)
 
-        return render(request, 'forbidden.html', context)
+    return render(request, 'forbidden.html', context)
 
 
 # Post Comment delete view
@@ -309,11 +308,10 @@ def delete_post_comment_replay(request, username, post_id, comment_id):
         return HttpResponseRedirect('/user/' + username + '/post/' + str(post.id))
 
     # If registered user not post author
-    else:
-        mskf.add_notification_availability_to_context(request, context)
-        mskf.add_authenticated_user_to_context(request, context)
+    mskf.add_notification_availability_to_context(request, context)
+    mskf.add_authenticated_user_to_context(request, context)
 
-        return render(request, 'forbidden.html')
+    return render(request, 'forbidden.html')
 
 
 # Like Post view
@@ -339,4 +337,3 @@ def post_like(request, username, post_id):
     post.save()
 
     return HttpResponseRedirect('/user/' + username + '/post/' + str(post.id))
-    

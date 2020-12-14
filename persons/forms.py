@@ -77,8 +77,7 @@ class ProfileEditForm(forms.Form):
             if re.match('^http://github.com/|https://github.com/', data):
                 return data
 
-            else:
-                raise ValidationError('فرمت وارد شده نادرست است.')
+            raise ValidationError('فرمت وارد شده نادرست است.')
 
     def clean_gitlab(self):
         data = self.cleaned_data['gitlab']
@@ -87,8 +86,7 @@ class ProfileEditForm(forms.Form):
             if re.match('^http://gitlab.com/|https://gitlab.com/', data):
                 return data
 
-            else:
-                raise ValidationError('فرمت وارد شده نادرست است.')
+            raise ValidationError('فرمت وارد شده نادرست است.')
 
     def clean_stackowerflow(self):
         data = self.cleaned_data['stackowerflow']
@@ -97,8 +95,7 @@ class ProfileEditForm(forms.Form):
             if re.match('^http://stackoverflow.com/|https://stackoverflow.com/', data):
                 return data
 
-            else:
-                raise ValidationError('فرمت وارد شده نادرست است.')
+            raise ValidationError('فرمت وارد شده نادرست است.')
 
     def clean_linkedin(self):
         data = self.cleaned_data['linkedin']
@@ -107,8 +104,7 @@ class ProfileEditForm(forms.Form):
             if re.match('^http://linkedin.com/|https://linkedin.com/|http://www.linkedin.com/|https://www.linkedin.com/', data):
                 return data
 
-            else:
-                raise ValidationError('فرمت وارد شده نادرست است.')
+            raise ValidationError('فرمت وارد شده نادرست است.')
 
     def clean_dev(self):
         data = self.cleaned_data['dev']
@@ -117,8 +113,7 @@ class ProfileEditForm(forms.Form):
             if re.match('^http://dev.to/|https://dev.to/', data):
                 return data
 
-            else:
-                raise ValidationError('فرمت وارد شده نادرست است.')
+            raise ValidationError('فرمت وارد شده نادرست است.')
 
 
 class RezomeForm(forms.Form):
