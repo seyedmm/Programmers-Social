@@ -2,8 +2,6 @@
 
 # شبکه اجتماعی برنامه نویسان
 [![CodeFactor](https://www.codefactor.io/repository/github/mskf1383/programmers-social/badge)](https://www.codefactor.io/repository/github/mskf1383/programmers-social)
-[![FOSSA Status](https://app.fossa.com/api/projects/git%2Bgithub.com%2Fmskf1383%2FProgrammers-Social.svg?type=shield)](https://app.fossa.com/projects/git%2Bgithub.com%2Fmskf1383%2FProgrammers-Social?ref=badge_shield)
-
 
 
 
