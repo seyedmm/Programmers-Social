@@ -24,12 +24,6 @@ def all_posts(request, username, page):
     person = Person.objects.get(username = username) # Get the Person
     posts = Post.objects.filter(author = person).order_by('-publish_time') # Get the Posts
 
-    try:
-        user = Person.objects.get(username = request.user.username)
-    
-    except:
-        user = None
-
     paginate = Paginator(posts, 3)
 
     context = {

@@ -81,7 +81,7 @@ def upload_file(request):
             file.save()
 
             # If user want to compress the image
-            if compress == True:
+            if compress is True:
                 mskf.compress(file.file.path)
 
             # calculate file size

@@ -73,7 +73,7 @@ class ProfileEditForm(forms.Form):
     def clean_github(self):
         data = self.cleaned_data['github']
 
-        if data != None:
+        if data is not None:
             if re.match('^http://github.com/|https://github.com/', data):
                 return data
 
@@ -82,7 +82,7 @@ class ProfileEditForm(forms.Form):
     def clean_gitlab(self):
         data = self.cleaned_data['gitlab']
 
-        if data != None:
+        if data is not None:
             if re.match('^http://gitlab.com/|https://gitlab.com/', data):
                 return data
 
@@ -91,7 +91,7 @@ class ProfileEditForm(forms.Form):
     def clean_stackowerflow(self):
         data = self.cleaned_data['stackowerflow']
     
-        if data != None:
+        if data is not None:
             if re.match('^http://stackoverflow.com/|https://stackoverflow.com/', data):
                 return data
 
@@ -100,7 +100,7 @@ class ProfileEditForm(forms.Form):
     def clean_linkedin(self):
         data = self.cleaned_data['linkedin']
         
-        if data != None:
+        if data is not None:
             if re.match('^http://linkedin.com/|https://linkedin.com/|http://www.linkedin.com/|https://www.linkedin.com/', data):
                 return data
 
@@ -109,7 +109,7 @@ class ProfileEditForm(forms.Form):
     def clean_dev(self):
         data = self.cleaned_data['dev']
 
-        if data != None:
+        if data is not None:
             if re.match('^http://dev.to/|https://dev.to/', data):
                 return data
 

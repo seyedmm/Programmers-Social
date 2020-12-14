@@ -15,6 +15,5 @@ class FileUploadForm(forms.Form):
 
         if data.size > 10000000:
             raise ValidationError('حجم فایل نباید از 10 مگابایت بیشتر باشد!')
-            
-        else:
-            return data
+
+        return data
