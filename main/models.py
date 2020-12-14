@@ -82,15 +82,6 @@ class Post(models.Model):
     author = models.ForeignKey('Person', on_delete = models.SET_NULL, null = True, verbose_name = 'نویسنده')
     publish_time = jmodels.jDateTimeField(default = timezone.now, verbose_name = 'زمان انتشار')
 
-    # Project
-    project = models.BooleanField(null = True, default = False)
-    project_name = models.CharField(max_length = 50, verbose_name = 'نام پروژه', null = True, blank = True)
-    project_lang = models.CharField(max_length = 50, verbose_name = 'زبان پروژه', null = True, blank = True)
-    project_license = models.CharField(max_length = 50, verbose_name = 'لایسنس پروژه', null = True, blank = True)
-    project_description = models.TextField(verbose_name = 'توضیحات پروژه', null = True, blank = True)
-    project_github = models.CharField(max_length = 1000, verbose_name = 'لینک در گیت‌هاب', null = True, blank = True)
-    project_gitlab = models.CharField(max_length = 1000, verbose_name = 'لینک در گیت‌لب', null = True, blank = True)
-
     # Statistic
     comments = models.CharField(max_length = 10, default = '0', verbose_name = 'تعداد نظر')
     likes = models.CharField(max_length = 10, default = '0', verbose_name = 'تعداد لایک')

@@ -54,7 +54,17 @@ def cloud_index(request):
 @login_required
 def upload_file(request):
     person = Person.objects.get(username=request.user.username)
-    cloud = Cloud.objects.get(owner=person)
+
+    # If user has cloud
+    try:
+        # Load the cloud
+        cloud = Cloud.objects.get(owner=person)
+
+    # If there is no cloud for user
+    except:
+        # Creat a new cloud for user
+        cloud = Cloud(owner=person)
+        cloud.save()
 
     # If request method == POST
     if request.method == 'POST':

@@ -95,57 +95,17 @@
 
     <p>{{ post_body | safe }}</p>
 
-    {% if post.project == True %}
-    <div class="jumbotron "
-        style="padding: 1rem; background: #f5f5f5; border: 1px solid rgba(0,0,0,.125);">
-        <div class="btn-group-vertical" style="float: left; text-align: left; align-items: flex-end;">
-            <span class="badge badge-dark"
-                style="float: left; font-size: 1em; font-weight: lighter; margin-bottom: 10px;"><i
-                    class="icofont-code-alt"></i> {{ post.project_lang }}</span>
-            <span class="badge badge-dark" style="float: left; font-size: 1em; font-weight: lighter;"><i
-                    class="icofont-law"></i> {{ post.project_license }}</span>
-        </div>
-
-        <h1 class="display-4">
-            <div style="display: table">
-                <div style="display: inline-block">
-                    <i class="icofont-rounded-left" style="vertical-align: middle;"></i>
-                </div>
-                <div style="display: table-cell">
-                    {{ post.project_name }}
-                </div>
-            </div>
-
-        </h1>
-
-        <hr class="my-4">
-        <p>{{ post.project_description }}</p>
-        <div style="text-align: center;">
-            {% if post.project_github != None %}
-            <a href="{{ post.project_github }}"><button type="button" class="btn btn-github border-gray"><img
-                        class="logo" src="{% static 'img/Github_logo.png' %}" height="32px"> لینک در
-                    گیت‌هاب</button></a>
-            {% endif %}
-
-            {% if post.project_gitlab != None %}
-            <a href="{{ post.project_gitlab }}"><button type="button" class="btn btn-gitlab border-gray"><img
-                        class="logo" src="{% static 'img/Gitlab_logo.png' %}" height="32px"> لینک در گیت‌لب</button></a>
-            {% endif %}
-        </div>
-    </div>
-    {% endif %}
-
     <hr />
 
     <p>
         این مطلب را در
         <a
-            href="https://telegram.me/share/url?url=http://192.168.1.100:8000/user/{{ post.author.username }}/post/{{ post.id }}"><button
+            href="https://telegram.me/share/url?url=http://localhost:8000/user/{{ post.author.username }}/post/{{ post.id }}"><button
                 class="btn btn-light border-gray "><i class="icofont-telegram"></i></button></a> ،
         <a
-            href="http://twitter.com/share?text=http://192.168.1.100:8000/user/{{ post.author.username }}/post/{{ post.id }}"><button
+            href="http://twitter.com/share?text=http://localhost:8000/user/{{ post.author.username }}/post/{{ post.id }}"><button
                 class="btn btn-light border-gray "><i class="icofont-twitter"></i></button></a> و
-        <a href="whatsapp://send?text=http://192.168.1.100:8000/user/{{ post.author.username }}/post/{{ post.id }}"><button
+        <a href="whatsapp://send?text=http://localhost:8000/user/{{ post.author.username }}/post/{{ post.id }}"><button
                 class="btn btn-light border-gray "><i class="icofont-whatsapp"></i></button></a>
         با دوستان خود به اشتراک بگذارید!
     </p>
