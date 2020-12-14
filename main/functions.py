@@ -153,7 +153,7 @@ class mskf():
         links = re.findall(r'<a href=\".*\" target=\"_blank\" rel=\"noopener nofollow\">', text)
         link_alts = re.findall(r'\" target=\"_blank\" rel=\"noopener nofollow\">.*</a>', text)
 
-        for num in range(0, len(links)):
+        for num, item in enumerate(links):
             raw_link = '(' \
                      + link_alts[num].replace('\" target=\"_blank\" rel=\"noopener nofollow\">', '').replace('</a>', '') \
                      + ')(' \
@@ -166,7 +166,7 @@ class mskf():
         images = re.findall(r'<div class="img"><img src=\".*\" alt=\"', text)
         image_alts = re.findall(r'\" alt=\".*\"></div>', text)
 
-        for num in range(0, len(images)):
+        for num, item in enumerate(images):
             raw_image = '!(' \
                       + image_alts[num].replace('\" alt=\"', '').replace('\"></div>', '') \
                       + ')(' \

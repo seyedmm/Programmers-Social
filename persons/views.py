@@ -146,8 +146,8 @@ def edit_profile(request):
                 pass
 
             # Give new data to person
-            if avatar != None:
-                if avatar == False:
+            if avatar is not None:
+                if avatar is False:
                     person.avatar = None
                     
                 else:

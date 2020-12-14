@@ -115,9 +115,6 @@ def post_detail(request, username, post_id):
 
             return HttpResponseRedirect('/user/' + post.author.username + '/post/' + str(post.id))
 
-        else:
-            print(form.cleaned_data['text'])
-
     # If form method == GET
     else:
         form = CommentForm() # Give form to user
@@ -227,8 +224,6 @@ def edit_post(request, post_id):
                                         'category': post.category,
                                     }) 
 
-            
-
         context = {
             'form': form,
             'post': post,
@@ -240,11 +235,10 @@ def edit_post(request, post_id):
         return render(request, 'edit_post.html', context)
     
     # If registered user not post author
-    else:
-        mskf.add_notification_availability_to_context(request, context)
-        mskf.add_authenticated_user_to_context(request, context)
+    mskf.add_notification_availability_to_context(request, context)
+    mskf.add_authenticated_user_to_context(request, context)
 
-        return render(request, 'forbidden.html')
+    return render(request, 'forbidden.html')
 
 
 # Post delete view
@@ -345,5 +339,4 @@ def post_like(request, username, post_id):
     post.save()
 
     return HttpResponseRedirect('/user/' + username + '/post/' + str(post.id))
-
-
+    
