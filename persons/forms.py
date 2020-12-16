@@ -74,7 +74,7 @@ class ProfileEditForm(forms.Form):
         data = self.cleaned_data['github']
 
         if data is not None:
-            if re.match('^http://github.com/|https://github.com/', data):
+            if re.match(r'^(http|https)://(www\.|)github\.com/', data):
                 return data
 
             raise ValidationError('فرمت وارد شده نادرست است.')
@@ -83,7 +83,7 @@ class ProfileEditForm(forms.Form):
         data = self.cleaned_data['gitlab']
 
         if data is not None:
-            if re.match('^http://gitlab.com/|https://gitlab.com/', data):
+            if re.match(r'^(http|https)://(www\.|)gitlab\.com/', data):
                 return data
 
             raise ValidationError('فرمت وارد شده نادرست است.')
@@ -92,7 +92,7 @@ class ProfileEditForm(forms.Form):
         data = self.cleaned_data['stackowerflow']
     
         if data is not None:
-            if re.match('^http://stackoverflow.com/|https://stackoverflow.com/', data):
+            if re.match(r'^(http|https)://(www\.|)stackoverflow\.com/', data):
                 return data
 
             raise ValidationError('فرمت وارد شده نادرست است.')
@@ -101,7 +101,7 @@ class ProfileEditForm(forms.Form):
         data = self.cleaned_data['linkedin']
         
         if data is not None:
-            if re.match('^http://linkedin.com/|https://linkedin.com/|http://www.linkedin.com/|https://www.linkedin.com/', data):
+            if re.match(r'^(http|https)://(www\.|)linkedin\.com/', data):
                 return data
 
             raise ValidationError('فرمت وارد شده نادرست است.')
@@ -110,7 +110,7 @@ class ProfileEditForm(forms.Form):
         data = self.cleaned_data['dev']
 
         if data is not None:
-            if re.match('^http://dev.to/|https://dev.to/', data):
+            if re.match(r'^(http|https)://(www\.|)dev\.to/', data):
                 return data
 
             raise ValidationError('فرمت وارد شده نادرست است.')
