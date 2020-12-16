@@ -2,6 +2,7 @@
 
 # شبکه اجتماعی برنامه نویسان
 [![CodeFactor](https://www.codefactor.io/repository/github/mskf1383/programmers-social/badge)](https://www.codefactor.io/repository/github/mskf1383/programmers-social)
+![CodeQL](https://github.com/mskf1383/Programmers-Social/workflows/CodeQL/badge.svg)
 
 
 این یک  شبکه اجتماعی متن باز و رایگان است که با پایتون و جنگو نوشته شده است. هدف این شبکه اجتماعی برنامه نویسان هستند. در تاریخ ۱۴۰۰/۰۱/۰۱ منتظر افتتاح این شبکه اجتماعی باشید.
