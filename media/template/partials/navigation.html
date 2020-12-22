@@ -30,14 +30,19 @@
     <form class="form-inline">
 
         {% if user.is_authenticated %}
+            <a class="notification my-2 my-sm-0" style="margin-left: 10px;" href="{% url 'person:post:new_post' %}" data-toggle="tooltip" data-placement="bottom" title="نوشتن مطلب"><i class="fas fa-pen-nib"></i></a>
+
             <a href="{% url 'person:profile_detail' user.username %}">
                 {% if new_notif %}
-                    <a class="notification my-2 my-sm-0" style="margin-left: 10px;" href="{% url 'person:new_notifications' %}" data-toggle="tooltip" data-placement="right" title="{{ notif_len }} پیام جدید موجود است!"><i class="icofont-alarm animated infinite flash" style="font-size: 1.2em; vertical-align: middle;"></i></a>
+                    <a class="notification my-2 my-sm-0" style="margin-left: 10px;" href="{% url 'person:new_notifications' %}" data-toggle="tooltip" data-placement="bottom" title="{{ notif_len }} پیام جدید!"><i class="fas fa-bell animated infinite flash"></i></a>
 
                 {% else %}
-                    <a class="notification my-2 my-sm-0" style="margin-left: 10px;" href="{% url 'person:all_notifications' 1 %}" data-toggle="tooltip" data-placement="right" title="پیام جدیدی موجود نیست"><i class="icofont-alarm" style="font-size: 1.2em; vertical-align: middle;"></i></a>
+                    
+                    <a class="notification my-2 my-sm-0" style="margin-left: 10px;" href="{% url 'person:all_notifications' 1 %}" data-toggle="tooltip" data-placement="bottom" title="خبری نیست"><i class="fas fa-bell"></i></a>
                 {% endif %}
             </a>
+
+            
 
             <div class="dropdown">
                     <a data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
@@ -52,15 +57,15 @@
                 <div class="dropdown-menu shadow-ms border-gray" aria-labelledby="dropdownMenuButton" style="text-align: center;">
                     <a class="dropdown-item" href="{% url 'person:profile_detail' user.username %}">{{ authenticated_user.name }}<br/><small>{{ authenticated_user.username }}@</small></a>
                     <div class="dropdown-divider"></div>
-                    <a class="dropdown-item" href="{% url 'person:post:new_post' %}"><i class="icofont-pen-nib"></i> نوشتن مطلب</a>
-                    <a class="dropdown-item" href="{% url 'cloud:cloud_index' %}"><i class="icofont-cloud"></i> فضای ابری</a>
-                    <a class="dropdown-item" href="{% url 'person:friends' 1 %}"><i class="icofont-users-alt-5"></i> دوستان شما</a>
-                    <a class="dropdown-item" href="{% url 'person:edit_profile' %}"><i class="icofont-settings-alt"></i> تنظیمات</a>
-                    <a href="https://github.com/mskf1383/Programmers-Social/issues" target="_blank" class="dropdown-item"><i class="icofont-bug"></i> گزارش باگ</a>
+                    <a class="dropdown-item" href="{% url 'person:post:new_post' %}"><i class="fas fa-pen-nib"></i> نوشتن مطلب</a>
+                    <a class="dropdown-item" href="{% url 'cloud:cloud_index' %}"><i class="fas fa-cloud"></i> فضای ابری</a>
+                    <a class="dropdown-item" href="{% url 'person:friends' 1 %}"><i class="fas fa-user-friends"></i> دوستان شما</a>
+                    <a class="dropdown-item" href="{% url 'person:edit_profile' %}"><i class="fas fa-cog"></i> تنظیمات</a>
+                    <a href="https://github.com/mskf1383/Programmers-Social/issues" target="_blank" class="dropdown-item"><i class="fas fa-bug"></i> گزارش باگ</a>
                     <div class="dropdown-divider"></div>
-                    <a href="#" class="btn-toggle"><i class="icofont-moon"></i> حالت شب</a>
+                    <a href="#" class="btn-toggle"><i class="far fa-moon"></i> حالت شب</a>
                     <div class="dropdown-divider"></div>
-                    <a class="dropdown-item" href="{% url 'logout' %}"><i class="icofont-sign-out"></i> خروج</a>
+                    <a class="dropdown-item" href="{% url 'logout' %}"><i class="fas fa-sign-out-alt"></i> خروج</a>
                 </div>
             </div>
 

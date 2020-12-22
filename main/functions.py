@@ -37,6 +37,18 @@ class mskf():
         text = text.replace('<', '&lt;').replace('>', '&gt;').replace(
             '\n', '<br/>')  # Clean the text and recognize line breaks
 
+        def except_(exceptions_dic, text):
+            # Exceptions
+            text = text.replace('__', '◼')
+            exceptions = re.findall(r'◼[^◼]*◼', text)
+            for e in exceptions:
+                excepted = e
+                for key, value in exceptions_dic.items():
+                    excepted = excepted.replace(key, value)
+                text = text.replace(e, excepted)
+
+            return text
+
         # Recognize bolds
         text = text.replace('**', '◆')
         bold_texts = re.findall(r'◆[^◆]*◆', text)
@@ -59,10 +71,11 @@ class mskf():
         # Recognize titrs
         text = text.replace('###', '◆')
         text = text.replace('<br/>', '\n')
-        titr_texts = re.findall(r'◆.*', text)
+        titr_texts = re.findall(r'\n◆.*', text)
         for titr_text in titr_texts:
-            html_text = '</p><h3>' + \
-                titr_text.replace('◆', '') + '</h3><p>'
+            html_text = '</p><h3>' \
+                      + titr_text[1:].replace('◆', '') \
+                      + '</h3><p>'
             text = text.replace(titr_text, html_text)
 
         text = text.replace('\n', '<br/>')
@@ -73,6 +86,7 @@ class mskf():
 
         # Regingize images
         text = text.replace(')(', '◆').replace('!(', '▸').replace(')', '◂')
+        text = except_({'◆': ')(', '▸': '(', '◂': ')'}, text)
         image_texts = re.findall(r'▸[^▸◆◂]*◆[^▸◆◂]*◂', text)
         for image_text in image_texts:
             image_alt = re.findall(r'▸[^▸◆◂]*◆', image_text)[0]
@@ -85,12 +99,16 @@ class mskf():
 
         # Recognize links
         text = text.replace(')(', '◆').replace('(', '▸').replace(')', '◂')
+        text = except_({'◆': ')(', '▸': '(', '◂': ')'}, text)
         link_texts = re.findall(r'▸[^▸◆◂]*◆[^▸◆◂]*◂', text)
         for link_text in link_texts:
             link_name = re.findall(r'▸[^▸◆◂]*◆', link_text)[0]
             link = re.findall(r'◆[^▸◆◂]*◂', link_text)[0]
-            html_text = '<a href=\"' + link.replace('◆', '').replace(
-                '◂', '') + '\" target=\"_blank\" rel=\"noopener nofollow\">' + link_name.replace('▸', '').replace('◆', '') + '</a>'
+            html_text = '<a href=\"' \
+                      + link.replace('◆', '').replace('◂', '') \
+                      + '\" target=\"_blank\" rel=\"noopener nofollow\">' \
+                      + link_name.replace('▸', '').replace('◆', '') \
+                      + '</a>'
             text = text.replace(link_text, html_text)
 
         text = text.replace('▸', '(').replace('◆', ')(').replace('◂', ')')
@@ -118,6 +136,25 @@ class mskf():
 
         text = text.replace('◆', '`')
 
+        # Recognize lists
+        text = text.replace('-', '◆')
+        text = text.replace('<br/>', '\n')
+        link_texts = re.findall(r'\n◆.*', text)
+        for link_text in link_texts:
+            html_text = '<li>' + link_text[1:].replace('◆', '').replace('\n', '') + '</li>'
+            text = text.replace(link_text, html_text)
+
+        text = text.replace('\n', '▸').replace('</li>▸', '</li>')
+
+        lists = re.findall(r'<li>[^▸]*</li>', text)
+        print(lists)
+        for listt in lists:
+            complete_list = '<ul>' + listt + '</ul>'
+            text = text.replace(listt, complete_list)
+
+        text = text.replace('▸', '<br/>')
+        text = text.replace('◆', '-')
+
         # Recognize gists
         text = text.replace('{ گیست ', '▸').replace(' }', '◂')
         gists = re.findall(r'▸[^▸◂]*◂', text)
@@ -129,7 +166,7 @@ class mskf():
 
         text = text.replace('▸', '{ گیست ').replace('◂', ' }')
 
-        return text
+        return text.replace('◼', '')
 
 
     def translate_to_raw(text):
@@ -148,31 +185,58 @@ class mskf():
         # HTML code box to RAW
         text = text.replace('</p><pre id="code">', '```').replace('</pre><p>', '```')
 
-        # HTML link to RAW
-        html_links = re.findall(r'<a href=\".*</a>', text)
-        links = re.findall(r'<a href=\".*\" target=\"_blank\" rel=\"noopener nofollow\">', text)
-        link_alts = re.findall(r'\" target=\"_blank\" rel=\"noopener nofollow\">.*</a>', text)
+        # HTML list to RAW
+        text = text.replace('<ul>', '').replace('</ul>', '').replace('</li>', '').replace('<li>', '-')
 
-        for num, item in enumerate(links):
-            raw_link = '(' \
-                     + link_alts[num].replace('\" target=\"_blank\" rel=\"noopener nofollow\">', '').replace('</a>', '') \
-                     + ')(' \
-                     + links[num].replace('<a href=\"', '').replace('\" target=\"_blank\" rel=\"noopener nofollow\">', '') \
-                     + ')'
-            text = text.replace(html_links[num], raw_link)
+        # HTML link to RAW
+        text = text.replace('\" target=\"_blank\" rel=\"noopener nofollow\">', '◆').replace('<a href=\"', '▸').replace('</a>', '◂')
+        html_links = re.findall(r'▸[^▸◆◂]*◆[^▸◆◂]*◂', text)
+        links = re.findall(r'▸[^▸◆◂]*◆', text)
+        link_alts = re.findall(r'◆[^▸◆◂]*', text)
+
+        for num, item in enumerate(html_links):
+            if '(' in links[num] or ')' in links[num]:
+                raw_link = '(' \
+                         + link_alts[num].replace('◆', '').replace('◂', '') \
+                         + ')(__' \
+                         + links[num].replace('▸', '').replace('◆', '') \
+                         + '__)'
+
+            else:
+                raw_link = '(' \
+                         + link_alts[num].replace('◆', '').replace('◂', '') \
+                         + ')(' \
+                         + links[num].replace('▸', '').replace('◆', '') \
+                         + ')'
+
+            text = text.replace(item, raw_link)
+
+        text = text.replace('◆', '\" target=\"_blank\" rel=\"noopener nofollow\">').replace('▸', '<a href=\"').replace('◂', '</a>')
 
         # HTML image to RAW
-        html_images = re.findall(r'<div class="img"><img src=\".*\"></div>', text)
-        images = re.findall(r'<div class="img"><img src=\".*\" alt=\"', text)
-        image_alts = re.findall(r'\" alt=\".*\"></div>', text)
+        text = text.replace('\" alt=\"', '◆').replace('<div class="img"><img src=\"', '▸').replace('\"></div>', '◂')
+        html_images = re.findall(r'▸[^▸◆◂]*◆[^▸◆◂]*◂', text)
+        images = re.findall(r'▸[^▸◆◂]*◆', text)
+        image_alts = re.findall(r'◆[^▸◆◂]*◂', text)
 
-        for num, item in enumerate(images):
-            raw_image = '!(' \
-                      + image_alts[num].replace('\" alt=\"', '').replace('\"></div>', '') \
-                      + ')(' \
-                      + images[num].replace('<div class="img"><img src=\"', '').replace('\" alt=\"', '') \
-                      + ')'
-            text = text.replace(html_images[num], raw_image)
+        for num, item in enumerate(html_images):
+            if '(' in images[num] or ')' in images[num]:
+                raw_image = '!(' \
+                          + image_alts[num].replace('◆', '').replace('◂', '') \
+                          + ')(__' \
+                          + images[num].replace('▸', '').replace('◆', '') \
+                          + '__)'
+
+            else:
+                raw_image = '!(' \
+                          + image_alts[num].replace('◆', '').replace('◂', '') \
+                          + ')(' \
+                          + images[num].replace('▸', '').replace('◆', '') \
+                          + ')'
+
+            text = text.replace(item, raw_image)
+
+        text = text.replace('◆', '\" alt=\"').replace('▸', '<div class="img"><img src=\"').replace('◂', '\"></div>')
 
         # HTML gist to RAW
         text = text.replace('<script src="https://gist.github.com/', '{ گیست ').replace('.js"></script>', ' }')
@@ -269,11 +333,11 @@ class mskf():
                         <a href="https://github.com/{repo_full_name}/" target="_blank" rel="noopener nofollow"> {repo_full_name}</a>
                         </h5>
                         <p>{repo_description}</p>
-                            <span class="badge" style=" font-size: 1em; font-weight: lighter;"><i class="icofont-code-alt"></i> {repo_lang}</span>
+                            <span class="badge" style=" font-size: 1em; font-weight: lighter;"><i class="fas fa-code"></i> {repo_lang}</span>
 
-                            <span class="badge" style=" font-size: 1em; font-weight: lighter;"><i class="icofont-law"></i> {repo_license}</span>
+                            <span class="badge" style=" font-size: 1em; font-weight: lighter;"><i class="fas fa-balance-scale"></i> {repo_license}</span>
 
-                            <span class="badge" style=" font-size: 1em; font-weight: lighter;"><i class="icofont-star"></i> {repo_stars}</span>
+                            <span class="badge" style=" font-size: 1em; font-weight: lighter;"><i class="far fa-star"></i> {repo_stars}</span>
                     </div>
                 '''.format(repo_full_name=repo_full_name,
                            repo_description=repo_description,

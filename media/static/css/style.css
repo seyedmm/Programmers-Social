@@ -64,6 +64,12 @@ h1, h2, h3, h4, h5, h6 {
     display: inherit;
 }
 
+.ads-wrp {
+    margin: auto;
+    width: 924px;
+    display: inherit;
+}
+
 .body {
     border-radius: .25rem;
     padding: .75rem 1.25rem;
@@ -89,6 +95,7 @@ a, p, img, h1, h2, h3, h4, h5, h6 {
     color: var(--dark);
     text-decoration: none !important;
 }
+
 a:hover p, a:hover h3, a:hover img/*, p a:hover*/ {
     opacity: .7;
     text-decoration: none;
@@ -123,6 +130,9 @@ code {
     font-size: inherit;
     direction: ltr;
     display: inline-block;
+}
+pre code {
+    background-color: transparent;
 }
 
 label {
@@ -397,7 +407,7 @@ button:hover img {
     border-top-style: solid;
     padding: 5px;
     padding-bottom: 0px;
-    box-shadow: 0px -1rem 1rem -1rem rgb(0,0,0,0.075);
+    box-shadow: 0 -5px 0rem 0rem #ffffff50;
 }
 
 .post-bar-static {
@@ -505,8 +515,15 @@ button:hover img {
     opacity: .5;
 }
 
-@media only screen and (max-width: 1000px) {
-    .wrp {
+.ads-row {
+    list-style-type: none;
+    padding-right: 0;
+    display: flex;
+    border-radius: .25rem;
+}
+
+@media only screen and (max-width: 924px) {
+    .wrp, .ads-wrp {
         width: 95%;
         margin-right: 2.5%;
         margin-left: 2.5%;
@@ -562,6 +579,9 @@ button:hover img {
     .follow-info {
         text-align: center;
     }
+    .ads-row {
+        overflow-x: auto;
+    }
   }
 
 
@@ -604,12 +624,15 @@ button:hover img {
     background-position: center;
     color: #fff;
     padding: 0px;
+    position: relative;
+    height: 300px;
 }
 #banner .body {
     background: rgba(0,0,0,.5);
     border-radius: .25rem;
     padding: .75rem 1.25rem;
     border: 1px solid rgba(0,0,0,.125);
+    position: absolute;
 }
 #banner .author-avatar {
     max-width: unset !important;
@@ -628,11 +651,15 @@ button:hover img {
 }
 #banner .author-name:hover {
     opacity: 0.7;
+    color: #fff !important;
 }
 #banner .author-work {
     color: #fff;
-    font-weight: 900;
     text-decoration: none;
+}
+#banner .author-work:hover {
+    opacity: 0.7;
+    color: #fff !important;
 }
 #banner .title {
     margin-bottom: 10px;
@@ -642,6 +669,7 @@ button:hover img {
 }
 #banner .title:hover {
     opacity: 0.7;
+    color: #fff !important;
 }
 #banner .short-description {
     line-break: unset;
@@ -649,6 +677,7 @@ button:hover img {
 }
 #banner .short-description:hover {
     opacity: 0.7;
+    color: #fff !important;
 }
 
 .pp-donate-box p {

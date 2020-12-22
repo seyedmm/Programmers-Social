@@ -1,5 +1,6 @@
 from django import forms
 from django.core.exceptions import ValidationError
+from main.models import Skill
 import re
 
 
@@ -8,31 +9,13 @@ class ProfileEditForm(forms.Form):
         ('مرد', 'مرد'),
         ('زن', 'زن'),
     )
-    
-    PROGRAMMING_CHOICES = (
-        ('_C_', 'C'),
-        ('_C++_', 'C++'),
-        ('_C#_', 'C#'),
-        ('_Objective-C_', 'Objective-C'),
-        ('_Java_', 'Java'),
-        ('_JavaScript_', 'JavaScript'),
-        ('_Python_', 'Python'),
-        ('_PHP_', 'PHP'),
-        ('_HTML_', 'HTML'),
-        ('_CSS_', 'CSS'),
-        ('_Perl_', 'Perl'),
-        ('_Swift_', 'Swift'),
-        ('_Kotlin_', 'Kotlin'),
-        ('_Go_', 'Go'),
-        ('_Ruby_', 'Ruby'),
-        ('_Basic_', 'Basic'),
-        ('_Pascal_', 'Pascal'),
-        ('_Lua_', 'Lua'),
-        ('_R_', 'R'),
-        ('_Rust_', 'Rust'),
-        ('_TypeScript_', 'TypeScript'),
-    )
 
+    SKILL_CHOICES = []
+    for skill in Skill.objects.all().order_by('name'):
+        SKILL_CHOICES.append(('_{}_'.format(skill), skill.name),)
+
+    SKILL_CHOICES = tuple(SKILL_CHOICES)
+    
     YEARS = [(None, 'هیچکدام')]
 
     for year in range(1330, 1395):
@@ -62,7 +45,7 @@ class ProfileEditForm(forms.Form):
     year_of_born = forms.CharField(widget = forms.Select(choices = YEARS, attrs = {'class': 'form-control'}), required = False, empty_value = None)
     gender = forms.CharField(widget = forms.RadioSelect(choices = GENDER_CHOICES, attrs = {'class': 'form-check form-check-inline form-check-input'}), required = False, empty_value = None)
     work = forms.CharField(widget = forms.Select(choices = WORK_CHOICES, attrs = {'class': 'form-control'}), required = False, empty_value = None)
-    programming = forms.CharField(widget = forms.CheckboxSelectMultiple(choices = PROGRAMMING_CHOICES, attrs = {'class': ''}), required = False, empty_value = None)
+    skills = forms.CharField(widget = forms.CheckboxSelectMultiple(choices = SKILL_CHOICES, attrs = {'class': ''}), required = False, empty_value = None)
     github = forms.URLField(required = False, empty_value = None, widget = forms.URLInput(attrs = {'class': 'form-control', 'placeholder': 'https://github.com/', 'dir': 'ltr'}))
     gitlab = forms.URLField(required = False, empty_value = None, widget = forms.URLInput(attrs = {'class': 'form-control', 'placeholder': 'https://gitlab.com/', 'dir': 'ltr'}))
     stackowerflow = forms.URLField(required = False, empty_value = None, widget = forms.URLInput(attrs = {'class': 'form-control', 'placeholder': 'https://stackoverflow.com/', 'dir': 'ltr'}))

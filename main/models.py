@@ -3,30 +3,6 @@ from django_jalali.db import models as jmodels
 from django.utils import timezone
 
 class Person(models.Model):
-    PROGRAMMING_CHOICES = (
-        ('C Language', 'C Language'),
-        ('C++', 'C++'),
-        ('C#', 'C#'),
-        ('Objective-C', 'Objective-C'),
-        ('Java', 'Java'),
-        ('JavaScript', 'JavaScript'),
-        ('Python', 'Python'),
-        ('PHP', 'PHP'),
-        ('HTML', 'HTML'),
-        ('CSS', 'CSS'),
-        ('Perl', 'Perl'),
-        ('Swift', 'Swift'),
-        ('Kotlin', 'Kotlin'),
-        ('Go', 'Go'),
-        ('Ruby', 'Ruby'),
-        ('Basic', 'Basic'),
-        ('Pascal', 'Pascal'),
-        ('Lua', 'Lua'),
-        ('R Language', 'R Language'),
-        ('Rust', 'Rust'),
-        ('TypeScript', 'TypeScript'),
-    )
-    
     YEARS = []
 
     for year in range(1330, 1395):
@@ -46,7 +22,7 @@ class Person(models.Model):
 
     # Work detail
     work = models.CharField(max_length = 50, null = True, blank = True, verbose_name = 'تخصص')
-    programming = models.ManyToManyField('Programming', blank = True, verbose_name = 'زبان‌های برنامه نویسی')
+    skills = models.ManyToManyField('Skill', blank = True, verbose_name = 'مهارت‌ها')
     rezome = models.TextField(null = True, blank = True, default = '', verbose_name = 'رزومه')
 
     # Statistic detail
@@ -115,15 +91,15 @@ class Ad(models.Model):
         verbose_name = 'تبلیغ'
         verbose_name_plural = 'تبلیغات'
 
-class Programming(models.Model):
-    language = models.CharField(max_length = 50, verbose_name = 'زبان برنامه نویسی')
+class Skill(models.Model):
+    name = models.CharField(max_length = 50, verbose_name = 'مهارت')
 
     class Meta:
-        verbose_name = 'زبان برنامه نویسی'
-        verbose_name_plural = 'زبان‌های برنامه نویسی'
+        verbose_name = 'مهارت'
+        verbose_name_plural = 'مهارت‌ها'
 
     def __str__(self):
-        return self.language
+        return self.name
 
 
 class Notification(models.Model):

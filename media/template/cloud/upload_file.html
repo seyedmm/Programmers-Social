@@ -8,7 +8,7 @@
 {% block body %}
     <div class="body shadow-ms border-gray">
         <h2>آپلود تصویر</h2><br/>
-        <h1 style="text-align: center;"><i class="icofont-cloud-upload icofont-5x"></i></h1>
+        <h1 style="text-align: center;"><i class="fas fa-cloud-upload-alt fa-5x"></i></h1>
         {% if available_space == True %}
             <form method="post" enctype="multipart/form-data">
                 {% csrf_token %}

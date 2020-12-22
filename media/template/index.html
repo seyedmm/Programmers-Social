@@ -13,55 +13,57 @@
         {% if ad != None %}
 
         <!-- Banner -->
-        <div id="banner" style="background-image: url({{ ad.post.cover }});">
-            <div class="body shadow-ms border-gray">
-                {% if ad.post.category != 'غیره' and ad.post.category != None %}
-                <span class="badge badge-light"
-                    style="float: left; font-size: 1em; font-weight: lighter;">
-                    {{ ad.post.category }}
-                </span>
-                {% endif %}
-
-                <div style="display: table;">
-                    <div style="display: inline-block;">
-                        <a href="{% url 'person:profile_detail' ad.post.author.username %}">
-                            {% if ad.post.author.avatar.url != None %}
-                            <img class="author-avatar " src="{{ ad.post.author.avatar.url }}">
-
-                            {% else %}
-                            <img class="author-avatar " src="/media/avatars/default_avatar.png/">
-                            {% endif %}
-                        </a>
-                    </div>
-
-                    <div class="person-detail">
-                        <p style="margin-bottom: 0px;">
-                            <a class="author-name" href="{% url 'person:profile_detail' ad.post.author.username %}">
-                                {{ ad.post.author.name }}
-                            </a>
-
-                            <a class="author-work">
-                                {% if ad.post.author.work != None %}
-                                - {{ ad.post.author.work }}
+        <div id="banner" class="card bg-dark border-gray shadow-ms" style="height: 300px; margin-bottom: 10px;">
+            <img src="{{ ad.post.cover }}" class="card-img" alt="{{ ad.post.title }}" style="width: 100%; height: 100%; object-fit: cover;">
+            <div class="card-img-overlay" style="background: #00000030;">
+                    {% if ad.post.category != 'غیره' and ad.post.category != None %}
+                    <span class="badge badge-light"
+                        style="float: left; font-size: 1em; font-weight: lighter;">
+                        {{ ad.post.category }}
+                    </span>
+                    {% endif %}
+    
+                    <div style="display: table;">
+                        <div style="display: inline-block;">
+                            <a href="{% url 'person:profile_detail' ad.post.author.username %}">
+                                {% if ad.post.author.avatar.url != None %}
+                                <img class="author-avatar " src="{{ ad.post.author.avatar.url }}">
+    
+                                {% else %}
+                                <img class="author-avatar " src="/media/avatars/default_avatar.png/">
                                 {% endif %}
                             </a>
-                        </p>
+                        </div>
+    
+                        <div class="person-detail">
+                            <p style="margin-bottom: 0px;">
+                                <a class="author-name" href="{% url 'person:profile_detail' ad.post.author.username %}">
+                                    {{ ad.post.author.name }}
+                                </a>
+    
+                                <a class="author-work">
+                                    {% if ad.post.author.work != None %}
+                                    - {{ ad.post.author.work }}
+                                    {% endif %}
+                                </a>
+                            </p>
+                        </div>
                     </div>
-                </div>
-
-                <br /><br /><br /><br /><br />
-
-                <a href="{% url 'person:post:post_detail' ad.post.author.username ad.post.id %}">
-                    <h3 class="title">
-                        <i class="icofont-rocket"></i> {{ ad.post.title }}
-                    </h3>
-
-                    {% if ad.post.short_description != None %}
-                    <p class="short-description">{{ ad.post.short_description }}</p>
-                    {% endif %}
-                </a>
+    
+                    <br /><br /><br /><br /><br />
+    
+                    <a href="{% url 'person:post:post_detail' ad.post.author.username ad.post.id %}">
+                        <h3 class="title">
+                            <i class="fas fa-rocket"></i> {{ ad.post.title }}
+                        </h3>
+    
+                        {% if ad.post.short_description != None %}
+                        <p class="short-description">{{ ad.post.short_description }}</p>
+                        {% endif %}
+                    </a>
+                
             </div>
-        </div>
+          </div>
         {% endif %}
 
     {% else %}
@@ -116,19 +118,10 @@
                             - {{ post.author.work }}
                             {% endif %}
                         </p>
-                        <small class="text-muted"><svg width="1em" height="1em" viewBox="0 0 16 16"
-                                class="bi bi-calendar-fill" fill="currentColor" xmlns="http://www.w3.org/2000/svg">
-                                <path
-                                    d="M3.5 0a.5.5 0 0 1 .5.5V1h8V.5a.5.5 0 0 1 1 0V1h1a2 2 0 0 1 2 2v11a2 2 0 0 1-2 2H2a2 2 0 0 1-2-2V5h16V4H0V3a2 2 0 0 1 2-2h1V.5a.5.5 0 0 1 .5-.5z" />
-                            </svg> {{ post.publish_time | jformat:'%Y/%m/%d' }} <svg width="1em" height="1em"
-                                viewBox="0 0 16 16" class="bi bi-clock-fill" fill="currentColor"
-                                xmlns="http://www.w3.org/2000/svg">
-                                <path fill-rule="evenodd"
-                                    d="M16 8A8 8 0 1 1 0 8a8 8 0 0 1 16 0zM8 3.5a.5.5 0 0 0-1 0V9a.5.5 0 0 0 .252.434l3.5 2a.5.5 0 0 0 .496-.868L8 8.71V3.5z" />
-                            </svg> {{ post.publish_time | jformat:'%H:%M' }}</small>
+                        <small class="text-muted"><i class="far fa-calendar"></i> {{ post.publish_time | jformat:'%Y/%m/%d' }} <i class="far fa-clock"></i> {{ post.publish_time | jformat:'%H:%M' }}</small>
                     </div>
                 </div>
-                <hr />
+                <br />
 
 
                 <div>
@@ -152,52 +145,30 @@
                         {% if user.is_authenticated %}
                         {% if post in person.likes.all %}
                         <a dir="ltr" href="{% url 'person:post:post_like' post.author.username post.id %}"><button
-                                type="button" class="btn btn-light text-danger  border-gray">{{ post.likes }} <svg width="1em" height="1em" viewBox="0 0 16 16" class="bi bi-heart-fill" fill="currentColor" xmlns="http://www.w3.org/2000/svg">
-                                    <path fill-rule="evenodd" d="M8 1.314C12.438-3.248 23.534 4.735 8 15-7.534 4.736 3.562-3.248 8 1.314z"/>
-                                  </svg></button></a>
+                                type="button" class="btn btn-light text-danger  border-gray">{{ post.likes }} <i class="fas fa-heart"></i></button></a>
 
                         {% else %}
                         <a dir="ltr" href="{% url 'person:post:post_like' post.author.username post.id %}"><button
-                                type="button" class="btn btn-light  border-gray">{{ post.likes }} <svg width="1em"
-                                    height="1em" viewBox="0 0 16 16" class="bi bi-heart" fill="currentColor"
-                                    xmlns="http://www.w3.org/2000/svg">
-                                    <path fill-rule="evenodd"
-                                        d="M8 2.748l-.717-.737C5.6.281 2.514.878 1.4 3.053c-.523 1.023-.641 2.5.314 4.385.92 1.815 2.834 3.989 6.286 6.357 3.452-2.368 5.365-4.542 6.286-6.357.955-1.886.838-3.362.314-4.385C13.486.878 10.4.28 8.717 2.01L8 2.748zM8 15C-7.333 4.868 3.279-3.04 7.824 1.143c.06.055.119.112.176.171a3.12 3.12 0 0 1 .176-.17C12.72-3.042 23.333 4.867 8 15z" />
-                                </svg></button></a>
+                                type="button" class="btn btn-light  border-gray">{{ post.likes }} <i class="far fa-heart"></i></button></a>
                         {% endif %}
 
                         {% else %}
                         <a dir="ltr" href="{% url 'person:post:post_like' post.author.username post.id %}"><button
-                                type="button" class="btn btn-light  border-gray">{{ post.likes }} <svg width="1em"
-                                    height="1em" viewBox="0 0 16 16" class="bi bi-heart" fill="currentColor"
-                                    xmlns="http://www.w3.org/2000/svg">
-                                    <path fill-rule="evenodd"
-                                        d="M8 2.748l-.717-.737C5.6.281 2.514.878 1.4 3.053c-.523 1.023-.641 2.5.314 4.385.92 1.815 2.834 3.989 6.286 6.357 3.452-2.368 5.365-4.542 6.286-6.357.955-1.886.838-3.362.314-4.385C13.486.878 10.4.28 8.717 2.01L8 2.748zM8 15C-7.333 4.868 3.279-3.04 7.824 1.143c.06.055.119.112.176.171a3.12 3.12 0 0 1 .176-.17C12.72-3.042 23.333 4.867 8 15z" />
-                                </svg></button></a>
+                                type="button" class="btn btn-light  border-gray">{{ post.likes }} <i class="far fa-heart"></i></button></a>
                         {% endif %}
 
                         <!-- Comments -->
                         <a dir="ltr"
                             href="{% url 'person:post:post_detail' post.author.username post.id %}#comments"><button
                                 class="btn btn-light  border-gray" type="button">
-                                {{ post.comments }} <svg width="1em" height="1em" viewBox="0 0 16 16"
-                                    class="bi bi-chat-left-text-fill" fill="currentColor"
-                                    xmlns="http://www.w3.org/2000/svg">
-                                    <path fill-rule="evenodd"
-                                        d="M0 2a2 2 0 0 1 2-2h12a2 2 0 0 1 2 2v8a2 2 0 0 1-2 2H4.414a1 1 0 0 0-.707.293L.854 15.146A.5.5 0 0 1 0 14.793V2zm3.5 1a.5.5 0 0 0 0 1h9a.5.5 0 0 0 0-1h-9zm0 2.5a.5.5 0 0 0 0 1h9a.5.5 0 0 0 0-1h-9zm0 2.5a.5.5 0 0 0 0 1h5a.5.5 0 0 0 0-1h-5z" />
-                                </svg>
+                                {{ post.comments }} <i class="fas fa-comment"></i>
                             </button></a>
 
                         <!-- Views -->
                             <button type="button" class="btn btn-light border-gray " dir="ltr">{{ post.views }}
-                                <svg width="1em" height="1em" viewBox="0 0 16 16" class="bi bi-eye-fill" fill="currentColor"
-                                    xmlns="http://www.w3.org/2000/svg">
-                                    <path d="M10.5 8a2.5 2.5 0 1 1-5 0 2.5 2.5 0 0 1 5 0z" />
-                                    <path fill-rule="evenodd"
-                                        d="M0 8s3-5.5 8-5.5S16 8 16 8s-3 5.5-8 5.5S0 8 0 8zm8 3.5a3.5 3.5 0 1 0 0-7 3.5 3.5 0 0 0 0 7z" />
-                                </svg></button>
+                                <i class="fas fa-eye"></i></button>
                             {% if post in person.viewed_posts.all %}
-                            <small class="text-muted"><i class="icofont-check-alt"></i> مشاهده
+                            <small class="text-muted"><i class="fas fa-check"></i> مشاهده
                                 شده</small>
                             {% endif %}
                     </div>

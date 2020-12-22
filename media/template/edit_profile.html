@@ -12,17 +12,17 @@
 <div class="body shadow-ms border-gray">
 <div class="btn-group" role="group" aria-label="Basic example" style="float: left" dir="ltr">
     {% if github_login %}
-        <button type="button" class="btn btn-github  border-gray" style="float: left"  data-toggle="tooltip" data-placement="bottom" title="متصل به گیت‌هاب"><img class="logo" src="{% static 'img/Github_logo.png' %}" height="32px"></button>
+        <button type="button" class="btn btn-github  border-gray" style="float: left"  data-toggle="tooltip" data-placement="bottom" title="متصل به گیت‌هاب"><i class="fab fa-github fa-lg"></i></button>
 
     {% else %}
-        <a class="btn-group" role="group" href="{% url 'social:begin' 'github' %}" style="float: left" data-toggle="tooltip" data-placement="bottom" title="اتصال حساب به گیت‌هاب"><button type="button" class="btn btn-light  border-gray"><img class="logo" src="{% static 'img/Github_light_logo.png' %}" height="32px"></button></a>
+        <a class="btn-group" role="group" href="{% url 'social:begin' 'github' %}" style="float: left" data-toggle="tooltip" data-placement="bottom" title="اتصال حساب به گیت‌هاب"><button type="button" class="btn btn-light  border-gray"><i class="fab fa-github fa-lg"></i></button></a>
     {% endif %}
 
     {% if gitlab_login %}
-        <button type="button" class="btn btn-gitlab  border-gray" style="float: left" data-toggle="tooltip" data-placement="bottom" title="متصل به گیت‌لب"><img class="logo" src="{% static 'img/Gitlab_logo.png' %}" height="32px"></button>
+        <button type="button" class="btn btn-gitlab  border-gray" style="float: left" data-toggle="tooltip" data-placement="bottom" title="متصل به گیت‌لب"><i class="fab fa-gitlab fa-lg"></i></button>
 
     {% else %}
-        <a class="btn-group" role="group" href="{% url 'social:begin' 'gitlab' %}" style="float: left" data-toggle="tooltip" data-placement="bottom" title="اتصال حساب به گیت‌لب"><button type="button" class="btn btn-light  border-gray"><img class="logo" src="{% static 'img/Gitlab_logo.png' %}" height="32px"></button></a>
+        <a class="btn-group" role="group" href="{% url 'social:begin' 'gitlab' %}" style="float: left" data-toggle="tooltip" data-placement="bottom" title="اتصال حساب به گیت‌لب"><button type="button" class="btn btn-light  border-gray"><i class="fab fa-gitlab fa-lg"></i></button></a>
     {% endif %}
 </div>        
 
@@ -65,7 +65,7 @@
             {% if form.work.errors %}
                 <p><strong>تخصص شما</strong>{{ form.work.errors }}</p>
             {% endif %}
-            {% if form.programming.errors %}
+            {% if form.skills.errors %}
                 <p><strong>زبان‌های برنامه نویسی که بلدید</strong>{{ form.gender.errors }}</p>
             {% endif %}
             {% if form.github.errors %}
@@ -90,7 +90,7 @@
     {% endif %}
 
     <button class="btn btn-primary  border-gray" type="button" data-toggle="collapse" data-target="#user_info" aria-expanded="false" aria-controls="collapseExample">
-        <i class="icofont-user-alt-4"></i> اطلاعات شخصی <i class="icofont-caret-down"></i>
+        <i class="fas fa-user"></i> اطلاعات شخصی <i class="fas fa-sort-down"></i>
     </button>
 
     <br/><br/>
@@ -126,31 +126,22 @@
         <br/><br/>  
     </div>
 
-    <button class="btn btn-primary  border-gray" type="button" data-toggle="collapse" data-target="#programming_info" aria-expanded="false" aria-controls="collapseExample">
-        <i class="icofont-code-alt"></i> اطلاعات حرفه‌ای <i class="icofont-caret-down"></i>
+    <button class="btn btn-primary  border-gray" type="button" data-toggle="collapse" data-target="#professional_info" aria-expanded="false" aria-controls="collapseExample">
+        <i class="fas fa-code"></i> اطلاعات حرفه‌ای <i class="fas fa-sort-down"></i>
     </button>
 
     <br/><br/>
-    <div class="collapse" id="programming_info">
+    <div class="collapse" id="professional_info">
         <label>تخصص شما:</label>
         {{ form.work }}
         <br/>
-        <label>زبان‌های برنامه نویسی که بلدید:</label>
-
-        {% for x in form.programming %}
-
-        <div class="form-check">
-            <input class="form-check-input" type="checkbox" value="" id="{{ x }}" name="programming">
-            <label class="form-check-label" for="{{ x }}">
-              Checked checkbox
-            </label>
-          </div>
-          {% endfor %}
+        <label>مهارت‌های شما:</label>
+        {{ form.skills }}
         <br/>
     </div>
 
     <button class="btn btn-primary  border-gray" type="button" data-toggle="collapse" data-target="#social" aria-expanded="false" aria-controls="collapseExample">
-        <i class="icofont-share"></i> در فضای مجازی <i class="icofont-caret-down"></i>
+        <i class="fas fa-share-alt"></i> در فضای مجازی <i class="fas fa-sort-down"></i>
     </button>
 
     <br/><br/>
@@ -175,11 +166,11 @@
         <br/>
     </div>
 
-    <a href="{% url 'person:edit_rezome' %}"><button type="button" class="btn btn-primary  border-gray"><i class="icofont-file-alt" style="font-size: 20px;"></i> ویرایش رزومه</button></a>
+    <a href="{% url 'person:edit_rezome' %}"><button type="button" class="btn btn-primary  border-gray"><i class="far fa-file-alt"></i> ویرایش رزومه</button></a>
 
     <br/><br/>
     <a href="{% url 'password_change' %}"><button class="btn btn-primary  border-gray" type="button">
-        <i class="icofont-key"></i> تغییر رمز عبور
+        <i class="fas fa-key"></i> تغییر رمز عبور
     </button></a>
 
     <br/><br/>

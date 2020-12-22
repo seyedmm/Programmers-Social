@@ -7,7 +7,7 @@ from .models import Person,\
                     Post,\
                     PostComment,\
                     Ad,\
-                    Programming,\
+                    Skill,\
                     Notification,\
                     Cloud,\
                     File
@@ -34,7 +34,7 @@ class AdAdmin(admin.ModelAdmin):
     list_display = ['post', 'type', 'available_views']
 
 
-@admin.register(Programming)
+@admin.register(Skill)
 class CommentAdmin(admin.ModelAdmin):
     pass
 

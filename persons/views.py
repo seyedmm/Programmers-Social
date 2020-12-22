@@ -8,7 +8,7 @@ from main.functions import mskf
 # Models
 from main.models import Person,\
                         Post,\
-                        Programming,\
+                        Skill,\
                         Notification
 
 # Forms
@@ -48,9 +48,9 @@ def all_persons(request, page):
 def profile_detail(request, username):
     person = get_object_or_404(Person, username = username) # Get Person
     
-    programming_availability = False
-    if len(person.programming.all()) > 0:
-        programming_availability = True
+    skills_availability = False
+    if len(person.skills.all()) > 0:
+        skills_availability = True
 
     posts = Post.objects.filter(author = person) # Get Persons posts
     count_posts = [post.title for post in posts]
@@ -63,7 +63,7 @@ def profile_detail(request, username):
         'person': person,
         'posts': posts,
         'post_availability': post_availability,
-        'programming_availability': programming_availability,
+        'skills_availability': skills_availability,
         'current_url': str(request.path).replace('/', '%2F'),
     }
 
@@ -104,7 +104,7 @@ def edit_profile(request):
             year_of_born = form.cleaned_data['year_of_born'] # Read description
             gender = form.cleaned_data['gender'] # Read gender
             work = form.cleaned_data['work']
-            programming = form.cleaned_data['programming'] # Read programming
+            skills = form.cleaned_data['skills'] # Read skills
             github = form.cleaned_data['github'] # Read github
             gitlab = form.cleaned_data['gitlab'] # Read gitlab
             stackowerflow = form.cleaned_data['stackowerflow'] # Read stackowerflow
@@ -112,36 +112,16 @@ def edit_profile(request):
             dev = form.cleaned_data['dev'] # Read dev
             website = form.cleaned_data['website'] # Read website
 
-            PROGRAMMING_CHOICES = {
-                '_C_': 'C', 
-                '_C++_': 'C++',
-                '_C#_': 'C#',
-                '_Objective-C_': 'Objective-C',
-                '_Java_': 'Java',
-                '_JavaScript_': 'JavaScript',
-                '_Python_': 'Python',
-                '_PHP_': 'PHP', 
-                '_HTML_': 'HTML',
-                '_CSS_': 'CSS', 
-                '_Perl_': 'Perl',
-                '_Swift_': 'Swift',
-                '_Kotlin_': 'Kotlin',
-                '_Go_': 'Go',
-                '_Ruby_': 'Ruby',
-                '_Basic_': 'Basic',
-                '_Pascal_': 'Pascal', 
-                '_Lua_': 'Lua',
-                '_R_': 'R',
-                '_Rust_': 'Rust',
-                '_TypeScript_': 'TypeScript',
-            }
+            SKILL_CHOICES = []
+            for skill in Skill.objects.all().order_by('name'):
+                SKILL_CHOICES.append('_{}_'.format(skill))
 
-            person.programming.clear()
+            person.skills.clear()
+
             try:
-                for p_lang in PROGRAMMING_CHOICES:
-                    if p_lang in programming:
-                        programming_language = Programming.objects.get(language = PROGRAMMING_CHOICES[p_lang])
-                        person.programming.add(programming_language)
+                for skill in SKILL_CHOICES:
+                    if skill in skills:
+                        person.skills.add(Skill.objects.get(name=skill.replace('_', '')))
             except:
                 pass
 
@@ -173,9 +153,9 @@ def edit_profile(request):
 
     # If form method == GET
     else:
-        p_langs = []
-        for p_lang in person.programming.all():
-            p_langs.append('_{}_'.format(p_lang))
+        skills = []
+        for skill in person.skills.all().order_by('name'):
+            skills.append('_{}_'.format(skill))
 
         # Give form to user
         form = ProfileEditForm(initial = {  
@@ -187,7 +167,7 @@ def edit_profile(request):
                                             'year_of_born': person.year_of_born,
                                             'gender': person.gender,
                                             'work': person.work,
-                                            'programming': p_langs,
+                                            'skills': skills,
                                             'github': person.github,
                                             'gitlab': person.gitlab,
                                             'stackowerflow': person.stackowerflow,

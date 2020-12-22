@@ -13,20 +13,16 @@
                 <li>
                     <p>
                         {% if notification.notif_type == 'like' %}
-                        <button type="button" class="btn btn-danger  border-gray"><svg width="1em" height="1em" viewBox="0 0 16 16" class="bi bi-heart-fill" fill="currentColor" xmlns="http://www.w3.org/2000/svg">
-                        <path fill-rule="evenodd" d="M8 1.314C12.438-3.248 23.534 4.735 8 15-7.534 4.736 3.562-3.248 8 1.314z"/>
-                      </svg></button> 
+                        <button type="button" class="btn btn-danger  border-gray"><i class="far fa-heart"></i></button> 
 
                         {% elif notification.notif_type == 'comment' %}
-                        <button type="button" class="btn btn-warning  border-gray"><svg width="1em" height="1em" viewBox="0 0 16 16" class="bi bi-chat-left-text-fill" fill="currentColor" xmlns="http://www.w3.org/2000/svg">
-                        <path fill-rule="evenodd" d="M0 2a2 2 0 0 1 2-2h12a2 2 0 0 1 2 2v8a2 2 0 0 1-2 2H4.414a1 1 0 0 0-.707.293L.854 15.146A.5.5 0 0 1 0 14.793V2zm3.5 1a.5.5 0 0 0 0 1h9a.5.5 0 0 0 0-1h-9zm0 2.5a.5.5 0 0 0 0 1h9a.5.5 0 0 0 0-1h-9zm0 2.5a.5.5 0 0 0 0 1h5a.5.5 0 0 0 0-1h-5z"/>
-                      </svg></button> 
+                        <button type="button" class="btn btn-warning  border-gray"><i class="fas fa-comment"></i></button> 
                         
                         {% elif notification.notif_type == 'replay' %}
-                        <button type="button" class="btn btn-primary  border-gray"><i class="icofont-speech-comments"></i></button> 
+                        <button type="button" class="btn btn-primary  border-gray"><i class="fas fa-comments"></i></button> 
 
                         {% elif notification.notif_type == 'follow' %}
-                        <button type="button" class="btn btn-primary  border-gray"><i class="icofont-plus"></i></button> 
+                        <button type="button" class="btn btn-primary  border-gray"><i class="fas fa-plus"></i></button> 
                         {% endif %}
 
                         {{ notification.message | safe }}
