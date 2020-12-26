@@ -11,8 +11,13 @@ class ProfileEditForm(forms.Form):
     )
 
     SKILL_CHOICES = []
-    for skill in Skill.objects.all().order_by('name'):
-        SKILL_CHOICES.append(('_{}_'.format(skill), skill.name),)
+    try:
+        skills = Skill.objects.all().order_by('name')
+        for skill in skills:
+            SKILL_CHOICES.append(('_{}_'.format(skill), skill),)
+    
+    except:
+        pass
 
     SKILL_CHOICES = tuple(SKILL_CHOICES)
     

@@ -1,6 +1,7 @@
 # THE CODE IS CLEAN
 
 import re
+import os
 from random import sample
 
 # Models
@@ -306,7 +307,8 @@ class mskf():
         repos = re.findall(r'▸[^▸◂]*◂', text)
         for repo_name in repos:
             from github import Github
-            g = Github()
+            GITHUB_TOKEN = os.getenv('GITHUB_TOKEN', None)
+            g = Github(GITHUB_TOKEN)
 
             try:
                 repo = g.get_repo(repo_name.replace('▸', '').replace('◂', ''))

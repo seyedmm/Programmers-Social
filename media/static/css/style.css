@@ -125,7 +125,7 @@ code {
 	color: var(--dark);
 	font-family: Vazir Code;
 	background: var(--border-color);
-	padding: 0px 5px;
+	padding: 0 5px;
 	border-radius: .25rem;
     font-size: inherit;
     direction: ltr;
@@ -198,15 +198,14 @@ hr {
 .avatar {
     max-width: unset !important;
     border-radius: 100% !important;
-    margin-top: 0rem !important;
-    margin-bottom: 0rem !important;
+    margin-top: 0 !important;
+    margin-bottom: 0 !important;
     border-style: solid;
     border-width: 1px;
 }
 
 .comment {
     margin-left: 100px;
-    padding: 10px;
     border-radius: .25rem;
     width: auto;
     position: relative;
@@ -220,7 +219,6 @@ hr {
     margin-left: 100px;
     margin-top: 10px;
     margin-right: 10px;
-    padding: 10px;
     width: auto;
     position: relative;
     display: block;
@@ -240,11 +238,11 @@ menu {
     width: 150px;
     background: var(--primary);
     padding: 10px;
-    border-radius: 0px 10px 10px 0px;
+    border-radius: 0 10px 10px 0;
 }
 
 .options {
-    margin-bottom: 0rem;
+    margin-bottom: 0;
 }
 
 .social button {
@@ -257,14 +255,14 @@ button:hover img {
 }
 
 .navbar-brand {
-    margin-right: 0rem;
+    margin-right: 0;
 }
 
 .logo {
     max-width: unset !important;
-    border-radius: 0rem !important;
-    margin-top: 0rem !important;
-    margin-bottom: 0rem !important;
+    border-radius: 0 !important;
+    margin-top: 0 !important;
+    margin-bottom: 0 !important;
 }
 
 .modal-content {
@@ -343,18 +341,18 @@ button:hover img {
 
 .mr-auto, .mx-auto {
     margin-left: auto !important;
-    margin-right: 0px !important;
+    margin-right: 0 !important;
 }
 
 .list-group {
-    border-radius: .25rem 0rem 0rem .25rem;
+    border-radius: .25rem 0 0 .25rem;
     position: sticky;
     top: 107px;
     float: right;
 }
 
 .list-group-item {
-    border-right-width: 0px;
+    border-right-width: 0;
     text-align: center;
     background-color: var(--light);
 }
@@ -365,7 +363,7 @@ button:hover img {
 
 .navbar {
     position: sticky;
-    top: 0px; 
+    top: 0;
     z-index: 999;
     border-bottom: 1px solid rgba(0,0,0,.125);
     background-color: var(--light);
@@ -401,13 +399,13 @@ button:hover img {
 
 .post-bar {
     position: sticky;
-    bottom: 0px;
+    bottom: 0;
     background-color: var(--light);
     border-top-width: 1px;
     border-top-style: solid;
     padding: 5px;
-    padding-bottom: 0px;
-    box-shadow: 0 -5px 0rem 0rem #ffffff50;
+    padding-bottom: 0;
+    box-shadow: 0 -5px 0 0 #ffffff50;
 }
 
 .post-bar-static {
@@ -415,7 +413,7 @@ button:hover img {
     border-top-width: 1px;
     border-top-style: solid;
     padding: 5px;
-    padding-bottom: 0px;
+    padding-bottom: 0;
 }
 
 .card-header.note-toolbar {
@@ -551,10 +549,10 @@ button:hover img {
         display: unset;
     }
     .comment {
-        margin-left: 0px;
-    } 
+        margin-left: 0;
+    }
     .comment-replay {
-        margin-left: 0px;
+        margin-left: 0;
     }
     .btn-group-vertical {
         float: unset !important;
@@ -573,7 +571,7 @@ button:hover img {
         margin-bottom: 10px;
     }
     .person-name {
-        padding-right: 0px;
+        padding-right: 0;
         display: block;
     }
     .follow-info {
@@ -616,14 +614,13 @@ button:hover img {
 
 #banner {
     border-radius: .25rem;
-    padding: .75rem 1.25rem;
     background-color: #fff;
     width: 100%;
     margin-bottom: 10px;
     background-size: cover;
     background-position: center;
     color: #fff;
-    padding: 0px;
+    padding: 0;
     position: relative;
     height: 300px;
 }
@@ -637,8 +634,8 @@ button:hover img {
 #banner .author-avatar {
     max-width: unset !important;
     border-radius: 100% !important;
-    margin-top: 0rem !important;
-    margin-bottom: 0rem !important;
+    margin-top: 0 !important;
+    margin-bottom: 0 !important;
     border: 1px solid var(--border-color);
     width: 48px;
     height: 48px;
