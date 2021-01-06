@@ -2,7 +2,7 @@
 
 
 
-<nav class="navbar navbar-expand-lg navbar-light shadow-ms border-gray">
+<nav class="navbar navbar-expand-lg navbar-light  border-gray">
     <div class="wrp">
     <a class="navbar-brand" href="{% url 'index' %}">
         <img src="{% static 'img/programmers-social_logo.svg' %}" width="30" height="30" class="programmers-social_logo d-inline-block align-top" alt="شبکه اجتماعی برنامه نویسان" loading="lazy">
@@ -34,11 +34,11 @@
 
             <a href="{% url 'person:profile_detail' user.username %}">
                 {% if new_notif %}
-                    <a class="notification my-2 my-sm-0" style="margin-left: 10px;" href="{% url 'person:new_notifications' %}" data-toggle="tooltip" data-placement="bottom" title="{{ notif_len }} پیام جدید!"><i class="fas fa-bell animated infinite flash"></i></a>
+                    <a class="notification  mr-sm-2" style="margin-left: 10px;" href="{% url 'person:new_notifications' %}" data-toggle="tooltip" data-placement="bottom" title="{{ notif_len }} پیام جدید!"><i class="fas fa-bell animated infinite flash"></i></a>
 
                 {% else %}
                     
-                    <a class="notification my-2 my-sm-0" style="margin-left: 10px;" href="{% url 'person:all_notifications' 1 %}" data-toggle="tooltip" data-placement="bottom" title="خبری نیست"><i class="fas fa-bell"></i></a>
+                    <a class="notification  mr-sm-2" style="margin-left: 10px;" href="{% url 'person:all_notifications' 1 %}" data-toggle="tooltip" data-placement="bottom" title="خبری نیست"><i class="fas fa-bell"></i></a>
                 {% endif %}
             </a>
 
@@ -47,14 +47,14 @@
             <div class="dropdown">
                     <a data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                         {% if authenticated_user.avatar.url != None %}
-                            <img class="avatar mr-sm-2 border-gray" type="button" src="{{ authenticated_user.avatar.url }}" width="38px" height="38px" style="border-style: solid; border-width: 1px;">
+                            <img class="avatar mr-sm-2" type="button" src="{{ authenticated_user.avatar.url }}" width="38px" height="38px">
                         
                         {% else %}
-                            <img class="avatar mr-sm-2 border-gray" type="button" src="/media/avatars/default_avatar.png/" width="38px" height="38px" style="border-style: solid; border-width: 1px;">
+                            <img class="avatar mr-sm-2" type="button" src="/media/avatars/default_avatar.png/" width="38px" height="38px">
                         {% endif %}
                     </a>
                 <!-- </button> -->
-                <div class="dropdown-menu shadow-ms border-gray" aria-labelledby="dropdownMenuButton" style="text-align: center;">
+                <div class="dropdown-menu  border-gray" aria-labelledby="dropdownMenuButton" style="text-align: center;">
                     <a class="dropdown-item" href="{% url 'person:profile_detail' user.username %}">{{ authenticated_user.name }}<br/><small>{{ authenticated_user.username }}@</small></a>
                     <div class="dropdown-divider"></div>
                     <a class="dropdown-item" href="{% url 'person:post:new_post' %}"><i class="fas fa-pen-nib"></i> نوشتن مطلب</a>

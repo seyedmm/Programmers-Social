@@ -74,7 +74,7 @@ h1, h2, h3, h4, h5, h6 {
     border-radius: .25rem;
     padding: .75rem 1.25rem;
     background-color: var(--light);
-    border: 1px solid rgba(0,0,0,.125);
+    box-shadow: 0 0 1rem 0 rgba(0,0,0,.075);
     width: 100%;
     margin-bottom: 10px;
 }
@@ -96,7 +96,7 @@ a, p, img, h1, h2, h3, h4, h5, h6 {
     text-decoration: none !important;
 }
 
-a:hover p, a:hover h3, a:hover img/*, p a:hover*/ {
+a:hover p, a:hover h1, a:hover h2, a:hover h3, a:hover h4, a:hover h5, a:hover h6, a:hover img {
     opacity: .7;
     text-decoration: none;
     color: var(--dark);
@@ -200,8 +200,6 @@ hr {
     border-radius: 100% !important;
     margin-top: 0 !important;
     margin-bottom: 0 !important;
-    border-style: solid;
-    border-width: 1px;
 }
 
 .comment {
@@ -359,6 +357,7 @@ button:hover img {
 
 .card {
     background-color: var(--light);
+    box-shadow: 0 0 1rem 0 rgba(0,0,0,.075);
 }
 
 .navbar {
@@ -368,6 +367,7 @@ button:hover img {
     border-bottom: 1px solid rgba(0,0,0,.125);
     background-color: var(--light);
     color: var(--dark);
+    box-shadow: 0 0 1rem 0 rgba(0,0,0,.075);
 }
 
 .navbar-light .navbar-brand {
@@ -406,6 +406,7 @@ button:hover img {
     padding: 5px;
     padding-bottom: 0;
     box-shadow: 0 -5px 0 0 #ffffff50;
+    z-index: 999;
 }
 
 .post-bar-static {
@@ -432,7 +433,7 @@ button:hover img {
 
 .border-gray {
     border-color: var(--border-color);
-    border-width: 0ch;
+    border-width: 0;
 }
 
 .btn-github {
@@ -477,13 +478,10 @@ button:hover img {
  box-shadow:0 0 0 .2rem #22225850;
 }
 
-.shadow-ms {
-    box-shadow: 0 0 1rem 0 rgba(0,0,0,.075);
-}
-
 .dropdown-menu {
     color: var(--dark);
     background-color: var(--light);
+    box-shadow: 0 0 1rem 0 rgba(0,0,0,.075);
 }
 
 .dropdown-item {
@@ -520,6 +518,24 @@ button:hover img {
     border-radius: .25rem;
 }
 
+@media (min-width: 924px) {
+    .navbar-expand-lg .navbar-collapse {
+        display: -ms-flexbox!important;
+        display: flex!important;
+        -ms-flex-preferred-size: auto;
+        flex-basis: auto;
+    }
+    .navbar-expand-lg .navbar-nav {
+        -ms-flex-direction: row;
+        flex-direction: row;
+    }
+    .navbar-expand-lg .navbar-nav .nav-link {
+        padding-right: .5rem;
+        padding-left: .5rem;
+    }
+}
+
+
 @media only screen and (max-width: 924px) {
     .wrp, .ads-wrp {
         width: 95%;
@@ -529,6 +545,7 @@ button:hover img {
     .navbar .wrp {
         display: contents;
     }
+    
     .list-group {
         width: 95%;
         margin-right: 2.5%;
@@ -572,7 +589,7 @@ button:hover img {
     }
     .person-name {
         padding-right: 0;
-        display: block;
+        /* display: block; */
     }
     .follow-info {
         text-align: center;
