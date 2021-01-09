@@ -10,7 +10,7 @@ import random
 # Models
 from main.models import Person,\
                         Post,\
-                        PostComment,\
+                        Comment,\
                         Notification,\
                         Ad
 
@@ -34,14 +34,14 @@ def all_posts(request, username, page):
     mskf.add_notification_availability_to_context(request, context)
     mskf.add_authenticated_user_to_context(request, context)
 
-    return render(request, 'all_posts.html', context)
+    return render(request, 'person/profile/detail.html', context)
 
 
 # Post page view
 def post_detail(request, username, post_id):
     person = Person.objects.get(username = username) # Get the Person
     post = get_object_or_404(Post, author = person, id = post_id) # Get the Post
-    comments = PostComment.objects.filter(place = post).order_by('id') # Get the Comments
+    comments = Comment.objects.filter(place = post).order_by('id') # Get the Comments
     len_comments = len(comments) # Get length of comments
 
     try:
@@ -75,7 +75,7 @@ def post_detail(request, username, post_id):
             # If mode == comment
             if mode == 'comment':
                 # Create a Comment model with form data
-                comment = PostComment(place = post, author = user, text = text, replay = None)
+                comment = Comment(place = post, author = user, text = text)
                 comment.save() # Save it
 
                 post.comments = int(post.comments) + 1
@@ -88,24 +88,20 @@ def post_detail(request, username, post_id):
                 return HttpResponse(json.dumps({'message': 'hello'}))
 
             else:
-                comment = PostComment.objects.get(id = mode)
-                comment.replay = text
+                print(mode)
+                replay = Comment(author = authenticated_user, text = text)
+                replay.save()
+
+                print(replay)
+                
+                comment = Comment.objects.get(id = mode)
+                comment.replays.add(replay)
                 comment.save()
+
+                print(comment)
 
                 notif = Notification(givver = comment.author, message = '<a href="/user/{0}/">{1}</a> پاسخی به <a href="/user/{2}/post/{3}/#comments">نظر</a> شما داد'.format(person.username, person.name, post.author.username, post.id), notif_type = 'replay')
                 notif.save()
-
-            context = {
-                'post': post,
-                'comments': comments,
-                'len_comments': len_comments,
-                'form': form,
-                'current_url': str(request.path).replace('/', '%2F'),
-            }
-
-            mskf.add_notification_availability_to_context(request, context)
-            mskf.add_authenticated_user_to_context(request, context)
-            mskf.add_3_ads_to_context(context)
 
             return HttpResponseRedirect('/user/' + post.author.username + '/post/' + str(post.id))
 
@@ -115,6 +111,7 @@ def post_detail(request, username, post_id):
 
     
     post_body = mskf.get_repo_data(post.body)
+    post_body = mskf.translate_to_html(post_body)
 
     context = {
         'post': post,
@@ -129,7 +126,7 @@ def post_detail(request, username, post_id):
     mskf.add_authenticated_user_to_context(request, context)
     mskf.add_3_ads_to_context(context)
 
-    return render(request, 'post_detail.html', context)
+    return render(request, 'post/detail.html', context)
 
 
 # Write post page view
@@ -147,8 +144,6 @@ def new_post(request):
             cover = form.cleaned_data['cover'] # Read cover
             short_description = form.cleaned_data['short_description'] # Read short description
             category = form.cleaned_data['category'] # Read category
-
-            body = mskf.translate_to_html(body)
 
             # Create a Post model with form data
             post = Post(title = title,\
@@ -173,7 +168,7 @@ def new_post(request):
     mskf.add_notification_availability_to_context(request, context)
     mskf.add_authenticated_user_to_context(request, context)
 
-    return render(request, 'new_post.html', context)
+    return render(request, 'post/write.html', context)
 
 
 # Edit post page view
@@ -194,8 +189,6 @@ def edit_post(request, post_id):
                 short_description = form.cleaned_data['short_description'] # Read short description
                 category = form.cleaned_data['category'] # Read category
 
-                body = mskf.translate_to_html(body)
-
                 # Give new data to post
                 post.title = title 
                 post.body = body
@@ -212,7 +205,7 @@ def edit_post(request, post_id):
             # Give form to user
             form = PostForm(initial = {
                                         'title': post.title,
-                                        'body': mskf.translate_to_raw(post.body),
+                                        'body': post.body,
                                         'cover': post.cover,
                                         'short_description': post.short_description,
                                         'category': post.category,
@@ -226,13 +219,13 @@ def edit_post(request, post_id):
         mskf.add_notification_availability_to_context(request, context)
         mskf.add_authenticated_user_to_context(request, context)
 
-        return render(request, 'edit_post.html', context)
+        return render(request, 'post/edit.html', context)
     
     # If registered user not post author
     mskf.add_notification_availability_to_context(request, context)
     mskf.add_authenticated_user_to_context(request, context)
 
-    return render(request, 'forbidden.html')
+    return render(request, 'pages/forbidden.html')
 
 
 # Post delete view
@@ -253,13 +246,13 @@ def delete_post(request, username, post_id):
     mskf.add_notification_availability_to_context(request, context)
     mskf.add_authenticated_user_to_context(request, context)
 
-    return render(request, 'forbidden.html', context)
+    return render(request, 'pages/forbidden.html', context)
 
 
 # Post Comment delete view
 @login_required
 def delete_post_comment(request, username, post_id, comment_id):
-    comment = get_object_or_404(PostComment, id = comment_id) # Get the Comment
+    comment = get_object_or_404(Comment, id = comment_id) # Get the Comment
     post = get_object_or_404(Post, id = post_id) # Get the Post
 
     # If registered user is comment author
@@ -285,13 +278,13 @@ def delete_post_comment(request, username, post_id, comment_id):
         mskf.add_notification_availability_to_context(request, context)
         mskf.add_authenticated_user_to_context(request, context)
 
-        return render(request, 'forbidden.html')
+        return render(request, 'pages/forbidden.html')
 
 
 # Post Comment Replay delete view
 @login_required
 def delete_post_comment_replay(request, username, post_id, comment_id):
-    comment = get_object_or_404(PostComment, id = comment_id) # Get the Comment
+    comment = get_object_or_404(Comment, id = comment_id) # Get the Comment
     post = get_object_or_404(Post, id = post_id) # Get the Post
 
     # if registered user is comments post author
@@ -305,7 +298,7 @@ def delete_post_comment_replay(request, username, post_id, comment_id):
     mskf.add_notification_availability_to_context(request, context)
     mskf.add_authenticated_user_to_context(request, context)
 
-    return render(request, 'forbidden.html')
+    return render(request, 'pages/forbidden.html')
 
 
 # Like Post view

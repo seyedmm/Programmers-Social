@@ -1,0 +1,59 @@
+{% extends 'main.html' %}
+{% load static %}
+
+{% block title %}
+    {{ super }} کاربران
+{% endblock %}
+
+
+{% block body %}
+<div class="body  border-gray">
+<h2>پیام‌ها:</h2><br/>
+<ul style="list-style-type: none;" class="infinite-container">
+    {% for notification in notifications.object_list %}
+        <li class="infinite-item">
+            <p>
+                {% if notification.done == True %}
+                    <button type="button" class="btn btn-success  border-gray"><i class="fas fa-check"></i></button> 
+                {% endif %}
+                {{ notification.message | safe }}
+            </p>
+        </li>
+    {% endfor %}
+</ul>
+<br/>
+
+{% if notifications.has_next %}
+    <a class="infinite-more-link" href="{% url 'person:all_notifications' notifications.next_page_number %}"></a>
+
+    <div class="d-flex justify-content-center" style="display:none;">
+        <div class="spinner-grow" role="status">
+            <span class="sr-only">Loading...</span>
+          </div>
+    </div>
+{% endif %}
+</div>
+
+<script src="{% static 'js/jquery.min.js' %}"></script>
+<script src="{% static 'js/jquery.waypoints.min.js' %}"></script>
+<script src="{% static 'js/infinite.min.js' %}"></script>
+    <script>
+    var infinite = new Waypoint.Infinite({
+        element: $('.infinite-container')[0],
+        handler: function(direction) {
+
+    },
+    offset: 'bottom-in-view',
+
+    onBeforePageLoad: function () {
+    $('.spinner-grow').show();
+    },
+    onAfterPageLoad: function () {
+    $('.spinner-grow').hide();
+    }
+
+    });
+
+    </script>
+
+{% endblock %}

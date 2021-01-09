@@ -1,0 +1,34 @@
+{% extends 'main.html' %}
+
+{% block title %}
+    {{ super }} کاربران
+{% endblock %}
+
+
+{% block body %}
+    <div class="body  border-gray">
+        <h2>پیام‌ها:</h2><br/>
+        <ul style="list-style-type: none;">
+            {% for notification in notifications %}
+                <li>
+                    <p>
+                        {% if notification.notif_type == 'like' %}
+                        <button type="button" class="btn btn-danger  border-gray"><i class="far fa-heart"></i></button> 
+
+                        {% elif notification.notif_type == 'comment' %}
+                        <button type="button" class="btn btn-warning  border-gray"><i class="fas fa-comment"></i></button> 
+                        
+                        {% elif notification.notif_type == 'replay' %}
+                        <button type="button" class="btn btn-primary  border-gray"><i class="fas fa-comments"></i></button> 
+
+                        {% elif notification.notif_type == 'follow' %}
+                        <button type="button" class="btn btn-primary  border-gray"><i class="fas fa-plus"></i></button> 
+                        {% endif %}
+
+                        {{ notification.message | safe }}
+                    </p>
+                </li>
+            {% endfor %}
+        </ul>
+    </div>
+{% endblock %}

@@ -1,0 +1,122 @@
+{% load jformat %}
+{% load static %}
+
+
+<div id="comment_{{ comment.id }}" class="body  border-gray">
+    {% if user.is_authenticated %}
+    {% if user.username == post.author.username %}
+    <div class="dropdown" style="float: left;">
+        <a class="text-muted" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true"
+            aria-expanded="false">
+            <p class="options">•••</p>
+        </a>
+        <div class="dropdown-menu  border-gray" aria-labelledby="dropdownMenuButton"
+            style="text-align: center;">
+            <button class="dropdown-item" type="button" class="btn btn-danger  border-gray" data-toggle="modal"
+                data-target="#delete_comment_{{ comment.id }}">حذف</button>
+
+            {% if comment.replay == None %}
+            <button class="dropdown-item" type="button" class="btn btn-primary  border-gray" data-toggle="modal"
+                data-target="#replay_comment_{{ comment.id }}">پاسخ دهید</button>
+            {% endif %}
+        </div>
+    </div>
+    {% elif user.username == comment.author.username %}
+    <div class="dropdown" style="float: left;">
+        <a class="text-muted" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true"
+            aria-expanded="false">
+            <p class="options">•••</p>
+        </a>
+        <div class="dropdown-menu  border-gray" aria-labelledby="dropdownMenuButton"
+            style="text-align: center;">
+            <button class="dropdown-item" type="button" class="btn btn-danger  border-gray" data-toggle="modal"
+                data-target="#delete_comment_{{ comment.id }}">حذف</button>
+        </div>
+    </div>
+    {% endif %}
+    {% endif %}
+
+    <div style="display: table;">
+        <div style="display: inline-block;">
+            <a href="{% url 'person:profile_detail' comment.author.username %}">
+                {% if comment.author.avatar.url != None %}
+                <img class="avatar  border-gray" src="{{ comment.author.avatar.url }}" width="48px" height="48px"
+                    class=" border-gray" style="border-radius: 100%; border-style: solid; border-width: 1px;">
+
+                {% else %}
+                <img class="avatar  border-gray" type="button" src="/media/avatars/default_avatar.png/" width="48px"
+                    height="48px" style="border-style: solid; border-width: 1px;">
+                {% endif %}
+            </a>
+
+        </div>
+
+        <div style="display: table-cell; vertical-align: middle; padding-right: 20px;">
+            <p style="margin-bottom: 0;">
+                <a class="person-name" href="{% url 'person:profile_detail' comment.author.username %}">
+                    {{ comment.author.name }}
+                </a>
+                {% if comment.author.work != None %}
+                - {{ comment.author.work }}
+                {% endif %}
+            </p>
+            <small class="text-muted"><i class="far fa-calendar"></i>
+                {{ comment.submit_time | jformat:'%Y/%m/%d' }} <i class="far fa-clock"></i>
+                {{ comment.submit_time | jformat:'%H:%M' }}
+            </small>
+        </div>
+    </div>
+    <hr />
+    {{ comment.text | safe }}
+
+    <!-- Delete Comment -->
+    <div class="modal fade" id="delete_comment_{{ comment.id }}" tabindex="-1" role="dialog" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="exampleModalLabel">هشدار - حذف نظر</h5>
+                </div>
+                <div class="modal-body">
+                    آیا مطمئن هستید؟
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary  border-gray" data-dismiss="modal">خیر</button>
+                    <a href="{% url 'person:post:delete_post_comment' post.author.username post.id comment.id %}"><button
+                            type="button" class="btn btn-danger  border-gray">بله</button></a>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Comment Replay -->
+    <div class="modal fade" id="replay_comment_{{ comment.id }}" tabindex="-1" role="dialog" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="exampleModalLabel">پاسخ به نظر</h5>
+                </div>
+                <div class="modal-body">
+                    <Form method="post">
+                        {% csrf_token %}
+                        {% if form.errors %}
+                        <div class="alert alert-danger" role="alert">
+                            لطفا فیلد را پر کنید!
+                        </div>
+                        {% endif %}
+                        <input style="display: none;" type="text" value="{{ comment.id }}" name="mode">
+                        <label>پاسخ شما:</label><br />
+                        <textarea class="form-control" type="text" rows="3" name="text"
+                            aria-describedby="text_help"></textarea>
+                        <small id=" text_help" class="form-text text-muted">حداکثر ۱۰۰۰ حرف</small>
+                        <br /><br />
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-secondary  border-gray"
+                                data-dismiss="modal">انصراف</button>
+                            <button type="submit" class="btn btn-success  border-gray">ارسال</button>
+                        </div>
+                    </Form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

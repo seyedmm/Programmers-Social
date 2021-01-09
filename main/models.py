@@ -19,6 +19,7 @@ class Person(models.Model):
     description = models.CharField(max_length = 200, null = True, blank = True, verbose_name = 'توضیحات')
     year_of_born = models.CharField(max_length = 4, choices = YEARS, null = True, blank = True, verbose_name = 'سال تولد')
     gender = models.CharField(max_length = 10, null = True, blank = True, verbose_name = 'جنسیت')
+    join_time = jmodels.jDateTimeField(default = timezone.now, verbose_name = 'زمان عضویت')
 
     # Work detail
     work = models.CharField(max_length = 50, null = True, blank = True, verbose_name = 'تخصص')
@@ -71,15 +72,16 @@ class Post(models.Model):
         return self.title
 
 
-class PostComment(models.Model):
+class Comment(models.Model):
     place = models.ForeignKey('Post', on_delete = models.SET_NULL, null = True, verbose_name = 'مکان')
     author = models.ForeignKey('Person', on_delete = models.SET_NULL, null = True, verbose_name = 'نویسنده')
     text = models.CharField(max_length = 1000, verbose_name = 'متن')
-    replay = models.CharField(max_length = 1000, null = True, blank = True, verbose_name = 'پاسخ')
+    replays = models.ManyToManyField('Comment', blank = True, verbose_name = 'پاسخ‌ها')
+    submit_time = jmodels.jDateTimeField(default = timezone.now, verbose_name = 'زمان ثبت')
 
     class Meta:
-        verbose_name = 'نظر مطلب'
-        verbose_name_plural = 'نظرات مطالب'
+        verbose_name = 'نظر'
+        verbose_name_plural = 'نظرات'
 
 
 class Ad(models.Model):

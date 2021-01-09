@@ -1,0 +1,34 @@
+<!-- Post options for post author -->
+{% if user.is_authenticated %}
+    {% if user.username == post.author.username %}
+        <div class="dropdown" style="float: left;">
+            <a class="text-muted" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true"
+                aria-expanded="false">
+                <p class="options">•••</p>
+            </a>
+
+            <div class="dropdown-menu  border-gray" aria-labelledby="dropdownMenuButton"
+                style="text-align: center;">
+                <a class="dropdown-item" href="{% url 'person:post:edit_post' post.id %}">ویرایش</a>
+                <a class="dropdown-item" href="{% url 'rocket' %}">افزایش بازدید</a>
+                <button class="btn btn-danger border-gray dropdown-item" type="button" data-toggle="modal" data-target="#delete_post">حذف</button>
+            </div>
+        </div>
+
+        {% include 'post/parts/delete_post_dialog.html' %}
+
+    {% else %}
+        {% if post.category != 'غیره' and post.category != None %}
+            <span class="badge badge-light" style="float: left; font-size: 1em; font-weight: lighter;">
+                {{ post.category }}
+            </span>
+        {% endif %}
+    {% endif %}
+
+    {% else %}
+    {% if post.category != 'غیره' and post.category != None %}
+        <span class="badge badge-light" style="float: left; font-size: 1em; font-weight: lighter;">
+            {{ post.category }}
+        </span>
+    {% endif %}
+{% endif %}

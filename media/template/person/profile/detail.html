@@ -1,0 +1,136 @@
+{% extends 'main.html' %}
+{% load static %}
+{% load jformat %}
+
+{% block title %}
+    {{ super }} {{ person.name }}
+{% endblock %}
+
+
+{% block body %}
+    <div class="body  border-gray">
+        <div class="btn-group-vertical" style="float: left; text-align: left; align-items: flex-end;">
+            {% if user.is_authenticated %}
+                {% if authenticated_user != person %}
+                    {% if person in authenticated_user.following.all %}
+                        <a href="{% url 'person:follow_person' person.username current_url %}"><button type="button" class="btn btn-success  border-gray" style="float: left; margin-bottom: 10px;"><i class="fas fa-check"></i> دنبال می‌کنید</button></a>
+                        
+                    {% else %}
+                        <a href="{% url 'person:follow_person' person.username current_url %}"><button type="button" class="btn btn-secondary  border-gray" style="float: left; margin-bottom: 10px;"><i class="fas fa-plus"></i> دنبال کنید</button></a>
+                    {% endif %}
+
+                {% else %}
+                    <a href="{% url 'person:edit_profile' %}"><button type="button" class="btn btn-secondary border-gray" style="float: left; margin-bottom: 10px;"><i class="fas fa-cog"></i> ویرایش پروفایل</button></a>
+                {% endif %}
+            {% endif %}
+
+            {% if person.rezome != "" %}
+                <a href="{% url 'person:rezome_detail' person.username %}"><button type="button" class="btn btn-primary  border-gray" style="float: left; margin-bottom: 10px;"><i class="far fa-file-alt"></i> مشاهده رزومه</button></a>
+            {% endif %}
+
+            {% if person.public_email != None %}
+                <a href="mailto:{{ person.public_email }}"><button type="button" class="btn btn-primary  border-gray" style="float: left; margin-bottom: 10px;"><i class="far fa-envelope"></i> پست الکترونیک</button></a>
+            {% endif %}
+            
+            {% if person.mobile != None %}
+                <a href="tel:{{ person.mobile }}"><button type="button" class="btn btn-primary  border-gray" style="float: left; margin-bottom: 10px;"><i class="fas fa-phone"></i> شماره تماس</button></a>
+            {% endif %}
+        </div>
+
+        <div class="profile">
+            <div class="profile-avatar">
+                {% if person.avatar.url != None %}
+                    <img src="{{ person.avatar.url }}" width="128px" height="128px" class="avatar  border-gray">
+                
+                {% else %}
+                    <img src="/media/avatars/default_avatar.png/" width="128px" height="128px" class="avatar  border-gray" type="button">
+                {% endif %}
+            </div>
+                    
+            <div class="profile-name">
+                {% if person.name != None %}
+                    <h2 style="margin-bottom: 10px;">
+                        {{ person.name }}
+                    </h2>
+                {% endif %}
+                {% if person.description != None %}
+                    <p>{{ person.description }}</p>
+                {% endif %}
+            </div>
+        </div><br/>
+
+        <p class="follow-info">توسط <a href="{% url 'person:followers' person.username 1 %}"><strong>{{ person.len_followers }} نفر</strong></a> دنبال می‌شود - <a href="{% url 'person:followings' person.username 1 %}"><strong>{{ person.len_following }} نفر</strong></a> را دنبال می‌کند</p>
+        {% if person.year_of_born != None %}
+        <p><i class="fas fa-birthday-cake"></i> متولد {{ person.year_of_born }}</p>
+        {% endif %}
+
+        {% if person.gender == 'مرد' %}
+            <p><i class="fas fa-mars"></i> {{ person.gender }}</p>
+
+        {% elif person.gender == 'زن' %}
+            <p><i class="fas fa-venus"></i> {{ person.gender }}</p>
+        {% endif %}
+
+        {% if person.work != None %}
+        <p><i class="fas fa-briefcase"></i> {{ person.work }}</p>
+        {% endif %}
+
+        {% if person.join_time != None %}
+        <p><i class="fas fa-seedling"></i> در <strong>{{ person.join_time | jformat:'%Y/%m/%d' }}</strong> به ما پیوست</p>
+        {% endif %}
+
+        {% if skills_availability == True %}
+            <p>
+                <strong>مهارت‌های من: </strong>
+                    {% for skill in person.skills.all %}
+                            <button type="button" class="btn btn-light  border-gray" style="margin-top: .25rem; margin-bottom: .25rem;">{{ skill }}</button>
+                    {% endfor %}
+                </ul>
+            </p>
+        {% endif %}
+
+        <div class="social">
+            {% if person.github != None %}
+                <a href="{{ person.github }}" target="_blank"><button type="button" class="btn btn-light  border-gray"><i class="fab fa-github fa-lg"></i></button></a>
+            {% endif %}
+
+            {% if person.gitlab != None %}
+                <a href="{{ person.gitlab }}" target="_blank"><button type="button" class="btn btn-light  border-gray"><i class="fab fa-gitlab fa-lg"></i></button></a>
+            {% endif %}
+
+            {% if person.stackowerflow != None %}
+                <a href="{{ person.stackowerflow }}" target="_blank"><button type="button" class="btn btn-light  border-gray"><i class="fab fa-stack-overflow fa-lg"></i></button></a>
+            {% endif %}
+
+            {% if person.linkedin != None %}
+                <a href="{{ person.linkedin }}" target="_blank"><button type="button" class="btn btn-light  border-gray"><i class="fab fa-linkedin fa-lg"></i></button></a>
+            {% endif %}
+
+            {% if person.dev != None %}
+                <a href="{{ person.dev }}" target="_blank"><button type="button" class="btn btn-light  border-gray"><i class="fab fa-dev fa-lg"></i></button></a>
+            {% endif %}
+
+            {% if person.website != None %}
+                <a href="{{ person.website }}" target="_blank"><button type="button" class="btn btn-light  border-gray"><i class="fas fa-globe fa-lg"></i></button></a>
+            {% endif %}
+        </div>
+    </div>
+
+    {% include 'post/list.html' %}
+
+    {% if posts.has_next %}
+        <a class="infinite-more-link" href="{% url 'person:post:all_posts' person.username posts.next_page_number %}"></a>
+
+        <div class="d-flex justify-content-center" style="display:none;">
+            <div class="spinner-grow" role="status">
+                <span class="sr-only">Loading...</span>
+            </div>
+        </div>
+
+    {% else %}
+        <p class="text-muted" style="text-align: center;"><small>به آخر لیست رسیدید</small></p>
+    {% endif %}
+
+    {% include 'infinite_load.html' %}
+
+{% endblock %}

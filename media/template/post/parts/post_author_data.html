@@ -1,0 +1,32 @@
+{% load jformat %}
+
+
+<div style="display: table;">
+    <div style="display: inline-block;">
+        <a href="{% url 'person:profile_detail' post.author.username %}">
+            {% if post.author.avatar.url != None %}
+                <img class="avatar" src="{{ post.author.avatar.url }}" width="48px" height="48px">
+
+            {% else %}
+                <img class="avatar" type="button" src="/media/avatars/default_avatar.png/" width="48px" height="48px">
+            {% endif %}
+        </a>
+    </div>
+
+    <div style="display: table-cell; vertical-align: middle; padding-right: 20px;">
+        <p style="margin-bottom: 0px;">
+            <a class="person-name" href="{% url 'person:profile_detail' post.author.username %}">
+                {{ post.author.name }}
+            </a>
+
+            {% if post.author.work != None %}
+                - {{ post.author.work }}
+            {% endif %}
+        </p>
+
+        <small class="text-muted">
+            <i class="far fa-calendar"></i> {{ post.publish_time | jformat:'%Y/%m/%d' }} 
+            <i class="far fa-clock"></i> {{ post.publish_time | jformat:'%H:%M' }}
+        </small>
+    </div>
+</div>

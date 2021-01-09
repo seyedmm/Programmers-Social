@@ -11,33 +11,33 @@
     "theme_color": "#43168d",
     "icons": [
       {
-        "src": "/static/img/programmers-social_logo_512x512.png",
+        "src": "/static/img/programmers-social_512x512.png",
         "sizes": "512x512",
         "type": "image/png",
         "purpose": "any maskable"  
       },
       {
-        "src": "/static/img/programmers-social_logo_512x512.png",
+        "src": "/static/img/programmers-social_512x512.png",
         "sizes": "512x512",
         "type": "image/png"
       },
       {
-        "src": "/static/img/programmers-social_logo_256x256.png",
+        "src": "/static/img/programmers-social_256x256.png",
         "sizes": "256x256",
         "type": "image/png"
       },
       {
-        "src": "/static/img/programmers-social_logo_128x128.png",
+        "src": "/static/img/programmers-social_128x128.png",
         "sizes": "128x128",
         "type": "image/png"
       },
       {
-        "src": "/static/img/programmers-social_logo_64x64.png",
+        "src": "/static/img/programmers-social_64x64.png",
         "sizes": "64x64",
         "type": "image/png"
       },
       {
-        "src": "/static/img/programmers-social_logo_32x32.png",
+        "src": "/static/img/programmers-social_32x32.png",
         "sizes": "32x32",
         "type": "image/png"
       }

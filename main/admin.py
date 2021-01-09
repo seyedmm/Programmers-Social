@@ -5,7 +5,7 @@ from django.contrib import admin
 # Models
 from .models import Person,\
                     Post,\
-                    PostComment,\
+                    Comment,\
                     Ad,\
                     Skill,\
                     Notification,\
@@ -24,7 +24,7 @@ class PostAdmin(admin.ModelAdmin):
     list_display = ['title', 'author']
 
 
-@admin.register(PostComment)
+@admin.register(Comment)
 class CommentAdmin(admin.ModelAdmin):
     list_display = ['author', 'place']
 

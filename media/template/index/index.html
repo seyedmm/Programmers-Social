@@ -1,0 +1,52 @@
+{% extends 'main.html' %}
+{% load static %}
+{% load jformat %}
+
+{% block title %}
+    {{ super }} دورهمی برنامه نویس‌ها و گیک‌های پارسی زبان
+{% endblock %}
+
+
+{% block body %}
+
+    {% if user.is_authenticated %}
+        {% if ad != None %}
+            {% include 'index/banner.html' %}
+        {% endif %}
+
+    {% else %}
+    <div style="width: 100%; margin-bottom: 10px;" class="body  border-gray">
+        <h1 style="text-align: center;"><img src="{% static 'img/programmers-social_logo.svg' %}" width="256px" class="programmers-social_logo"></h1><br />
+        <h2 style="text-align: center;">
+            شبکه اجتماعی برنامه نویسان، دورهمی برنامه نویس‌ها و گیک‌های پارسی زبان!
+        </h2><br />
+        <p>شبکه اجتماعی برنامه نویسان، یک  شبکه اجتماعی <a href="https://opensource.org/" target="_blank">متن باز</a>، مخصوص برنامه نویسان پارسی زبان است. شما با عضویت در شبکه اجتماعی برنامه نویسان می‌توانید صفحه‌ی اختصاصی خود را بسازید و با انتشار مطلب، تجربیات و داستان‌های خود را با دیگر برنامه نویسان به اشتراک بگذارید.
+        </p>
+        <br />
+        <div style="text-align: center;">
+            <a href="{% url 'login' %}"><button class="btn btn-primary my-2 my-sm-0  border-gray"
+                    type="button">ورود</button></a>
+            <a href="{% url 'signup' %}"><button class="btn btn-primary mr-sm-2  border-gray"
+                    type="button">عضویت</button></a>
+        </div>
+    </div>
+    {% endif %}
+
+    {% include 'post/list.html' %}
+
+    {% if posts.has_next %}
+        <a class="infinite-more-link" href="{% url 'posts' posts.next_page_number %}"></a>
+
+        <div class="d-flex justify-content-center" style="display:none;">
+            <div class="spinner-grow" role="status">
+                <span class="sr-only">Loading...</span>
+            </div>
+        </div>
+
+    {% else %}
+        <p class="text-muted" style="text-align: center;"><small>به آخر لیست رسیدید</small></p>
+    {% endif %}
+
+    {% include 'infinite_load.html' %}
+
+{% endblock %}

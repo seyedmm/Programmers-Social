@@ -1,0 +1,15 @@
+<a href="{% url 'person:post:post_detail' post.author.username post.id %}">
+    <h3 style="margin-bottom: 10px; padding-right: .75rem;">
+        {{ post.title }}
+    </h3>
+
+    {% if post.cover != None %}
+        <div style="height: 200px;">
+            <img style="object-fit: cover; width: 100%; height: 100%;" src="{{ post.cover }}">
+        </div><br />
+    {% endif %}
+
+    {% if post.short_description != None %}
+        <p style="line-break: unset;">{{ post.short_description }}</p>
+    {% endif %}
+</a>

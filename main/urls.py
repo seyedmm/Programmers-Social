@@ -6,5 +6,6 @@ urlpatterns = [
     path('', views.index, name = 'index'),
     path('?page=<int:page>/', views.posts, name = 'posts'),
     path('wellcome/', views.wellcome, name = 'wellcome'),
-    # path('support/', views.posts, name = 'support'),
+    path('support/', views.support, name = 'support'),
+    path('rocket/', views.rocket, name = 'rocket'),
 ]

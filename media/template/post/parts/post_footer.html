@@ -1,0 +1,42 @@
+<div id="post-menu" class="post-bar-static border-gray">
+    <!-- Like -->
+    {% if user.is_authenticated %}
+        {% if post in person.likes.all %}
+            <a href="{% url 'person:post:post_like' post.author.username post.id %}">
+                <button type="button" class="btn btn-light text-danger border-gray">
+                    <i class="fas fa-heart"></i> {{ post.likes }}
+                </button>
+            </a>
+
+        {% else %}
+            <a href="{% url 'person:post:post_like' post.author.username post.id %}">
+                <button type="button" class="btn btn-light border-gray">
+                    <i class="far fa-heart"></i> {{ post.likes }}
+                </button>
+            </a>
+        {% endif %}
+
+    {% else %}
+        <a href="{% url 'person:post:post_like' post.author.username post.id %}">
+            <button type="button" class="btn btn-light  border-gray">
+                <i class="far fa-heart"></i> {{ post.likes }}
+            </button>
+        </a>
+    {% endif %}
+
+    <!-- Comments -->
+    <a href="{% url 'person:post:post_detail' post.author.username post.id %}#comments">
+        <button class="btn btn-light border-gray" type="button">
+            <i class="fas fa-comment"></i> {{ post.comments }}
+        </button>
+    </a>
+
+    <!-- Views -->
+    <button type="button" class="btn btn-light border-gray">
+        <i class="fas fa-eye"></i> {{ post.views }}
+    </button>
+
+    {% if post in person.viewed_posts.all %}
+        <small class="text-muted"><i class="fas fa-check"></i> مشاهده شده</small>
+    {% endif %}
+</div>

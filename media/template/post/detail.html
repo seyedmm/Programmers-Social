@@ -1,0 +1,255 @@
+{% extends 'main.html' %}
+{% load jformat %}
+{% load static %}
+
+{% block title %}
+{{ super }} {{ post.title }}
+{% endblock %}
+
+
+{% block body %}
+<div class="body  border-gray">
+    {% include 'post/parts/post_options.html' %}
+
+    {% include 'post/parts/post_author_data.html' %}
+    <br />
+
+    <!-- Post -->
+    <h2>{{ post.title }}</h2><br />
+
+    {% if post.cover != None %}
+    <div class="img"><img src="{{ post.cover }}"></div>
+    {% endif %}
+
+    <div id="content"></div>
+    <br />
+
+    <p>
+        این مطلب را در
+        <a
+            href="https://telegram.me/share/url?url=http://localhost:8000/user/{{ post.author.username }}/post/{{ post.id }}"><button
+                class="btn btn-light border-gray "><i class="fab fa-telegram"></i></button></a> ،
+        <a
+            href="http://twitter.com/share?text=http://localhost:8000/user/{{ post.author.username }}/post/{{ post.id }}"><button
+                class="btn btn-light border-gray "><i class="fab fa-twitter"></i></button></a> و
+        <a href="whatsapp://send?text=http://localhost:8000/user/{{ post.author.username }}/post/{{ post.id }}"><button
+                class="btn btn-light border-gray "><i class="fab fa-whatsapp"></i></button></a>
+        با دوستان خود به اشتراک بگذارید!
+    </p>
+
+    <div id="post-menu" class="post-bar border-gray">
+        <!-- Like -->
+        {% if user.is_authenticated %}
+        {% if post in person.likes.all %}
+        <a dir="ltr" href="{% url 'person:post:post_like' post.author.username post.id %}"><button type="button"
+                class="btn btn-light text-danger  border-gray">{{ post.likes }} <i
+                    class="fas fa-heart"></i></button></a>
+
+        {% else %}
+        <a dir="ltr" href="{% url 'person:post:post_like' post.author.username post.id %}"><button type="button"
+                class="btn btn-light  border-gray">{{ post.likes }} <i class="far fa-heart"></i></button></a>
+        {% endif %}
+
+        {% else %}
+        <a dir="ltr" href="{% url 'person:post:post_like' post.author.username post.id %}"><button type="button"
+                class="btn btn-light  border-gray">{{ post.likes }} <i class="far fa-heart"></i></button></a>
+        {% endif %}
+
+        <!-- Comments -->
+        <a dir="ltr" href="{% url 'person:post:post_detail' post.author.username post.id %}#comments"><button
+                class="btn btn-light  border-gray" type="button">
+                {{ post.comments }} <i class="fas fa-comment"></i></button></a>
+
+        <!-- Views -->
+        <button type="button" class="btn btn-light border-gray " dir="ltr">{{ post.views }}
+            <i class="fas fa-eye"></i></button>
+    </div>
+
+    <div id="comments"></div>
+</div>
+
+
+<div class="body  border-gray">
+    {% if user.is_authenticated %}
+    {% if authenticated_user != post.author %}
+    <div class="dropdown" style="float: left;">
+
+        <a class="text-muted" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true"
+            aria-expanded="false">
+            <p class="options">
+                •••
+            </p>
+        </a>
+
+        <div class="dropdown-menu  border-gray" aria-labelledby="dropdownMenuButton"
+            style="text-align: center;">
+            {% if post.author in authenticated_user.following.all %}
+            <a class="dropdown-item" href="{% url 'person:follow_person' post.author.username current_url %}">لغو
+                دنبال</a>
+
+            {% else %}
+            <a class="dropdown-item" href="{% url 'person:follow_person' post.author.username current_url %}">دنبال
+                کنید</a>
+            {% endif %}
+        </div>
+    </div>
+    {% endif %}
+    {% endif %}
+
+    <div style="display: table;">
+        <div style="display: inline-block;">
+            <a href="{% url 'person:profile_detail' post.author.username %}">
+                {% if post.author.avatar.url != None %}
+                <img class="avatar border-gray " src="{{ post.author.avatar.url }}" width="48px" height="48px"
+                    class=" border-gray" style="border-style: solid; border-width: 1px;">
+
+                {% else %}
+                <img class="avatar  border-gray" type="button" src="/media/avatars/default_avatar.png/" width="48px"
+                    height="48px" style="border-style: solid; border-width: 1px;">
+                {% endif %}
+            </a>
+
+        </div>
+
+        <div style="display: table-cell; vertical-align: middle; padding-right: 20px;">
+            <p style="margin-bottom: 0;">
+                <a class="person-name" href="{% url 'person:profile_detail' post.author.username %}">
+
+                    {{ post.author.name }}
+                </a>
+                {% if post.author.work != None %}
+                - {{ post.author.work }}
+                {% endif %}
+
+                {% if post.author in authenticated_user.following.all %}
+                <i class="text-muted" style="font-style: normal;"> - دنبال شده</i>
+                {% endif %}
+            </p>
+            {% if post.author.description != None %}
+            <small class="text-muted">{{ post.author.description }}</small>
+            {% endif %}
+        </div>
+    </div>
+</div>
+<hr />
+</div>
+
+<div class="ads-wrp">
+    <ul class="ads-row">
+        {% for ad in ads_list %}
+        <li style="text-align: center; padding-right: 10px; padding-left: 10px;">
+            {% if ad == None %}
+            <div class="card  border-gray" style="width: 18rem;height: 100%;">
+                <div style="height: 200px;">
+                    <img style="object-fit: cover; width: 100%; height: 100%;" src="{% static 'img/rocket.jpg' %}" class="card-img-top"
+                    alt="سیستم افزایش بازدید شبکه اجتماعی برنامه نویسان">
+                </div>
+                <div class="card-body">
+                    <h5 class="card-title">مطلبت رو به پرواز در بیار!</h5>
+                    <p class="card-text">با سیستم افزایش بازدید شبکه اجتماعی برنامه نویسان، می‌تونی مطلبت رو راحت‌تر به
+                        دست بقیه برسونی</p>
+                    <a href="{% url 'rocket' %}" class="btn btn-primary">اطلاعات بیشتر</a>
+                </div>
+            </div>
+            {% else %}
+            <div class="card  border-gray" style="width: 18rem;height: 100%;">
+                <div style="height: 200px;">
+                    <img style="object-fit: cover; width: 100%; height: 100%;" src="{{ ad.post.cover }}" class="card-img-top" alt="{{ ad.post.title }}">
+                </div>
+                <div class="card-body">
+                    <a href="{% url 'person:post:post_detail' ad.post.author ad.post.id %}">
+                        <h5><i class="fas fa-rocket"></i> {{ ad.post.title }}</h5>
+                    </a>
+                    <p class="card-text">{{ ad.post.short_description }}</p>
+
+                    <hr/>
+                    <div style="display: table;">
+                        <div style="display: inline-block;">
+                            <a href="{% url 'person:profile_detail' ad.post.author.username %}">
+                                {% if ad.post.author.avatar.url != None %}
+                                <img class="avatar border-gray " src="{{ ad.post.author.avatar.url }}" width="48px"
+                                    height="48px" class=" border-gray" style="border-style: solid; border-width: 1px;">
+
+                                {% else %}
+                                <img class="avatar  border-gray" type="button" src="/media/avatars/default_avatar.png/"
+                                    width="48px" height="48px" style="border-style: solid; border-width: 1px;">
+                                {% endif %}
+                            </a>
+                        </div>
+
+                        <div style="display: table-cell; vertical-align: middle; padding-right: 20px;">
+                            <p style="margin-bottom: 0;">
+                                <a class="person-name" href="{% url 'person:profile_detail' ad.post.author.username %}">
+                                    {{ ad.post.author.name }}
+                                </a>
+                            </p>
+                            <small class="text-muted"><i class="far fa-calendar"></i>
+                                {{ ad.post.publish_time | jformat:'%Y/%m/%d' }} <i class="far fa-clock"></i>
+                                {{ ad.post.publish_time | jformat:'%H:%M' }}</small>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            {% endif %}
+        </li>
+
+        {% endfor %}
+    </ul>
+</div>
+
+<div class="wrp">
+
+    <hr />
+    <!-- Comments -->
+
+    <div id="add_comment" class="body  border-gray">
+        {% if request.user.is_authenticated %}
+        <form method="post">
+            {% csrf_token %}
+            {% if form.errors %}
+            <div class="alert alert-danger" role="alert">
+                لطفا فیلد را پر کنید!
+            </div>
+            {% endif %}
+            <input style="display: none;" type="text" value="comment" name="mode">
+            <label>نظر شما:</label><br />
+            <textarea class="form-control" type="text" rows="3" name="text" aria-describedby="text_help"></textarea>
+            <small id=" text_help" class="form-text text-muted">حداکثر ۱۰۰۰ حرف</small>
+
+            <br />
+            <button type="submit" class="btn btn-success  border-gray">ارسال</button>
+        </form>
+        {% else %}
+        برای ارسال نظر ابتدا <a href="{% url 'login' %}">وارد</a> شوید
+        {% endif %}
+    </div>
+
+    {% if len_comments > 0 %}
+    {% for comment in comments %}
+    {% include 'post/comments/comment.html' %}
+
+
+    <div style="margin-right: 20px;">
+        {% if comment.replays.all != None %}
+            {% include 'post/comments/replay_l1.html' %}
+        {% endif %}
+    </div>
+
+    {% endfor %}
+    {% else %}
+    <div class="body  border-gray">
+        <p>هیچ نظری وجود ندارد!</p>
+    </div>
+    {% endif %}
+
+    <script src="{% static 'js/marked.min.js' %}"></script>
+    <script>
+        var content = '{{ post_body | safe }}';
+
+        // Find all line breaks
+        while (content.search('&0A;') > -1) {
+            var content = content.replace('&0A;', '\n').replace('&27;', '\'').replace('&5C;', '\\');
+        }
+        document.getElementById('content').innerHTML = marked(content);
+    </script>
+{% endblock %}

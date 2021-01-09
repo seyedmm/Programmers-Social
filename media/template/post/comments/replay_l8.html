@@ -1,0 +1,10 @@
+{% for comment in comment.replays.all %}
+    {% include 'post/comments/comment.html' %}
+
+    <div style="margin-right: 20px;">
+        {% if comment.replays.all != None %}
+            {% include 'post/comments/replay_l9.html' %}
+        {% endif %}
+    </div>
+
+{% endfor %}

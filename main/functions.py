@@ -35,126 +35,123 @@ class mskf():
 
 
     def translate_to_html(text):
-        text = text.replace('<', '&lt;').replace('>', '&gt;').replace(
-            '\n', '<br/>')  # Clean the text and recognize line breaks
+        text = text.replace('<', '&lt;').replace('>', '&gt;')  # Clean the text and recognize line breaks
 
-        def except_(exceptions_dic, text):
-            # Exceptions
-            text = text.replace('__', '◼')
-            exceptions = re.findall(r'◼[^◼]*◼', text)
-            for e in exceptions:
-                excepted = e
-                for key, value in exceptions_dic.items():
-                    excepted = excepted.replace(key, value)
-                text = text.replace(e, excepted)
+        # def except_(exceptions_dic, text):
+        #     # Exceptions
+        #     text = text.replace('__', '◼')
+        #     exceptions = re.findall(r'◼[^◼]*◼', text)
+        #     for e in exceptions:
+        #         excepted = e
+        #         for key, value in exceptions_dic.items():
+        #             excepted = excepted.replace(key, value)
+        #         text = text.replace(e, excepted)
 
-            return text
+        #     return text
 
-        # Recognize bolds
-        text = text.replace('**', '◆')
-        bold_texts = re.findall(r'◆[^◆]*◆', text)
-        for bold_text in bold_texts:
-            html_text = '<strong>' + \
-                bold_text.replace('◆', '') + '</strong>'
-            text = text.replace(bold_text, html_text)
+        # # Recognize bolds
+        # text = text.replace('**', '◆')
+        # bold_texts = re.findall(r'◆[^◆]*◆', text)
+        # for bold_text in bold_texts:
+        #     html_text = '<strong>' + \
+        #         bold_text.replace('◆', '') + '</strong>'
+        #     text = text.replace(bold_text, html_text)
 
-        text = text.replace('◆', '**')
+        # text = text.replace('◆', '**')
 
-        # Recognize italics
-        text = text.replace('*', '◆')
-        italic_texts = re.findall(r'◆[^◆]*◆', text)
-        for italic_text in italic_texts:
-            html_text = '<i>' + italic_text.replace('◆', '') + '</i>'
-            text = text.replace(italic_text, html_text)
+        # # Recognize italics
+        # text = text.replace('*', '◆')
+        # italic_texts = re.findall(r'◆[^◆]*◆', text)
+        # for italic_text in italic_texts:
+        #     html_text = '<i>' + italic_text.replace('◆', '') + '</i>'
+        #     text = text.replace(italic_text, html_text)
 
-        text = text.replace('◆', '*')
+        # text = text.replace('◆', '*')
 
-        # Recognize titrs
-        text = text.replace('###', '◆')
-        text = text.replace('<br/>', '\n')
-        titr_texts = re.findall(r'\n◆.*', text)
-        for titr_text in titr_texts:
-            html_text = '</p><h3>' \
-                      + titr_text[1:].replace('◆', '') \
-                      + '</h3><p>'
-            text = text.replace(titr_text, html_text)
+        # # Recognize titrs
+        # text = text.replace('###', '◆')
+        # text = text.replace('<br/>', '\n')
+        # titr_texts = re.findall(r'\n◆.*', text)
+        # for titr_text in titr_texts:
+        #     html_text = '</p><h3>' \
+        #               + titr_text[1:].replace('◆', '') \
+        #               + '</h3><p>'
+        #     text = text.replace(titr_text, html_text)
 
-        text = text.replace('\n', '<br/>')
-        text = re.sub(
-            r'\</h3><p>[^<]*\<br/>', lambda x: x.group(0).replace('<br/>', ''), text)
+        # text = text.replace('\n', '<br/>')
+        # text = re.sub(
+        #     r'\</h3><p>[^<]*\<br/>', lambda x: x.group(0).replace('<br/>', ''), text)
 
-        text = text.replace('◆', '###')
+        # text = text.replace('◆', '###')
 
-        # Regingize images
-        text = text.replace(')(', '◆').replace('!(', '▸').replace(')', '◂')
-        text = except_({'◆': ')(', '▸': '(', '◂': ')'}, text)
-        image_texts = re.findall(r'▸[^▸◆◂]*◆[^▸◆◂]*◂', text)
-        for image_text in image_texts:
-            image_alt = re.findall(r'▸[^▸◆◂]*◆', image_text)[0]
-            image_url = re.findall(r'◆[^▸◆◂]*◂', image_text)[0]
-            html_text = '<div class="img"><img src=\"' + image_url.replace('◆', '').replace(
-                '◂', '') + '\" alt=\"' + image_alt.replace('▸', '').replace('◆', '') + '\"></div>'
-            text = text.replace(image_text, html_text)
+        # # Regingize images
+        # text = text.replace(')(', '◆').replace('!(', '▸').replace(')', '◂')
+        # text = except_({'◆': ')(', '▸': '(', '◂': ')'}, text)
+        # image_texts = re.findall(r'▸[^▸◆◂]*◆[^▸◆◂]*◂', text)
+        # for image_text in image_texts:
+        #     image_alt = re.findall(r'▸[^▸◆◂]*◆', image_text)[0]
+        #     image_url = re.findall(r'◆[^▸◆◂]*◂', image_text)[0]
+        #     html_text = '<div class="img"><img src=\"' + image_url.replace('◆', '').replace(
+        #         '◂', '') + '\" alt=\"' + image_alt.replace('▸', '').replace('◆', '') + '\"></div>'
+        #     text = text.replace(image_text, html_text)
 
-        text = text.replace('▸', '!(').replace('◂', ')')
+        # text = text.replace('▸', '!(').replace('◂', ')')
 
-        # Recognize links
-        text = text.replace(')(', '◆').replace('(', '▸').replace(')', '◂')
-        text = except_({'◆': ')(', '▸': '(', '◂': ')'}, text)
-        link_texts = re.findall(r'▸[^▸◆◂]*◆[^▸◆◂]*◂', text)
-        for link_text in link_texts:
-            link_name = re.findall(r'▸[^▸◆◂]*◆', link_text)[0]
-            link = re.findall(r'◆[^▸◆◂]*◂', link_text)[0]
-            html_text = '<a href=\"' \
-                      + link.replace('◆', '').replace('◂', '') \
-                      + '\" target=\"_blank\" rel=\"noopener nofollow\">' \
-                      + link_name.replace('▸', '').replace('◆', '') \
-                      + '</a>'
-            text = text.replace(link_text, html_text)
+        # # Recognize links
+        # text = text.replace(')(', '◆').replace('(', '▸').replace(')', '◂')
+        # text = except_({'◆': ')(', '▸': '(', '◂': ')'}, text)
+        # link_texts = re.findall(r'▸[^▸◆◂]*◆[^▸◆◂]*◂', text)
+        # for link_text in link_texts:
+        #     link_name = re.findall(r'▸[^▸◆◂]*◆', link_text)[0]
+        #     link = re.findall(r'◆[^▸◆◂]*◂', link_text)[0]
+        #     html_text = '<a href=\"' \
+        #               + link.replace('◆', '').replace('◂', '') \
+        #               + '\" target=\"_blank\" rel=\"noopener nofollow\">' \
+        #               + link_name.replace('▸', '').replace('◆', '') \
+        #               + '</a>'
+        #     text = text.replace(link_text, html_text)
 
-        text = text.replace('▸', '(').replace('◆', ')(').replace('◂', ')')
+        # text = text.replace('▸', '(').replace('◆', ')(').replace('◂', ')')
 
         # Recognize code boxes
         text = text.replace('```', '◆')
         code_texts = re.findall(r'◆[^◆]*◆', text)
         for code_text in code_texts:
-            html_text = '</p><pre id="code">' + \
-                code_text.replace('◆', '').replace(
-                    '<br/>', '') + '</pre><p>'
+            matches = re.match(r'◆(?P<lang>.*)(?P<code>[^◆]*)◆', code_text)
+            html_text = '<pre data-enlighter-language="' + matches['lang'] +'">' + \
+                matches['code'].replace('◆', '').replace(
+                    '<br/>', '') + '</pre>'
             text = text.replace(code_text, html_text)
-
-        text = re.sub(
-            r'\</pre><p>[^<]*\<br/>', lambda x: x.group(0).replace('<br/>', ''), text)
 
         text = text.replace('◆', '```')
 
-        # Recognize codes
-        text = text.replace('`', '◆')
-        code_texts = re.findall(r'◆[^◆]*◆', text)
-        for code_text in code_texts:
-            html_text = '<code>' + code_text.replace('◆', '') + '</code>'
-            text = text.replace(code_text, html_text)
+        # # Recognize codes
+        # text = text.replace('`', '◆')
+        # code_texts = re.findall(r'◆[^◆]*◆', text)
+        # for code_text in code_texts:
+        #     html_text = '<code>' + code_text.replace('◆', '') + '</code>'
+        #     text = text.replace(code_text, html_text)
 
-        text = text.replace('◆', '`')
+        # text = text.replace('◆', '`')
 
-        # Recognize lists
-        text = text.replace('-', '◆')
-        text = text.replace('<br/>', '\n')
-        link_texts = re.findall(r'\n◆.*', text)
-        for link_text in link_texts:
-            html_text = '<li>' + link_text[1:].replace('◆', '').replace('\n', '') + '</li>'
-            text = text.replace(link_text, html_text)
+        # # Recognize lists
+        # text = text.replace('-', '◆')
+        # text = text.replace('<br/>', '\n')
+        # link_texts = re.findall(r'\n◆.*', text)
+        # for link_text in link_texts:
+        #     html_text = '<li>' + link_text[1:].replace('◆', '').replace('\n', '') + '</li>'
+        #     text = text.replace(link_text, html_text)
 
-        text = text.replace('\n', '▸').replace('</li>▸', '</li>')
+        # text = text.replace('\n', '▸').replace('</li>▸', '</li>')
 
-        lists = re.findall(r'<li>[^▸]*</li>', text)
-        print(lists)
-        for listt in lists:
-            complete_list = '<ul>' + listt + '</ul>'
-            text = text.replace(listt, complete_list)
+        # lists = re.findall(r'<li>[^▸]*</li>', text)
+        # print(lists)
+        # for listt in lists:
+        #     complete_list = '<ul>' + listt + '</ul>'
+        #     text = text.replace(listt, complete_list)
 
-        text = text.replace('▸', '<br/>')
-        text = text.replace('◆', '-')
+        # text = text.replace('▸', '<br/>')
+        # text = text.replace('◆', '-')
 
         # Recognize gists
         text = text.replace('{ گیست ', '▸').replace(' }', '◂')
@@ -167,7 +164,7 @@ class mskf():
 
         text = text.replace('▸', '{ گیست ').replace('◂', ' }')
 
-        return text.replace('◼', '')
+        return text.replace('\n', '&0A;').replace('\r', '').replace('\'', '&27;').replace('\\', '&5C;')
 
 
     def translate_to_raw(text):
@@ -184,7 +181,7 @@ class mskf():
         text = text.replace('<code>', '`').replace('</code>', '`')
 
         # HTML code box to RAW
-        text = text.replace('</p><pre id="code">', '```').replace('</pre><p>', '```')
+        text = text.replace('<pre data-enlighter-language="', '```').replace('">', '').replace('</pre>', '```')
 
         # HTML list to RAW
         text = text.replace('<ul>', '').replace('</ul>', '').replace('</li>', '').replace('<li>', '-')
@@ -243,7 +240,8 @@ class mskf():
         text = text.replace('<script src="https://gist.github.com/', '{ گیست ').replace('.js"></script>', ' }')
 
         # Clean the text and recognize line breaks
-        text = text.replace('&lt;', '<').replace('&gt;', '>').replace('<br/>', '\n') 
+        # text = text.replace('&lt;', '<').replace('&gt;', '>').replace('<br/>', '\n')
+        text = text.replace('&lt;', '<').replace('&gt;', '>').replace('&0A;', '\n').replace('\\\'', '\'').replace('\\\"', '\"').replace('\\\\', '\\')  # Clean the text and recognize line breaks
 
         return text
 
@@ -325,23 +323,7 @@ class mskf():
                 except:
                     repo_license = 'None'
 
-                repo_html = '''
-                    <div dir="ltr" class="jumbotron"
-                        style="text-align: left; padding: 1rem 1rem; background: var(--light); border: 1px solid var(--border-color);">
-
-                        <h5 style="font-family: Vazir; font-weight: 400;">
-                        <img class="avatar border-gray" type="button" src="{repo_owner_avatar}"
-                            width="48px" height="48px" style="border-style: solid; border-width: 1px;">
-                        <a href="https://github.com/{repo_full_name}/" target="_blank" rel="noopener nofollow"> {repo_full_name}</a>
-                        </h5>
-                        <p>{repo_description}</p>
-                            <span class="badge" style=" font-size: 1em; font-weight: lighter;"><i class="fas fa-code"></i> {repo_lang}</span>
-
-                            <span class="badge" style=" font-size: 1em; font-weight: lighter;"><i class="fas fa-balance-scale"></i> {repo_license}</span>
-
-                            <span class="badge" style=" font-size: 1em; font-weight: lighter;"><i class="far fa-star"></i> {repo_stars}</span>
-                    </div>
-                '''.format(repo_full_name=repo_full_name,
+                repo_html = '<div dir="ltr" class="jumbotron" style="text-align: left; padding: 1rem 1rem; background: var(--light); border: 1px solid var(--border-color);"><h5 style="font-family: Vazir; font-weight: 400;"><img class="avatar border-gray" type="button" src="{repo_owner_avatar}" width="48px" height="48px" style="border-style: solid; border-width: 1px;"><a href="https://github.com/{repo_full_name}/" target="_blank" rel="noopener nofollow"> {repo_full_name}</a></h5><p>{repo_description}</p><span class="badge" style=" font-size: 1em; font-weight: lighter;"><i class="fas fa-code"></i> {repo_lang}</span><span class="badge" style=" font-size: 1em; font-weight: lighter;"><i class="fas fa-balance-scale"></i> {repo_license}</span><span class="badge" style=" font-size: 1em; font-weight: lighter;"><i class="far fa-star"></i> {repo_stars}</span></div>'.format(repo_full_name=repo_full_name,
                            repo_description=repo_description,
                            repo_license=repo_license,
                            repo_lang=repo_lang,

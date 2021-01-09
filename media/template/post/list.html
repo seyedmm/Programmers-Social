@@ -1,0 +1,19 @@
+{% load static %}
+
+<ul class="infinite-container" style="list-style-type: none; padding-right: 0px;">
+    {% for post in posts.object_list %}
+        <li class="infinite-item">
+            <div class="body  border-gray">
+                {% include 'post/parts/post_options.html' %}
+
+                {% include 'post/parts/post_author_data.html' %}
+                <br />
+
+                {% include 'post/parts/post_preview.html' %}
+
+                {% include 'post/parts/post_footer.html' %}
+            </div>
+        </li>
+    {% endfor %}
+</ul>
+<br />

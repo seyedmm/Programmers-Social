@@ -41,28 +41,23 @@ def all_persons(request, page):
     mskf.add_notification_availability_to_context(request, context)
     mskf.add_authenticated_user_to_context(request, context)
 
-    return render(request, 'all_persons.html', context)
+    return render(request, 'person/list.html', context)
 
 
 # Users page view
 def profile_detail(request, username):
     person = get_object_or_404(Person, username = username) # Get Person
+    posts = Post.objects.filter(author = person).order_by('-publish_time') # Get the Posts
+
+    paginate = Paginator(posts, 3)
     
     skills_availability = False
     if len(person.skills.all()) > 0:
         skills_availability = True
 
-    posts = Post.objects.filter(author = person) # Get Persons posts
-    count_posts = [post.title for post in posts]
-    post_availability = False
-
-    if len(count_posts) > 0:
-        post_availability = True
-
     context = {
         'person': person,
-        'posts': posts,
-        'post_availability': post_availability,
+        'posts': paginate.page(1),
         'skills_availability': skills_availability,
         'current_url': str(request.path).replace('/', '%2F'),
     }
@@ -70,7 +65,7 @@ def profile_detail(request, username):
     mskf.add_notification_availability_to_context(request, context)
     mskf.add_authenticated_user_to_context(request, context)
 
-    return render(request, 'profile_detail.html', context)
+    return render(request, 'person/profile/detail.html', context)
 
 
 # Edit Profile page view
@@ -186,7 +181,7 @@ def edit_profile(request):
     mskf.add_notification_availability_to_context(request, context)
     mskf.add_authenticated_user_to_context(request, context)
 
-    return render(request, 'edit_profile.html', context)
+    return render(request, 'person/profile/edit.html', context)
 
 
 # Rezome create view
@@ -200,7 +195,7 @@ def rezome_detail(request, username):
     mskf.add_notification_availability_to_context(request, context)
     mskf.add_authenticated_user_to_context(request, context)
 
-    return render(request, 'rezome_detail.html', context)
+    return render(request, 'person/rezome/detail.html', context)
 
 
 # Rezome create view
@@ -231,7 +226,7 @@ def edit_rezome(request):
     mskf.add_notification_availability_to_context(request, context)
     mskf.add_authenticated_user_to_context(request, context)
 
-    return render(request, 'edit_rezome.html', context)
+    return render(request, 'person/rezome/edit.html', context)
 
 
 # All Notifications
@@ -249,7 +244,7 @@ def all_notifications(request, page):
     mskf.add_notification_availability_to_context(request, context)
     mskf.add_authenticated_user_to_context(request, context)
 
-    return render(request, 'all_notifications.html', context)
+    return render(request, 'person/notifications/list.html', context)
 
 
 # Notifications
@@ -269,7 +264,7 @@ def new_notifications(request):
     mskf.add_notification_availability_to_context(request, context)
     mskf.add_authenticated_user_to_context(request, context)
 
-    return render(request, 'new_notifications.html', context)
+    return render(request, 'person/notifications/new.html', context)
 
 
 # Follow Person view
@@ -318,7 +313,7 @@ def friends(request, page):
     mskf.add_notification_availability_to_context(request, context)
     mskf.add_authenticated_user_to_context(request, context)
 
-    return render(request, 'followed_persons.html', context)
+    return render(request, 'person/friends/list.html', context)
 
 
 # Followed Persons Posts view
@@ -343,7 +338,7 @@ def friends_posts(request, page):
     mskf.add_notification_availability_to_context(request, context)
     mskf.add_authenticated_user_to_context(request, context)
 
-    return render(request, 'friends_posts.html', context)
+    return render(request, 'person/friends/posts.html', context)
 
 
 # Followers view
@@ -366,7 +361,7 @@ def followers(request, username, page):
     mskf.add_notification_availability_to_context(request, context)
     mskf.add_authenticated_user_to_context(request, context)
 
-    return render(request, 'followers.html', context)
+    return render(request, 'person/followers.html', context)
 
 
 # Followers view
@@ -389,4 +384,4 @@ def followings(request, username, page):
     mskf.add_notification_availability_to_context(request, context)
     mskf.add_authenticated_user_to_context(request, context)
 
-    return render(request, 'followings.html', context)
+    return render(request, 'person/followings.html', context)
