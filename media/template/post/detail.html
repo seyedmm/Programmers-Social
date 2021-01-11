@@ -21,7 +21,7 @@
     <div class="img"><img src="{{ post.cover }}"></div>
     {% endif %}
 
-    <div id="content"></div>
+    <div id="content">{{ post_body | safe }}</div>
     <br />
 
     <p>
@@ -241,15 +241,4 @@
         <p>هیچ نظری وجود ندارد!</p>
     </div>
     {% endif %}
-
-    <script src="{% static 'js/marked.min.js' %}"></script>
-    <script>
-        var content = '{{ post_body | safe }}';
-
-        // Find all line breaks
-        while (content.search('&0A;') > -1) {
-            var content = content.replace('&0A;', '\n').replace('&27;', '\'').replace('&5C;', '\\');
-        }
-        document.getElementById('content').innerHTML = marked(content);
-    </script>
 {% endblock %}

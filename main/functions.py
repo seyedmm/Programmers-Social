@@ -10,6 +10,23 @@ from main.models import Person,\
                         Ad
                         
 
+# Delete all html tags
+def no_html(text):
+    text = text.replace('<', '&lt;').replace('>', '&gt;')
+
+    code_boxes = re.findall(r'```[^```]*```', text)
+    for code_box in code_boxes:
+        new_code_box = code_box.replace('&lt;', '<').replace('&gt;', '>')
+        text = text.replace(code_box, new_code_box)
+
+    codes = re.findall(r'`[^`]*`', text)
+    for code in codes:
+        new_code = code.replace('&lt;', '<').replace('&gt;', '>')
+        text = text.replace(code, new_code)
+
+    return text
+
+
 # MSKF
 class mskf():
     def add_notification_availability_to_context(request, context):
@@ -114,16 +131,16 @@ class mskf():
         # text = text.replace('▸', '(').replace('◆', ')(').replace('◂', ')')
 
         # Recognize code boxes
-        text = text.replace('```', '◆')
-        code_texts = re.findall(r'◆[^◆]*◆', text)
-        for code_text in code_texts:
-            matches = re.match(r'◆(?P<lang>.*)(?P<code>[^◆]*)◆', code_text)
-            html_text = '<pre data-enlighter-language="' + matches['lang'] +'">' + \
-                matches['code'].replace('◆', '').replace(
-                    '<br/>', '') + '</pre>'
-            text = text.replace(code_text, html_text)
+        # text = text.replace('```', '◆')
+        # code_texts = re.findall(r'◆[^◆]*◆', text)
+        # for code_text in code_texts:
+        #     matches = re.match(r'◆(?P<lang>.*)(?P<code>[^◆]*)◆', code_text)
+        #     html_text = '<pre data-enlighter-language="' + matches['lang'] +'">' + \
+        #         matches['code'].replace('◆', '').replace(
+        #             '<br/>', '') + '</pre>'
+        #     text = text.replace(code_text, html_text)
 
-        text = text.replace('◆', '```')
+        # text = text.replace('◆', '```')
 
         # # Recognize codes
         # text = text.replace('`', '◆')

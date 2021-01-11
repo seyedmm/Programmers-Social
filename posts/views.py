@@ -2,10 +2,12 @@ from django.shortcuts import render, get_object_or_404
 from django.http import HttpResponseRedirect, HttpResponse
 from django.contrib.auth.decorators import login_required
 from django.core.paginator import Paginator
-from main.functions import mskf
+from main.functions import mskf, no_html
 import json
 import re
 import random
+import markdown
+from markdown.extensions import codehilite, fenced_code
 
 # Models
 from main.models import Person,\
@@ -62,11 +64,9 @@ def post_detail(request, username, post_id):
     # For comment
     # If form method == POST
     if request.method == 'POST':
-        print('post')
         form = CommentForm(request.POST) # Get form
 
         if form.is_valid():
-            print('valid')
             mode = form.cleaned_data['mode'] # Read mode
             text = form.cleaned_data['text'] # Read body
             text = text.replace('<', '&lt;').replace('>', '&gt;').replace('\n', '<br/>') # Clean the body and recognize line breaks
@@ -110,8 +110,7 @@ def post_detail(request, username, post_id):
         form = CommentForm() # Give form to user
 
     
-    post_body = mskf.get_repo_data(post.body)
-    post_body = mskf.translate_to_html(post_body)
+    post_body = markdown.markdown(no_html(post.body), extensions=['codehilite', 'fenced_code'])
 
     context = {
         'post': post,

@@ -85,10 +85,6 @@
                     انتشار
                 </button>
 
-                <button type="button" class="btn btn-success  border-gray" onclick="preview()">
-                    پیش نمایش
-                </button>
-
                 <a href="{% url 'person:profile_detail' user.username %}"><button type="button" class="btn btn-danger  border-gray">بازگشت</button></a>
             <!-- </div> -->
     
@@ -128,16 +124,4 @@
             </div>
         </form>
     </div>
-
-    
-    <div class="body">
-        <div id="content"></div>
-    </div>
-
-    <script src="{% static 'js/marked.min.js' %}"></script>
-    <script>
-        function preview() {
-            document.getElementById('content').innerHTML = marked(document.getElementsByTagName('textarea')[0].value);
-        }
-    </script>
-    {% endblock %}
+{% endblock %}

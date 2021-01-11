@@ -18,8 +18,7 @@
     <link rel="stylesheet" href="{% static 'css/style.css' %}" />
     <link rel="stylesheet" href="{% static 'css/fontawesome.min.css' %}">
     <link rel="stylesheet" href="{% static 'css/animate.min.css' %}" />
-    <link rel="stylesheet" href="{% static 'css/enlighterjs.min.css' %}" />
-    <link rel="stylesheet" href="{% static 'css/enlighterjs.dracula.min.css' %}" />
+    <link rel="stylesheet" href="{% static 'css/dracula.css' %}" />
 
     <link rel="manifest" href="{% static 'manifest.json' %}">
 
@@ -42,20 +41,6 @@
     <script src="{% static 'js/jquery.min.js' %}"></script>
     <script src="{% static 'js/bootstrap.bundle.min.js' %}"></script>
     <script src="{% static 'js/darkmode.js' %}"></script>
-    <script src="{% static 'js/enlighterjs.min.js' %}"></script>
-    <script type="text/javascript">
-        // Activate tooltip
-        $(document).ready(function () {
-            $('[data-toggle="tooltip"]').tooltip();
-        });
-
-        // Code syntax highlighter
-        EnlighterJS.init('pre', '', {
-            linehover: false,
-            theme: 'dracula',
-            indent : 4,
-        });
-    </script>
 </body>
 
 </html>

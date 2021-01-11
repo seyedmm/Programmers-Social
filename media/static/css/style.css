@@ -113,7 +113,7 @@ a {
 pre {
 	color: var(--light);
 	font-family: Vazir Code;
-	background: var(--dark);
+	background: #353846;
 	padding: 10px;
 	border-radius: .25rem;
 	direction: ltr;
