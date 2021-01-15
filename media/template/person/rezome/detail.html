@@ -9,12 +9,13 @@
     <div class="body  border-gray">
         {% if user.is_authenticated %}
             {% if user.username == person.username %}
-                <div class="dropdown" style="float: left;">
-                    <a class="text-muted" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                        <p class="options">•••</p>
+                <div class="dropdown">
+                    <a class="text-muted" type="button">
+                        <p class="options"><i class="options fas fa-ellipsis-h"></i></p>
                     </a>
-                    <div class="dropdown-menu  border-gray" aria-labelledby="dropdownMenuButton" style="text-align: center;">
-                        <a class="dropdown-item" href="{% url 'person:edit_rezome' %}">ویرایش</a>
+                    
+                    <div class="dropdown-content">
+                        <a href="{% url 'person:edit_rezome' %}">ویرایش</a>
                     </div>
                 </div>
             {% endif %}

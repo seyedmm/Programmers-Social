@@ -20,15 +20,14 @@
     {% for person in persons.object_list %}
         <li class="infinite-item">
             <div class="body  border-gray">
-                <div class="dropdown" style="float: left;">
-                        
-                    <a class="text-muted" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                        <p class="options">•••</p>
+                <div class="dropdown">
+                    <a class="text-muted" type="button">
+                        <p class="options"><i class="options fas fa-ellipsis-h"></i></p>
                     </a>
                     
-                    <div class="dropdown-menu  border-gray" aria-labelledby="dropdownMenuButton" style="text-align: center;">
+                    <div class="dropdown-content">
                         {% if person in authenticated_user.following.all %}
-                        <a class="dropdown-item" href="{% url 'person:follow_person' person.username current_url %}">لغو دنبال</a>
+                            <a href="{% url 'person:follow_person' person.username current_url %}">لغو دنبال</a>
                         {% endif %}
                     </div>
                 </div>

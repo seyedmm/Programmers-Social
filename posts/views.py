@@ -7,7 +7,7 @@ import json
 import re
 import random
 import markdown
-from markdown.extensions import codehilite, fenced_code
+from markdown.extensions import codehilite, fenced_code, sane_lists
 
 # Models
 from main.models import Person,\
@@ -110,7 +110,14 @@ def post_detail(request, username, post_id):
         form = CommentForm() # Give form to user
 
     
-    post_body = markdown.markdown(no_html(post.body), extensions=['codehilite', 'fenced_code'])
+    post_body = markdown.markdown(
+        no_html(post.body),
+        extensions=[
+            'codehilite',
+            'fenced_code',
+            'sane_lists'
+            ]
+        )
 
     context = {
         'post': post,

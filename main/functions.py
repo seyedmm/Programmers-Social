@@ -12,7 +12,10 @@ from main.models import Person,\
 
 # Delete all html tags
 def no_html(text):
-    text = text.replace('<', '&lt;').replace('>', '&gt;')
+    html_tags = re.findall(r'<[^<>]*>', text)
+    for tag in html_tags:
+        clean_tag = tag.replace('<', '&lt;').replace('>', '&gt;')
+        text = text.replace(tag, clean_tag)
 
     code_boxes = re.findall(r'```[^```]*```', text)
     for code_box in code_boxes:

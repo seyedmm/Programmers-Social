@@ -37,33 +37,7 @@
         با دوستان خود به اشتراک بگذارید!
     </p>
 
-    <div id="post-menu" class="post-bar border-gray">
-        <!-- Like -->
-        {% if user.is_authenticated %}
-        {% if post in person.likes.all %}
-        <a dir="ltr" href="{% url 'person:post:post_like' post.author.username post.id %}"><button type="button"
-                class="btn btn-light text-danger  border-gray">{{ post.likes }} <i
-                    class="fas fa-heart"></i></button></a>
-
-        {% else %}
-        <a dir="ltr" href="{% url 'person:post:post_like' post.author.username post.id %}"><button type="button"
-                class="btn btn-light  border-gray">{{ post.likes }} <i class="far fa-heart"></i></button></a>
-        {% endif %}
-
-        {% else %}
-        <a dir="ltr" href="{% url 'person:post:post_like' post.author.username post.id %}"><button type="button"
-                class="btn btn-light  border-gray">{{ post.likes }} <i class="far fa-heart"></i></button></a>
-        {% endif %}
-
-        <!-- Comments -->
-        <a dir="ltr" href="{% url 'person:post:post_detail' post.author.username post.id %}#comments"><button
-                class="btn btn-light  border-gray" type="button">
-                {{ post.comments }} <i class="fas fa-comment"></i></button></a>
-
-        <!-- Views -->
-        <button type="button" class="btn btn-light border-gray " dir="ltr">{{ post.views }}
-            <i class="fas fa-eye"></i></button>
-    </div>
+    {% include 'post/parts/post_footer_sticky.html' %}
 
     <div id="comments"></div>
 </div>
@@ -72,27 +46,20 @@
 <div class="body  border-gray">
     {% if user.is_authenticated %}
     {% if authenticated_user != post.author %}
-    <div class="dropdown" style="float: left;">
+        <div class="dropdown">
+            <a class="text-muted" type="button">
+                <p class="options"><i class="options fas fa-ellipsis-h"></i></p>
+            </a>
+            
+            <div class="dropdown-content">
+                {% if post.author in authenticated_user.following.all %}
+                    <a href="{% url 'person:follow_person' post.author.username current_url %}">لغو دنبال</a>
 
-        <a class="text-muted" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true"
-            aria-expanded="false">
-            <p class="options">
-                •••
-            </p>
-        </a>
-
-        <div class="dropdown-menu  border-gray" aria-labelledby="dropdownMenuButton"
-            style="text-align: center;">
-            {% if post.author in authenticated_user.following.all %}
-            <a class="dropdown-item" href="{% url 'person:follow_person' post.author.username current_url %}">لغو
-                دنبال</a>
-
-            {% else %}
-            <a class="dropdown-item" href="{% url 'person:follow_person' post.author.username current_url %}">دنبال
-                کنید</a>
-            {% endif %}
+                {% else %}
+                    <a href="{% url 'person:follow_person' post.author.username current_url %}">دنبال کنید</a>
+                {% endif %}
+            </div>
         </div>
-    </div>
     {% endif %}
     {% endif %}
 
@@ -100,12 +67,11 @@
         <div style="display: inline-block;">
             <a href="{% url 'person:profile_detail' post.author.username %}">
                 {% if post.author.avatar.url != None %}
-                <img class="avatar border-gray " src="{{ post.author.avatar.url }}" width="48px" height="48px"
-                    class=" border-gray" style="border-style: solid; border-width: 1px;">
+                <img class="avatar" src="{{ post.author.avatar.url }}" width="48px" height="48px">
 
                 {% else %}
-                <img class="avatar  border-gray" type="button" src="/media/avatars/default_avatar.png/" width="48px"
-                    height="48px" style="border-style: solid; border-width: 1px;">
+                <img class="avatar" type="button" src="/media/avatars/default_avatar.png/" width="48px"
+                    height="48px">
                 {% endif %}
             </a>
 
@@ -167,12 +133,12 @@
                         <div style="display: inline-block;">
                             <a href="{% url 'person:profile_detail' ad.post.author.username %}">
                                 {% if ad.post.author.avatar.url != None %}
-                                <img class="avatar border-gray " src="{{ ad.post.author.avatar.url }}" width="48px"
-                                    height="48px" class=" border-gray" style="border-style: solid; border-width: 1px;">
+                                <img class="avatar" src="{{ ad.post.author.avatar.url }}" width="48px"
+                                    height="48px">
 
                                 {% else %}
-                                <img class="avatar  border-gray" type="button" src="/media/avatars/default_avatar.png/"
-                                    width="48px" height="48px" style="border-style: solid; border-width: 1px;">
+                                <img class="avatar" type="button" src="/media/avatars/default_avatar.png/"
+                                    width="48px" height="48px">
                                 {% endif %}
                             </a>
                         </div>

@@ -30,44 +30,55 @@
     <form class="form-inline">
 
         {% if user.is_authenticated %}
-            <a class="notification my-2 my-sm-0" style="margin-left: 10px;" href="{% url 'person:post:new_post' %}" data-toggle="tooltip" data-placement="bottom" title="نوشتن مطلب"><i class="fas fa-pen-nib"></i></a>
+        <div class="tooltip" style="margin-left: 15px;">
+            <a class="notification my-2" href="{% url 'person:post:new_post' %}"><i class="fas fa-pen-nib"></i></a>
 
+            <span class="tooltiptext">نوشتن مطلب</span>
+        </div>
+            
             <a href="{% url 'person:profile_detail' user.username %}">
                 {% if new_notif %}
-                    <a class="notification  mr-sm-2" style="margin-left: 10px;" href="{% url 'person:new_notifications' %}" data-toggle="tooltip" data-placement="bottom" title="{{ notif_len }} پیام جدید!"><i class="fas fa-bell animated infinite flash"></i></a>
+                    <div class="tooltip" style="margin-left: 15px;">
+                        <a class="notification" href="{% url 'person:new_notifications' %}"><i class="fas fa-bell animated infinite flash"></i></a>
 
-                {% else %}
+                        <span class="tooltiptext">{{ notif_len }} پیام جدید!</span>
+                    </div>
                     
-                    <a class="notification  mr-sm-2" style="margin-left: 10px;" href="{% url 'person:all_notifications' 1 %}" data-toggle="tooltip" data-placement="bottom" title="خبری نیست"><i class="fas fa-bell"></i></a>
+                {% else %}
+                    <div class="tooltip" style="margin-left: 15px;">
+                        <a class="notification" href="{% url 'person:all_notifications' 1 %}"><i class="fas fa-bell"></i></a>
+
+                        <span class="tooltiptext">خبری نیست</span>
+                    </div>
                 {% endif %}
             </a>
 
             
-
             <div class="dropdown">
-                    <a data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                        {% if authenticated_user.avatar.url != None %}
-                            <img class="avatar mr-sm-2" type="button" src="{{ authenticated_user.avatar.url }}" width="38px" height="38px">
-                        
-                        {% else %}
-                            <img class="avatar mr-sm-2" type="button" src="/media/avatars/default_avatar.png/" width="38px" height="38px">
-                        {% endif %}
-                    </a>
-                <!-- </button> -->
-                <div class="dropdown-menu  border-gray" aria-labelledby="dropdownMenuButton" style="text-align: center;">
-                    <a class="dropdown-item" href="{% url 'person:profile_detail' user.username %}">{{ authenticated_user.name }}<br/><small>{{ authenticated_user.username }}@</small></a>
+                <a>
+                    {% if authenticated_user.avatar.url != None %}
+                        <img class="avatar mr-sm-2" type="button" src="{{ authenticated_user.avatar.url }}" width="38px" height="38px">
+                    
+                    {% else %}
+                        <img class="avatar mr-sm-2" type="button" src="/media/avatars/default_avatar.png/" width="38px" height="38px">
+                    {% endif %}
+                </a>
+
+                <div class="dropdown-content">
+                    <!-- </button> -->
+                    <a href="{% url 'person:profile_detail' user.username %}">{{ authenticated_user.name }}<br/><small>{{ authenticated_user.username }}@</small></a>
                     <div class="dropdown-divider"></div>
-                    <a class="dropdown-item" href="{% url 'person:post:new_post' %}"><i class="fas fa-pen-nib"></i> نوشتن مطلب</a>
-                    <a class="dropdown-item" href="{% url 'cloud:cloud_index' %}"><i class="fas fa-cloud"></i> فضای ابری</a>
-                    <a class="dropdown-item" href="{% url 'person:friends' 1 %}"><i class="fas fa-user-friends"></i> دوستان شما</a>
-                    <a class="dropdown-item" href="{% url 'support' %}"><i class="fas fa-headset"></i> پشتیبانی</a>
-                    <a class="dropdown-item" href="{% url 'rocket' %}"><i class="fas fa-rocket"></i> افزایش بازدید</a>
-                    <a class="dropdown-item" href="{% url 'person:edit_profile' %}"><i class="fas fa-cog"></i> تنظیمات</a>
-                    <a href="https://github.com/mskf1383/Programmers-Social/issues" target="_blank" class="dropdown-item"><i class="fas fa-bug"></i> گزارش باگ</a>
+                    <a href="{% url 'person:post:new_post' %}"><i class="fas fa-pen-nib"></i> نوشتن مطلب</a>
+                    <a href="{% url 'cloud:cloud_index' %}"><i class="fas fa-cloud"></i> فضای ابری</a>
+                    <a href="{% url 'person:friends' 1 %}"><i class="fas fa-user-friends"></i> دوستان شما</a>
+                    <a href="{% url 'support' %}"><i class="fas fa-headset"></i> پشتیبانی</a>
+                    <a href="{% url 'rocket' %}"><i class="fas fa-rocket"></i> افزایش بازدید</a>
+                    <a href="{% url 'person:edit_profile' %}"><i class="fas fa-cog"></i> تنظیمات</a>
+                    <a href="https://github.com/mskf1383/Programmers-Social/issues" target="_blank"><i class="fas fa-bug"></i> گزارش باگ</a>
                     <div class="dropdown-divider"></div>
-                    <a href="#" class="btn-toggle"><i class="far fa-moon"></i> حالت شب</a>
+                    <button type="button" class="btn-toggle"><i class="far fa-moon"></i> حالت شب</button>
                     <div class="dropdown-divider"></div>
-                    <a class="dropdown-item" href="{% url 'logout' %}"><i class="fas fa-sign-out-alt"></i> خروج</a>
+                    <a href="{% url 'logout' %}"><i class="fas fa-sign-out-alt"></i> خروج</a>
                 </div>
             </div>
 

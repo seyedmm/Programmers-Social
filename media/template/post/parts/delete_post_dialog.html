@@ -1,5 +1,5 @@
 <!-- Delete Post -->
-<div class="modal fade" id="delete_post" tabindex="-1" role="dialog" aria-hidden="true">
+<div class="modal" id="delete_post">
     <div class="modal-dialog">
         <div class="modal-content">
             <div class="modal-header">
@@ -7,11 +7,11 @@
             </div>
 
             <div class="modal-body">
-                با اینکار مطلب حذف می‌شود و دیگر قابل بازیابی نیست.<br />آیا مطمئن هستید؟
+                با این کار مطلب حذف می‌شود و دیگر قابل بازیابی نیست.<br />آیا مطمئن هستید؟
             </div>
 
             <div class="modal-footer">
-                <button type="button" class="btn btn-secondary border-gray" data-dismiss="modal">خیر</button>
+                <button type="button" class="btn btn-secondary border-gray" onclick="closeModal('delete_post')">خیر</button>
                 <a href="{% url 'person:post:delete_post' user.username post.id %}">
                     <button type="button" class="btn btn-danger border-gray">بله</button>
                 </a>

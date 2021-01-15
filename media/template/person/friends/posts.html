@@ -10,7 +10,7 @@
 {% block body %}
     <h2>مطالب دوستان شما</h2><br/>
 
-    {% include 'post/posts_list.html' %}
+    {% include 'post/list.html' %}
 
     {% if posts.has_next %}
         <a class="infinite-more-link" href="{% url 'person:friends_posts' posts.next_page_number %}"></a>

@@ -4,36 +4,18 @@
 
 <div id="comment_{{ comment.id }}" class="body  border-gray">
     {% if user.is_authenticated %}
-    {% if user.username == post.author.username %}
-    <div class="dropdown" style="float: left;">
-        <a class="text-muted" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true"
-            aria-expanded="false">
-            <p class="options">•••</p>
-        </a>
-        <div class="dropdown-menu  border-gray" aria-labelledby="dropdownMenuButton"
-            style="text-align: center;">
-            <button class="dropdown-item" type="button" class="btn btn-danger  border-gray" data-toggle="modal"
-                data-target="#delete_comment_{{ comment.id }}">حذف</button>
+        <div class="dropdown">
+            <a class="text-muted" type="button">
+                <p class="options"><i class="options fas fa-ellipsis-h"></i></p>
+            </a>
+            <div class="dropdown-content">
+                {% if user.username == post.author.username or user.username == comment.author.username %}
+                    <button onclick="openModal('delete_comment_{{ comment.id }}')">حذف</button>
+                {% endif %}
 
-            {% if comment.replay == None %}
-            <button class="dropdown-item" type="button" class="btn btn-primary  border-gray" data-toggle="modal"
-                data-target="#replay_comment_{{ comment.id }}">پاسخ دهید</button>
-            {% endif %}
+                <button type="button" onclick="openModal('replay_comment_{{ comment.id }}')">پاسخ دهید</button>
+            </div>
         </div>
-    </div>
-    {% elif user.username == comment.author.username %}
-    <div class="dropdown" style="float: left;">
-        <a class="text-muted" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true"
-            aria-expanded="false">
-            <p class="options">•••</p>
-        </a>
-        <div class="dropdown-menu  border-gray" aria-labelledby="dropdownMenuButton"
-            style="text-align: center;">
-            <button class="dropdown-item" type="button" class="btn btn-danger  border-gray" data-toggle="modal"
-                data-target="#delete_comment_{{ comment.id }}">حذف</button>
-        </div>
-    </div>
-    {% endif %}
     {% endif %}
 
     <div style="display: table;">
@@ -70,7 +52,7 @@
     {{ comment.text | safe }}
 
     <!-- Delete Comment -->
-    <div class="modal fade" id="delete_comment_{{ comment.id }}" tabindex="-1" role="dialog" aria-hidden="true">
+    <div class="modal" id="delete_comment_{{ comment.id }}">
         <div class="modal-dialog">
             <div class="modal-content">
                 <div class="modal-header">
@@ -89,7 +71,7 @@
     </div>
 
     <!-- Comment Replay -->
-    <div class="modal fade" id="replay_comment_{{ comment.id }}" tabindex="-1" role="dialog" aria-hidden="true">
+    <div class="modal" id="replay_comment_{{ comment.id }}">
         <div class="modal-dialog">
             <div class="modal-content">
                 <div class="modal-header">

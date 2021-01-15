@@ -9,7 +9,7 @@
 {% block body %}
 <div class="body  border-gray">
     <div class="dropdown" style="float: left;">
-        <a class="text-muted" type="button" data-toggle="modal" data-target="#setting">
+        <a class="text-muted" type="button" onclick="openModal('setting')">
             <p class="options"><i class="fas fa-cog"></i></p>
         </a>
     </div>
@@ -44,13 +44,13 @@
         <label>متن:</label><br/>
         {{ form.body }}
         <br/>
-        <button type="button" class="btn btn-info  border-gray" data-toggle="modal" data-target="#help">
+        <button type="button" class="btn btn-info border-gray" onclick="openModal('help')">
             راهنما
         </button>
         <br/><hr/>
 
         <!-- Help -->
-        <div class="modal fade" id="help" tabindex="-1" role="dialog" aria-hidden="true">
+        <div class="modal" id="help">
             <div class="modal-dialog modal-dialog-scrollable">
                 <div class="modal-content">
                     <div class="modal-header">
@@ -64,32 +64,32 @@
         </div>
         
         <!-- Setting -->
-        <div class="modal fade" id="setting" tabindex="-1" role="dialog" aria-hidden="true">
-            <div class="modal-dialog modal-dialog-scrollable">
-                <div class="modal-content">
-                    <div class="modal-header">
-                        <h5 class="modal-title" id="exampleModalLabel">تنظیمات</h5>
-                    </div>
-                    <div class="modal-body">
-                        هیچی
-                    </div>
-                    <div class="modal-footer">
-                        <button type="button" class="btn btn-secondary  border-gray" data-dismiss="modal">تائید</button>
-                    </div>
+    <div class="modal" id="setting">
+        <div class="modal-dialog modal-dialog-scrollable">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="exampleModalLabel">تنظیمات</h5>
+                </div>
+                <div class="modal-body">
+                    هیچی
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary  border-gray" onclick="closeModal('setting')">تائید</button>
                 </div>
             </div>
         </div>
+    </div>
 
-        <!-- <div id="post-menu" class="post-bar border-gray"> -->
-            <button type="button" class="btn btn-success  border-gray" data-toggle="modal" data-target="#publish">
+        <!-- <div id="post-menu" class="post-footer border-gray"> -->
+            <button type="button" class="btn btn-success  border-gray" onclick="openModal('publish')">
                 انتشار
             </button>
-            
+
             <a href="{% url 'person:profile_detail' user.username %}"><button type="button" class="btn btn-danger  border-gray">بازگشت</button></a>
         <!-- </div> -->
 
         <!-- Publish options -->
-        <div class="modal fade" id="publish" tabindex="-1" role="dialog" aria-hidden="true">
+        <div class="modal" id="publish">
             <div class="modal-dialog modal-dialog-scrollable">
                 <div class="modal-content">
                     <div class="modal-header">
@@ -123,6 +123,5 @@
             </div>
         </div>
     </form>
-    
 </div>
 {% endblock %}

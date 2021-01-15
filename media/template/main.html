@@ -39,8 +39,26 @@
     </div>
 
     <script src="{% static 'js/jquery.min.js' %}"></script>
-    <script src="{% static 'js/bootstrap.bundle.min.js' %}"></script>
     <script src="{% static 'js/darkmode.js' %}"></script>
+    <script>
+        function openModal(modalId) {
+            var modal = document.getElementById(modalId);
+        
+            modal.style.display = "block";
+            
+            window.onclick = function(event) {
+                if (event.target == modal) {
+                    modal.style.display = "none";
+                }
+            }
+        }
+
+        function closeModal(modalId) {
+            var modal = document.getElementById(modalId);
+        
+            modal.style.display = "none";
+        }
+    </script>
 </body>
 
 </html>
