@@ -637,13 +637,7 @@ button:hover img {
 }
 
 @media (prefers-color-scheme: dark) {
-    /* :root {
-        --dark: #dedad6;
-        --body-background: #0f0f0d;
-        --light: #000;
-        --light-hover: #0a0a0a;
-        --border-color: rgba(255,255,255,0.125);
-    } */
+    /* in default mode */
     :root {
         --dark: #eee;
         --body-background: #222;
@@ -654,6 +648,32 @@ button:hover img {
     img {
         filter: brightness(.8) contrast(1.2);
     }
+
+    /* in light mode */
+    .light-mode {
+        --dark: #111;
+        --body-background: #ddd;
+        --light: #eee;
+        --light-hover: #fff;
+        --border-color: rgba(0, 0, 0, 0.125);
+    }
+    .light-mode img {
+        filter: brightness(1) contrast(1);
+    }
+
+    /* in dark mode */
+    .dark-mode {
+        --dark: #eee;
+        --body-background: #222;
+        --light: #111;
+        --light-hover: #000;
+        --border-color: rgba(255, 255, 255, 0.125);
+    }
+    .dark-mode img {
+        filter: brightness(.8) contrast(1.2);
+    }
+
+    /* always */
     .programmers-social_logo {
         filter: brightness(1) contrast(1) !important;
     }
