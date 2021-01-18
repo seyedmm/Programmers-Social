@@ -39,9 +39,12 @@
             <a href="{% url 'person:profile_detail' user.username %}">
                 {% if new_notif %}
                     <div class="tooltip" style="margin-left: 15px;">
-                        <a class="notification" href="{% url 'person:new_notifications' %}"><i class="fas fa-bell animated infinite flash"></i></a>
+                        <a class="notification" href="{% url 'person:new_notifications' %}">
+                            <span><i class="fas fa-bell"></i>
+                            <span class="badge badge-light badge-notif">{{ notif_len }}</span>
+                        </a>
 
-                        <span class="tooltiptext">{{ notif_len }} پیام جدید!</span>
+                        <span class="tooltiptext">پیام جدید!</span>
                     </div>
                     
                 {% else %}

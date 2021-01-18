@@ -113,6 +113,7 @@ a, p, img, h1, h2, h3, h4, h5, h6 {
     text-decoration: none !important;
 }
 
+
 a:hover p, a:hover h1, a:hover h2, a:hover h3, a:hover h4, a:hover h5, a:hover h6, a:hover img {
     opacity: .7;
     text-decoration: none;
@@ -413,6 +414,7 @@ button:hover img {
 
 .notification {
     color: var(--dark);
+    font-size: larger;
 }
 
 .notification:hover {
@@ -446,6 +448,16 @@ button:hover img {
     float: left;
     font-size: 1em;
     font-weight: lighter;
+}
+
+.badge-notif {
+    position: absolute;
+    bottom: 1px;
+    right: -9px;
+    padding: 1px 5px;
+    border-radius: 50%;
+    font-weight: 400;
+    font-size: 75%;
 }
 
 .card-header.note-toolbar {
