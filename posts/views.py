@@ -1,13 +1,14 @@
 from django.shortcuts import render, get_object_or_404
-from django.http import HttpResponseRedirect, HttpResponse
+from django.http import HttpResponseRedirect, JsonResponse
 from django.contrib.auth.decorators import login_required
 from django.core.paginator import Paginator
 from main.functions import mskf, no_html
-import json
-import re
-import random
+
+# Markdown
 import markdown
-from markdown.extensions import codehilite, fenced_code, sane_lists
+from markdown.extensions import codehilite,\
+                                fenced_code,\
+                                sane_lists
 
 # Models
 from main.models import Person,\
@@ -84,21 +85,13 @@ def post_detail(request, username, post_id):
                 notif = Notification(givver = post.author, message = '<a href="/user/{0}/">{1}</a> نظری روی مطلب «<a href="/user/{2}/post/{3}/">{4}</a>» شما ارسال کرد'.format(user.username, user.name, post.author.username, post.id, post.title, comment.id), notif_type = 'comment')
                 notif.save()
 
-            elif mode == 'hello':
-                return HttpResponse(json.dumps({'message': 'hello'}))
-
             else:
-                print(mode)
                 replay = Comment(author = authenticated_user, text = text)
                 replay.save()
-
-                print(replay)
                 
                 comment = Comment.objects.get(id = mode)
                 comment.replays.add(replay)
                 comment.save()
-
-                print(comment)
 
                 notif = Notification(givver = comment.author, message = '<a href="/user/{0}/">{1}</a> پاسخی به <a href="/user/{2}/post/{3}/#comments">نظر</a> شما داد'.format(person.username, person.name, post.author.username, post.id), notif_type = 'replay')
                 notif.save()
@@ -310,23 +303,28 @@ def delete_post_comment_replay(request, username, post_id, comment_id):
 # Like Post view
 @login_required
 def post_like(request, username, post_id):
-    user = request.user
-    person = Person.objects.get(username = user.username)
-    person_likes = person.likes.all()
+    authenticated_user = Person.objects.get(username = request.user.username)
     post = Post.objects.get(id = post_id)
 
-    if post in person_likes:
-        post.likes = int(post.likes) - 1
-        person.likes.remove(post)
+    response_data = {}
 
-    else:
-        post.likes = int(post.likes) + 1
-        person.likes.add(post)
+    if request.POST.get('action') == 'post':
+        if post in authenticated_user.likes.all():
+            post.likes = int(post.likes) - 1
+            authenticated_user.likes.remove(post)
+            response_data['like_btn'] = f'<button type="submit" class="btn btn-light border-gray"><i class="far fa-heart"></i> {post.likes}</button>'
 
-        notif = Notification(givver = post.author, message = '<a href="/user/{0}/">{1}</a> مطلب «<a href="/user/{2}/post/{3}/">{4}</a>» شما را لایک کرد'.format(person.username, person.name, post.author.username, post.id, post.title), notif_type = 'like')
-        notif.save()
+        else:
+            post.likes = int(post.likes) + 1
+            authenticated_user.likes.add(post)
+            response_data['like_btn'] = f'<button type="submit" class="btn btn-light text-danger border-gray"><i class="fas fa-heart"></i> {post.likes}</button>'
 
-    person.save()
-    post.save()
+            notif = Notification(givver = post.author, message = '<a href="/user/{0}/">{1}</a> مطلب «<a href="/user/{2}/post/{3}/">{4}</a>» شما را لایک کرد'.format(authenticated_user.username, authenticated_user.name, post.author.username, post.id, post.title), notif_type = 'like')
+            notif.save()
+
+        authenticated_user.save()
+        post.save()
+
+        return JsonResponse(response_data)
 
     return HttpResponseRedirect('/user/' + username + '/post/' + str(post.id))

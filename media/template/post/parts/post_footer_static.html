@@ -2,18 +2,22 @@
     <!-- Like -->
     {% if user.is_authenticated %}
         {% if post in person.likes.all %}
-            <a href="{% url 'person:post:post_like' post.author.username post.id %}">
-                <button type="button" class="btn btn-light text-danger border-gray">
-                    <i class="fas fa-heart"></i> {{ post.likes }}
-                </button>
-            </a>
+        <form method="POST" id="{{ post.id }}" class="like-form">
+            {% csrf_token %}
+
+            <span class="likes_{{ post.id }}">
+                <button onclick="like('{{ post.id }}', '{% url 'person:post:post_like' post.author.username post.id %}')" type="submit" class="btn btn-light text-danger border-gray"><i class="fas fa-heart"></i> {{ post.likes }}</button>
+            </span>
+        </form>
 
         {% else %}
-            <a href="{% url 'person:post:post_like' post.author.username post.id %}">
-                <button type="button" class="btn btn-light border-gray">
-                    <i class="far fa-heart"></i> {{ post.likes }}
-                </button>
-            </a>
+            <form method="POST" id="{{ post.id }}" class="like-form">
+                {% csrf_token %}
+
+                <span class="likes_{{ post.id }}">
+                    <button onclick="like('{{ post.id }}', '{% url 'person:post:post_like' post.author.username post.id %}')" type="submit" class="btn btn-light border-gray"><i class="far fa-heart"></i> {{ post.likes }}</button>
+                </span>
+            </form>
         {% endif %}
 
     {% else %}
@@ -40,3 +44,7 @@
         <small class="text-muted"><i class="fas fa-check"></i> مشاهده شده</small>
     {% endif %}
 </div>
+
+<script>
+    document.getElementById('{{ post.id }}').onclick = function() {like('{{ post.id }}', '{% url 'person:post:post_like' post.author.username post.id %}')};
+</script>

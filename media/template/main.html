@@ -59,6 +59,43 @@
             modal.style.display = "none";
         }
     </script>
+    <script>
+        var post_id = ''
+        var post_like_url = ''
+
+        function like(form_id, form_url) {
+            post_id = form_id
+            post_like_url = form_url
+            console.log(post_id)
+            console.log(post_like_url)
+        }
+
+        $(document).on('submit', post_id, function(e){
+            if (post_id != '') {
+                e.preventDefault();
+                $.ajax({
+                    type:'POST',
+                    url: post_like_url,
+                    data:{
+                        csrfmiddlewaretoken:$('input[name=csrfmiddlewaretoken]').val(),
+                        action: 'post'
+                    },
+                    success:function(json){
+                        document.getElementById(post_id).reset();
+                        $(".likes_" + post_id).html(json.like_btn)
+                        post_id = ''
+                    },
+                    error : function(xhr,errmsg,err) {
+                    $('#results').html("<div class='alert-box alert radius' data-alert>Oops! We have encountered an error: "+errmsg+
+                        " <a href='#' class='close'>&times;</a></div>"); // add the error to the dom
+                    console.log(xhr.status + ": " + xhr.responseText); // provide a bit more info about the error to the console
+                    post_id = ''
+                }
+                });
+            }
+        });
+        
+    </script>
 </body>
 
 </html>

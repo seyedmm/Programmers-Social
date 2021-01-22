@@ -460,6 +460,10 @@ button:hover img {
     font-size: 75%;
 }
 
+.like-form {
+    display: inline;
+}
+
 .card-header.note-toolbar {
     direction: rtl !important;
     background: #000 !important;
