@@ -1,98 +1,134 @@
-{% load static %}
+<p>ویرایشگر مطلب از مارک دان (Markdown) پشتیبانی می‎کند.</p>
+<hr />
+<div class="codehilite"><pre class="rtlpre"><span></span><code><span class="err">نوشتن</span> <span class="err">عنوان</span> <span class="err">خیلی</span> <span class="err">راحته</span><span class="p">.</span> <span class="err">فقط</span> <span class="err">کافیه</span> <span class="err">اولش</span> <span class="err">به</span> <span class="err">مقدار</span> <span class="err">لازم</span> <span class="o">#</span> <span class="err">بذارید</span><span class="p">:</span>
 
-<p>قرار دادن تصویر:</p>
-<pre style="direction: rtl; text-align: right;">!(متن جایگزین)(آدرس تصویر)</pre>
-<p>توجه: اگر داخل لینک «(» و «)» وجود دارد، اول و آخر آن «__» بگذارید.</p>
-<p>مثال:</p>
-<pre style="direction: rtl; text-align: right;">!(طبیعت)(http://programmers-social.ir/media/images/yellownature.jpeg/)</pre>
-<div class="img"><img src="/media/images/yellownature.jpeg" alt="طبیعت"></div>
-<hr /><br />
+<span class="o">#</span> <span class="err">عنوان</span> <span class="err">سطح</span> <span class="mi">1</span>
+<span class="o">##</span> <span class="err">عنوان</span> <span class="err">سطح</span> <span class="mi">2</span>
+<span class="o">###</span> <span class="err">عنوان</span> <span class="err">سطح</span> <span class="mi">3</span>
+<span class="o">####</span> <span class="err">عنوان</span> <span class="err">سطح</span> <span class="mi">4</span>
+<span class="o">#####</span> <span class="err">عنوان</span> <span class="err">سطح</span> <span class="mi">5</span>
+<span class="o">######</span> <span class="err">عنوان</span> <span class="err">سطح</span> <span class="mi">6</span>
+</code></pre></div>
 
-<p>قرار دادن لینک:</p>
-<pre style="direction: rtl; text-align: right;">(متن لینک)(آدرس لینک)</pre>
-<p>توجه: اگر داخل لینک «(» و «)» وجود دارد، اول و آخر آن «__» بگذارید.</p>
-<p>مثال:</p>
-<pre style="direction: rtl; text-align: right;">(شبکه اجتماعی برنامه نویسان)(http://programmers-social.ir/)</pre>
-<a href="/" target="_blank">شبکه اجتماعی برنامه نویسان</a>
-<hr /><br />
+<h1>عنوان سطح 1</h1>
+<h2>عنوان سطح 2</h2>
+<h3>عنوان سطح 3</h3>
+<h4>عنوان سطح 4</h4>
+<h5>عنوان سطح 5</h5>
+<h6>عنوان سطح 6</h6>
+<hr />
+<div class="codehilite"><pre class="rtlpre"><span></span><code><span class="err">بولد</span> <span class="err">کردن</span> <span class="err">و</span> <span class="err">ایتلیک</span> <span class="err">کردن</span> <span class="err">هم</span> <span class="err">به</span> <span class="err">این</span> <span class="err">دو</span> <span class="err">صورت</span> <span class="err">انجام</span> <span class="err">می‌شه</span><span class="p">:</span>
 
-<p>بولد کردن متن:</p>
-<pre style="direction: rtl; text-align: right;">**متن**</pre>
-<p>مثال:</p>
-<pre style="direction: rtl; text-align: right;">**این متن بولد است**</pre>
-<strong>این متن بولد است</strong>
-<hr /><br />
+<span class="o">**</span><span class="err">بولد</span><span class="o">**</span>
+<span class="n">__بولد__</span>
 
-<p>ایتالیک کردن متن:</p>
-<pre style="direction: rtl; text-align: right;">*متن*</pre>
-<p>مثال:</p>
-<pre style="direction: rtl; text-align: right;">*این متن ایتالیک است*</pre>
-<i>این متن ایتالیک است</i>
-<hr /><br />
+<span class="o">*</span><span class="err">ایتالیک</span><span class="o">*</span>
+<span class="n">_ایتالیک_</span>
+</code></pre></div>
 
-<p>کد کردن متن:</p>
-<pre style="direction: rtl; text-align: right;">`کد`</pre>
-<p>مثال:</p>
-<pre style="direction: rtl; text-align: right;">`This is an inline code`</pre>
-<code>This is an inline code</code>
-<hr /><br />
+<p><strong>بولد</strong><br />
+<strong>بولد</strong></p>
+<p><em>ایتالیک</em><br />
+<em>ایتالیک</em></p>
+<hr />
+<div class="codehilite"><pre class="rtlpre"><span></span><code><span class="err">برای</span> <span class="err">قرار</span> <span class="err">دادن</span> <span class="err">لینک</span> <span class="err">از</span> <span class="err">این</span> <span class="err">روش</span> <span class="err">استفاده</span> <span class="err">کنید</span><span class="p">:</span>
 
-<p>ایجاد تیتر:</p>
-<pre style="direction: rtl; text-align: right;">###تیتر</pre>
-<p>مثال:</p>
-<pre style="direction: rtl; text-align: right;">###بخش اول</pre>
-<h3>بخش اول</h3>
-<hr /><br />
+<span class="p">[</span><span class="err">عنوان</span> <span class="err">لینک</span><span class="p">](</span><span class="err">لینک</span><span class="p">)</span>
 
-<p>ایجاد جعبه کد:</p>
-<pre style="direction: rtl; text-align: right;">```<br/>محل قرار گیری کد<br/>```</pre>
-<p>مثال:</p>
-<pre style="direction: rtl; text-align: right;">```<br/>x = 1<br/>y = 2<br/>print(x + y)<br/>```</pre>
-<pre id="code">x = 1<br/>y = 2<br/>print(x + y)</pre>
-<hr /><br />
+<span class="err">مثال</span><span class="p">:</span> <span class="p">[</span><span class="err">شبکه</span> <span class="err">اجتماعی</span> <span class="err">برنامه</span> <span class="err">نویسان</span><span class="p">](</span><span class="o">/</span><span class="p">)</span>
+</code></pre></div>
 
-<p>ایجاد فهرست:</p>
-<pre style="direction: rtl; text-align: right;">- مورد اول<br/>- مورد دوم<br/>- مورد سوم<br/>...</pre>
-<p>مثال:</p>
-<pre style="direction: rtl; text-align: right;">- پایتون<br/>- جنگو<br/>- اچ تی ام ال</pre>
+<p><a href="/">شبکه اجتماعی برنامه نویسان</a></p>
+<hr />
+<div class="codehilite"><pre class="rtlpre"><span></span><code><span class="err">برای</span> <span class="err">قرار</span> <span class="err">دادن</span> <span class="err">تصویر</span> <span class="err">از</span> <span class="err">این</span> <span class="err">روش</span> <span class="err">استفاده</span> <span class="err">کنید</span><span class="p">:</span>
+
+<span class="o">!</span><span class="p">[</span><span class="err">متن</span> <span class="err">جایگزین</span> <span class="err">تصویر</span><span class="p">](</span><span class="err">آدرس</span> <span class="err">تصویر</span><span class="p">)</span>
+
+<span class="err">مثال</span><span class="p">:</span> <span class="o">!</span><span class="p">[</span><span class="err">طبیعت</span> <span class="err">زیبا</span><span class="p">](</span><span class="n">http</span><span class="p">:</span><span class="o">//</span><span class="n">localhost</span><span class="p">:</span><span class="mi">8000</span><span class="o">/</span><span class="n">media</span><span class="o">/</span><span class="n">images</span><span class="o">/</span><span class="n">yellownature</span><span class="p">.</span><span class="n">jpeg</span><span class="p">)</span>
+</code></pre></div>
+
+<p><img alt="طبیعت زیبا" src="http://localhost:8000/media/images/yellownature.jpeg" /></p>
+<hr />
+<div class="codehilite"><pre class="rtlpre"><span></span><code><span class="err">قرار</span> <span class="err">دادن</span> <span class="err">فهرست</span> <span class="err">هم</span> <span class="err">به</span> <span class="err">همین</span> <span class="err">راحتیه</span><span class="p">:</span>
+
+<span class="o">-</span> <span class="err">گزینه</span> <span class="mi">1</span>
+<span class="o">-</span> <span class="err">گزینه</span> <span class="mi">2</span>
+    <span class="o">-</span> <span class="err">زیر</span> <span class="err">مجموعه</span> <span class="err">گزینه</span> <span class="mi">2</span>
+<span class="o">-</span> <span class="err">گزینه</span> <span class="mi">3</span>
+</code></pre></div>
+
 <ul>
-    <li> پایتون</li>
-    <li> جنگو</li>
-    <li> اچ تی ام ال</li>
+<li>گزینه 1</li>
+<li>گزینه 2<ul>
+<li>زیر مجموعه گزینه 2</li>
 </ul>
-<hr /><br />
+</li>
+<li>گزینه 3</li>
+</ul>
+<hr />
+<div class="codehilite"><pre class="rtlpre"><span></span><code><span class="err">اگه</span> <span class="err">می‌خواین</span> <span class="err">وسط</span> <span class="err">متن</span> <span class="err">یه</span> <span class="err">چیزی</span> <span class="err">رو</span> <span class="err">به</span> <span class="err">شکل</span> <span class="err">کد</span> <span class="err">نمایش</span> <span class="err">بدید</span> <span class="err">از</span> <span class="err">این</span> <span class="err">روش</span> <span class="err">استفاده</span> <span class="err">کنید</span><span class="p">:</span>
 
-<p>قرار دادن ریپوزیتوری از گیت هاب:</p>
-<pre style="direction: rtl; text-align: right;">{ گیت هاب repo_adress }</pre>
-<p>
-    repo_adress:
-    <br/>
-    https://github.com/<strong style="border-bottom: 2px solid orangered">mskf1383/My-small-python-projects</strong>
-</p>
-<p>مثال:</p>
-<pre style="direction: rtl; text-align: right;">{ گیت هاب mskf1383/My-small-python-projects }</pre>
-<div dir="ltr" class="jumbotron" style="text-align: left; padding: 1rem; background: var(--light); border: 1px solid var(--border-color);">
+<span class="o">`</span><span class="n">This</span> <span class="k">is</span> <span class="n">an</span> <span class="n">inline</span> <span class="n">code</span><span class="o">`</span>
+</code></pre></div>
 
-    <h5 style="font-family: Vazir; font-weight: 400;">
-    <img class="avatar border-gray" type="button" src="/media/avatars/mskf_avatar.png" width="48px" height="48px" style="border-style: solid; border-width: 1px;">
-    <a href="https://github.com/mskf1383/My-small-python-projects/" target="_blank" rel="noopener nofollow"> mskf1383/My-small-python-projects</a>
-    </h5>
-    <p>This is my small projects written in python</p>
-        <span class="badge" style=" font-size: 1em; font-weight: lighter;"><i class="fas fa-code"></i> Python</span>
+<p><code>This is an inline code</code></p>
+<hr />
+<div class="codehilite"><pre class="rtlpre"><span></span><code><span class="err">گر</span> <span class="err">می‌خواید</span> <span class="err">کدی</span> <span class="err">رو</span> <span class="err">تو</span> <span class="err">مطلب</span> <span class="err">قرار</span> <span class="err">بدید</span> <span class="err">از</span> <span class="err">این</span> <span class="err">روش</span> <span class="err">استفاده</span> <span class="err">کنید</span><span class="p">:</span>
 
-        <span class="badge" style=" font-size: 1em; font-weight: lighter;"><i class="fas fa-balance-scale"></i> MIT License</span>
+<span class="o">```</span>
+<span class="n">x</span> <span class="o">=</span> <span class="mi">1</span>
+<span class="n">y</span> <span class="o">=</span> <span class="mi">2</span>
+<span class="n">print</span><span class="p">(</span><span class="n">x</span> <span class="o">+</span> <span class="n">y</span><span class="p">)</span>
+<span class="o">```</span>
+</code></pre></div>
 
-        <span class="badge" style=" font-size: 1em; font-weight: lighter;"><i class="far fa-star"></i> 3</span>
-</div>
-<hr /><br />
+<div class="codehilite"><pre><span></span><code><span class="err">x = 1</span>
+<span class="err">y = 2</span>
+<span class="err">print(x + y)</span>
+</code></pre></div>
 
-<p>قرار دادن گیست:</p>
-<pre style="direction: rtl; text-align: right;">{ گیست gist_adress }</pre>
-<p>
-    gist_adress:
-    <br/>
-    https://gist.github.com/<strong style="border-bottom: 2px solid orangered">mskf1383/faf61e9cdcab2897086bffff3400c570</strong>
-</p>
-<p>مثال:</p>
-<pre style="direction: rtl; text-align: right;">{ گیست mskf1383/faf61e9cdcab2897086bffff3400c570 }</pre>
-<!-- <script src="https://gist.github.com/mskf1383/faf61e9cdcab2897086bffff3400c570.js"></script> -->
+<hr />
+<div class="codehilite"><pre class="rtlpre"><span></span><code><span class="err">در</span> <span class="err">ضمن</span> <span class="err">با</span> <span class="err">قرار</span> <span class="err">دادن</span> <span class="err">نام</span> <span class="err">زبان</span> <span class="err">برنامه</span> <span class="err">نویسی</span> <span class="err">کدها</span> <span class="err">هایلایت</span> <span class="err">می‌شوند</span><span class="p">:</span>
+
+<span class="o">```</span><span class="n">python</span>
+<span class="n">x</span> <span class="o">=</span> <span class="mi">1</span>
+<span class="n">y</span> <span class="o">=</span> <span class="mi">2</span>
+<span class="n">print</span><span class="p">(</span><span class="n">x</span> <span class="o">+</span> <span class="n">y</span><span class="p">)</span>
+<span class="o">```</span>
+
+<span class="err">اگر</span> <span class="err">هم</span> <span class="err">اسم</span> <span class="err">زبان</span> <span class="err">رو</span> <span class="err">ذکر</span> <span class="err">نکنید</span> <span class="err">با</span> <span class="err">تشخیص</span> <span class="err">خودکار</span> <span class="err">هایلایت</span> <span class="err">می‌شه</span><span class="p">.</span> <span class="err">اگر</span> <span class="err">کلا</span> <span class="err">هایلایت</span> <span class="err">نمی‌خواید</span> <span class="err">جلوش</span> <span class="n">plain</span> <span class="err">بذارید</span>
+</code></pre></div>
+
+<div class="codehilite"><pre><span></span><code><span class="n">x</span> <span class="o">=</span> <span class="mi">1</span>
+<span class="n">y</span> <span class="o">=</span> <span class="mi">2</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">x</span> <span class="o">+</span> <span class="n">y</span><span class="p">)</span>
+</code></pre></div>
+
+<hr />
+<div class="codehilite"><pre class="rtlpre"><span></span><code><span class="err">برای</span> <span class="err">جدول</span> <span class="err">هم</span> <span class="err">به</span> <span class="err">اینصورت</span> <span class="err">عمل</span> <span class="err">کنید</span><span class="p">:</span>
+
+<span class="err">عنوان</span> <span class="mi">1</span> <span class="o">|</span> <span class="err">عنوان</span> <span class="mi">2</span>
+<span class="c1">------- | -------</span>
+<span class="err">داده</span> <span class="err">ستون</span> <span class="mi">1</span> <span class="o">|</span> <span class="err">داده</span> <span class="err">ستون</span> <span class="mi">2</span>
+<span class="err">دومین</span> <span class="err">داده</span> <span class="err">ستون</span> <span class="mi">1</span> <span class="o">|</span> <span class="err">دومین</span> <span class="err">داده</span> <span class="err">ستون</span> <span class="mi">2</span>
+</code></pre></div>
+
+<table>
+<thead>
+<tr>
+<th>عنوان 1</th>
+<th>عنوان 2</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>داده ستون 1</td>
+<td>داده ستون 2</td>
+</tr>
+<tr>
+<td>دومین داده ستون 1</td>
+<td>دومین داده ستون 2</td>
+</tr>
+</tbody>
+</table>
+<br />
