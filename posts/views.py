@@ -8,7 +8,9 @@ from main.functions import mskf, no_html
 import markdown
 from markdown.extensions import codehilite,\
                                 fenced_code,\
-                                sane_lists
+                                sane_lists,\
+                                tables,\
+                                nl2br
 
 # Models
 from main.models import Person,\
@@ -108,8 +110,10 @@ def post_detail(request, username, post_id):
         extensions=[
             'codehilite',
             'fenced_code',
-            'sane_lists'
-            ]
+            'sane_lists',
+            'tables',
+            'nl2br',
+            ],
         )
 
     context = {

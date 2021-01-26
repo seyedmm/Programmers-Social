@@ -113,7 +113,6 @@ a, p, img, h1, h2, h3, h4, h5, h6 {
     text-decoration: none !important;
 }
 
-
 a:hover p, a:hover h1, a:hover h2, a:hover h3, a:hover h4, a:hover h5, a:hover h6, a:hover img {
     opacity: .7;
     text-decoration: none;
@@ -155,6 +154,16 @@ pre code {
     background-color: transparent;
 }
 
+.rtlpre code {
+    direction: rtl;
+    text-align: right;
+    background-color: transparent;
+}
+.rtlpre {
+    direction: rtl;
+    text-align: right;
+}
+
 label {
     color: var(--dark);
 }
@@ -167,6 +176,7 @@ hr {
     color: var(--dark);
     background-color: var(--light-hover);
     border: 1px solid var(--border-color);
+    font-family: Vazir Code;
 }
 
 .form-control:focus {
@@ -664,7 +674,6 @@ button:hover img {
     img {
         filter: brightness(.8) contrast(1.2);
     }
-
     /* in light mode */
     .light-mode {
         --dark: #111;
@@ -676,7 +685,6 @@ button:hover img {
     .light-mode img {
         filter: brightness(1) contrast(1);
     }
-
     /* in dark mode */
     .dark-mode {
         --dark: #eee;
@@ -688,7 +696,6 @@ button:hover img {
     .dark-mode img {
         filter: brightness(.8) contrast(1.2);
     }
-
     /* always */
     .programmers-social_logo {
         filter: brightness(1) contrast(1) !important;
@@ -955,4 +962,10 @@ blockquote {
     background: var(--border-color);
     padding: 5px;
     border-right: 5px solid var(--border-color);
+}
+
+table, td, th {
+    border: 1px solid var(--border-color);
+    padding: 5px 10px;
+    text-align: center;
 }
