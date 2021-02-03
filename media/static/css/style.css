@@ -462,12 +462,14 @@ button:hover img {
 
 .badge-notif {
     position: absolute;
-    bottom: 1px;
-    right: -9px;
-    padding: 1px 5px;
+    bottom: 2px;
+    right: -6px;
+    padding: 3px;
     border-radius: 50%;
-    font-weight: 400;
-    font-size: 75%;
+    width: auto;
+    height: auto;
+    background: var(--primary);
+    border: 3px solid var(--light);
 }
 
 .like-form {
