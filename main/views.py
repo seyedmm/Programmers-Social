@@ -143,3 +143,14 @@ def rocket(request):
 
     # Show "rocket" page template to user
     return render(request, 'pages/rocket.html', context)
+
+
+def page_not_found_view(request, exception=None):
+    context = {}
+
+    # Add authenticated user and it's new notifications to context
+    mskf.add_notification_availability_to_context(request, context)
+    mskf.add_authenticated_user_to_context(request, context)
+
+    # Show template
+    return render(request, 'admin/404.html', context)

@@ -1,12 +1,15 @@
-{% extends "admin/base_site.html" %}
-{% load i18n %}
+{% extends 'main.html' %}
 
-{% block title %}{% trans 'Page not found' %}{% endblock %}
+{% block title %}
+    {{ super }} صفحه پیدا نشد
+{% endblock %}
 
-{% block content %}
 
-<h2>{% trans 'Page not found' %}</h2>
-
-<p>{% trans 'We’re sorry, but the requested page could not be found.' %}</p>
-
+{% block body %}
+    <div class="body  border-gray">
+        <br/>
+        <h1 style="text-align: center; font-size: 10em;">404</h1><br/>
+        <p style="text-align: center;">گشتم نبود، نگرد نیست!</p>
+        <p style="text-align: center;"><a href="{% url 'index' %}">بازگشت به صفحه اصلی</a></p>
+    </div>
 {% endblock %}
