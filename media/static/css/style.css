@@ -1,3 +1,5 @@
+/***** Fonts *****/
+
 @font-face {
     font-family: Vazir FD;
     font-weight: 400;
@@ -19,25 +21,33 @@
     src: url(fonts/Vazir-Code.ttf) format("ttf"), url(fonts/Vazir-Code.woff) format("woff"), url(fonts/Vazir-Code.woff2) format("woff2"), url(fonts/Vazir-Code.eot) format("eot");
 }
 
-/* :root {
-    --primary: #43168d;
-    --primary-hover: #2b0b5f;
-    --primary-shadow: #43168d50;
-    --dark: #dedad6;
-    --dark: #212529;
-    --body-background: #f6f8fa;
-    --light: #fff;
-    --light-hover: #f5f5f5;
-    --border-color: rgba(0,0,0,0.125);
-}
+/***** Color Mods *****/
 
-.dark-mode {
-    --dark: #dedad6;
-    --body-background: #0f0f0d;
-    --light: #000;
-    --light-hover: #0a0a0a;
-    --border-color: rgba(255,255,255,0.125);
-} */
+@media (prefers-color-scheme: dark) {
+    /* in default mode */
+    :root {
+        --dark: #eee;
+        --body-background: #222;
+        --light: #111;
+        --light-hover: #000;
+        --border-color: rgba(255, 255, 255, 0.125);
+    }
+    img {
+        filter: brightness(.8) contrast(1.2);
+    }
+    /* in light mode */
+    .light-mode img {
+        filter: brightness(1) contrast(1);
+    }
+    /* in dark mode */
+    .dark-mode img {
+        filter: brightness(.8) contrast(1.2);
+    }
+    /* always */
+    .programmers-social_logo {
+        filter: brightness(1) contrast(1) !important;
+    }
+}
 
 :root {
     --primary: #791FFF;
@@ -57,6 +67,8 @@
     --light-hover: #000;
     --border-color: rgba(255, 255, 255, 0.125);
 }
+
+/***** Styles *****/
 
 .dark-mode img {
     filter: brightness(.8) contrast(1.2);
@@ -159,6 +171,7 @@ pre code {
     text-align: right;
     background-color: transparent;
 }
+
 .rtlpre {
     direction: rtl;
     text-align: right;
@@ -296,11 +309,6 @@ button:hover img {
     border-radius: 0 !important;
     margin-top: 0 !important;
     margin-bottom: 0 !important;
-}
-
-.modal-content {
-    background-color: var(--light);
-    border: 1px solid var(--border-color);
 }
 
 .modal-header {
@@ -578,8 +586,8 @@ button:hover img {
 
 @media (min-width: 924px) {
     .navbar-expand-lg .navbar-collapse {
-        display: -ms-flexbox!important;
-        display: flex!important;
+        display: -ms-flexbox !important;
+        display: flex !important;
         -ms-flex-preferred-size: auto;
         flex-basis: auto;
     }
@@ -662,46 +670,6 @@ button:hover img {
     background-color: var(--light);
     border: 1px solid var(--border-color);
     border-radius: 6px;
-}
-
-@media (prefers-color-scheme: dark) {
-    /* in default mode */
-    :root {
-        --dark: #eee;
-        --body-background: #222;
-        --light: #111;
-        --light-hover: #000;
-        --border-color: rgba(255, 255, 255, 0.125);
-    }
-    img {
-        filter: brightness(.8) contrast(1.2);
-    }
-    /* in light mode */
-    .light-mode {
-        --dark: #111;
-        --body-background: #ddd;
-        --light: #eee;
-        --light-hover: #fff;
-        --border-color: rgba(0, 0, 0, 0.125);
-    }
-    .light-mode img {
-        filter: brightness(1) contrast(1);
-    }
-    /* in dark mode */
-    .dark-mode {
-        --dark: #eee;
-        --body-background: #222;
-        --light: #111;
-        --light-hover: #000;
-        --border-color: rgba(255, 255, 255, 0.125);
-    }
-    .dark-mode img {
-        filter: brightness(.8) contrast(1.2);
-    }
-    /* always */
-    .programmers-social_logo {
-        filter: brightness(1) contrast(1) !important;
-    }
 }
 
 #banner {
@@ -802,7 +770,7 @@ button:hover img {
     position: absolute;
     min-width: 160px;
     border-radius: .25rem;
-    padding: .75rem 0rem;
+    padding: .75rem 0;
     background-color: var(--light);
     box-shadow: 0 0 1rem 0 rgba(0, 0, 0, .075);
     z-index: 999;
@@ -851,11 +819,11 @@ button:hover img {
 
 @keyframes dropdown-hover {
     from {
-        transform: translate(0px, 10px);
+        transform: translate(0, 10px);
         opacity: 0;
     }
     to {
-        transform: translate(0px, 0px);
+        transform: translate(0, 0);
         opacity: 1;
     }
 }
@@ -875,7 +843,7 @@ button:hover img {
     visibility: hidden;
     width: 120px;
     border-radius: .25rem;
-    padding: .5rem 0rem;
+    padding: .5rem 0;
     background-color: var(--light-hover);
     box-shadow: 0 0 1rem 0 rgba(0, 0, 0, .075);
     color: var(--dark);
@@ -940,10 +908,9 @@ button:hover img {
 
 .modal-content {
     background-color: var(--light);
+    border: 1px solid var(--border-color);
     margin: auto;
-    /* padding: 20px; */
     border-width: 0;
-    /* width: 90%; */
     animation-name: showModal;
     animation-duration: .3s;
     animation-timing-function: ease;
@@ -951,11 +918,11 @@ button:hover img {
 
 @keyframes showModal {
     from {
-        transform: translate(0px, 10px);
+        transform: translate(0, 10px);
         opacity: 0;
     }
     to {
-        transform: translate(0px, 0px);
+        transform: translate(0, 0);
         opacity: 1;
     }
 }
