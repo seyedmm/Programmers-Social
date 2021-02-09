@@ -10,6 +10,5 @@ urlpatterns = [
     path('<str:username>/post/<int:post_id>/delete/', views.delete_post, name = 'delete_post'),
     path('<str:username>/post/<int:post_id>/', views.post_detail, name = 'post_detail'),
     path('<str:username>/post/<int:post_id>/comment/<int:comment_id>/delete/', views.delete_post_comment, name = 'delete_post_comment'),
-    path('<str:username>/post/<int:post_id>/comment/<int:comment_id>/replay/delete/', views.delete_post_comment_replay, name = 'delete_post_comment_replay'),
     path('<str:username>/post/<int:post_id>/like/', views.post_like, name = 'post_like'),
 ]
