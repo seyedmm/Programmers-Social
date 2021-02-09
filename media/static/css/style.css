@@ -2,21 +2,21 @@
 
 @font-face {
     font-family: Vazir FD;
-    font-weight: 400;
+    font-weight: normal;
     font-style: Regular;
     src: url(fonts/Vazir-FD.ttf) format("ttf"), url(fonts/Vazir-FD.woff) format("woff"), url(fonts/Vazir-FD.woff2) format("woff2"), url(fonts/Vazir-FD.eot) format("eot");
 }
 
 @font-face {
     font-family: Vazir Black FD;
-    font-weight: 400;
+    font-weight: normal;
     font-style: Regular;
     src: url(fonts/Vazir-Black-FD.ttf) format("ttf"), url(fonts/Vazir-Black-FD.woff) format("woff"), url(fonts/Vazir-Black-FD.woff2) format("woff2"), url(fonts/Vazir-Black-FD.eot) format("eot");
 }
 
 @font-face {
     font-family: Vazir Code;
-    font-weight: 400;
+    font-weight: normal;
     font-style: Regular;
     src: url(fonts/Vazir-Code.ttf) format("ttf"), url(fonts/Vazir-Code.woff) format("woff"), url(fonts/Vazir-Code.woff2) format("woff2"), url(fonts/Vazir-Code.eot) format("eot");
 }
@@ -83,7 +83,6 @@ body {
 
 h1, h2, h3, h4, h5, h6 {
     font-family: Vazir Black FD;
-    font-weight: 900;
 }
 
 .wrp {
@@ -189,7 +188,6 @@ hr {
     color: var(--dark);
     background-color: var(--light-hover);
     border: 1px solid var(--border-color);
-    font-family: Vazir Code;
 }
 
 .form-control:focus {
@@ -223,7 +221,6 @@ hr {
 
 .person-name {
     font-family: Vazir Black FD;
-    font-weight: 900;
     text-decoration: none;
     color: var(--dark);
 }
@@ -623,9 +620,6 @@ button:hover img {
     .list-group-item {
         border-right-width: 1px;
     }
-    .tooltip {
-        visibility: hidden;
-    }
     .just-in-mobile {
         display: unset;
     }
@@ -706,7 +700,6 @@ button:hover img {
 #banner .author-name {
     color: #fff;
     font-family: Vazir Black FD;
-    font-weight: 900;
     text-decoration: none;
 }
 
@@ -751,10 +744,6 @@ button:hover img {
     color: unset;
     transition: unset;
     text-decoration: unset !important;
-}
-
-[class*=" icofont-"], [class^=icofont-] {
-    vertical-align: middle;
 }
 
 .dropdown {
