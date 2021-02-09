@@ -24,6 +24,19 @@ from .forms import PostForm,\
                    CommentForm
 
 
+from six.moves.urllib.parse import urlparse
+from bleach.linkifier import Linker
+      
+def set_target(attrs, new=False):
+    p = urlparse(attrs[(None, 'href')])
+    if p.netloc not in ['localhost:8000']:
+        attrs[(None, 'rel')] = 'noopener nofollow'
+        attrs[(None, 'target')] = '_blank'
+        
+    return attrs
+
+linker = Linker(callbacks=[set_target])
+
 # All Posts view
 def all_posts(request, username, page):
     person = Person.objects.get(username = username) # Get the Person
@@ -105,15 +118,17 @@ def post_detail(request, username, post_id):
         form = CommentForm() # Give form to user
 
     
-    post_body = markdown.markdown(
-        no_html(post.body),
-        extensions=[
-            'codehilite',
-            'fenced_code',
-            'sane_lists',
-            'tables',
-            'nl2br',
-            ],
+    post_body = linker.linkify(
+        markdown.markdown(
+            no_html(post.body),
+            extensions=[
+                'codehilite',
+                'fenced_code',
+                'sane_lists',
+                'tables',
+                'nl2br',
+                ],
+            )
         )
 
     context = {
@@ -239,6 +254,10 @@ def delete_post(request, username, post_id):
 
     # If registered user is post author
     if post.author.username == request.user.username:
+        # Delete post comments
+        for comment in Comment.objects.filter(place=post):
+            comment.delete()
+
         post.delete() # Delete it
 
         return HttpResponseRedirect('/' + 'user/' + username)
@@ -282,26 +301,6 @@ def delete_post_comment(request, username, post_id, comment_id):
         mskf.add_authenticated_user_to_context(request, context)
 
         return render(request, 'pages/forbidden.html')
-
-
-# Post Comment Replay delete view
-@login_required
-def delete_post_comment_replay(request, username, post_id, comment_id):
-    comment = get_object_or_404(Comment, id = comment_id) # Get the Comment
-    post = get_object_or_404(Post, id = post_id) # Get the Post
-
-    # if registered user is comments post author
-    if post.author.username == request.user.username:
-        comment.replay = None # Delete Comment Replay (set it None)
-        comment.save() # Save it
-
-        return HttpResponseRedirect('/user/' + username + '/post/' + str(post.id))
-
-    # If registered user not post author
-    mskf.add_notification_availability_to_context(request, context)
-    mskf.add_authenticated_user_to_context(request, context)
-
-    return render(request, 'pages/forbidden.html')
 
 
 # Like Post view
