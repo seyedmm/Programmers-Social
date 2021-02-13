@@ -25,7 +25,7 @@ SECRET_KEY = '^^q2286+$psvvq$ovf(n-b(evo%v*l$)f2v+(vsafoa+-92ww$'
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-LOGIN_REDIRECT_URL = '/'
+LOGIN_REDIRECT_URL = '/wellcome'
 
 EMAIL_BACKEND = 'django.core.mail.backends.filebased.EmailBackend'
 EMAIL_FILE_PATH = os.path.join(BASE_DIR, 'sent_emails')

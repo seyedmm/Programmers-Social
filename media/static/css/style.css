@@ -104,6 +104,7 @@ h1, h2, h3, h4, h5, h6 {
     box-shadow: 0 0 1rem 0 rgba(0, 0, 0, .075);
     width: 100%;
     margin-bottom: 10px;
+    overflow-wrap: break-word;
 }
 
 .body img {
@@ -926,4 +927,21 @@ table, td, th {
     border: 1px solid var(--border-color);
     padding: 5px 10px;
     text-align: center;
+}
+
+/* The progress container (grey background) */
+
+/* The progress bar (scroll indicator) */
+
+.progress-bar {
+    height: 3px;
+    background: var(--primary);
+    width: 0%;
+    position: sticky;
+    top: 56px;
+    z-index: 999;
+}
+
+html {
+    scroll-behavior: smooth;
 }

@@ -1,7 +1,7 @@
 <div id="post-menu" class="post-footer-sticky border-gray">
     <!-- Like -->
     {% if user.is_authenticated %}
-        {% if post in person.likes.all %}
+        {% if post in person.liked_posts.all %}
         <form method="POST" id="{{ post.id }}" class="like-form">
             {% csrf_token %}
 

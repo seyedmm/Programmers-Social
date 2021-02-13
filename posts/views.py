@@ -2,7 +2,7 @@ from django.shortcuts import render, get_object_or_404
 from django.http import HttpResponseRedirect, JsonResponse
 from django.contrib.auth.decorators import login_required
 from django.core.paginator import Paginator
-from main.functions import mskf, no_html
+from main.functions import mskf, no_html, get_repo_data
 
 # Markdown
 import markdown
@@ -120,7 +120,9 @@ def post_detail(request, username, post_id):
     
     post_body = linker.linkify(
         markdown.markdown(
-            no_html(post.body),
+            get_repo_data(
+                no_html(post.body)
+            ),
             extensions=[
                 'codehilite',
                 'fenced_code',
@@ -312,14 +314,14 @@ def post_like(request, username, post_id):
     response_data = {}
 
     if request.POST.get('action') == 'post':
-        if post in authenticated_user.likes.all():
+        if post in authenticated_user.liked_posts.all():
             post.likes = int(post.likes) - 1
-            authenticated_user.likes.remove(post)
+            authenticated_user.liked_posts.remove(post)
             response_data['like_btn'] = f'<button type="submit" class="btn btn-light border-gray"><i class="far fa-heart"></i> {post.likes}</button>'
 
         else:
             post.likes = int(post.likes) + 1
-            authenticated_user.likes.add(post)
+            authenticated_user.liked_posts.add(post)
             response_data['like_btn'] = f'<button type="submit" class="btn btn-light text-danger border-gray"><i class="fas fa-heart"></i> {post.likes}</button>'
 
             notif = Notification(givver = post.author, message = '<a href="/user/{0}/">{1}</a> مطلب «<a href="/user/{2}/post/{3}/">{4}</a>» شما را لایک کرد'.format(authenticated_user.username, authenticated_user.name, post.author.username, post.id, post.title), notif_type = 'like')

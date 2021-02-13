@@ -27,12 +27,6 @@ def signup(request):
             user.backend = 'django.contrib.auth.backends.ModelBackend'
             user.save()
 
-            # Create a Person model for user
-            person = Person(
-                username=username,
-                name=username)
-            person.save()
-
             # Login current user
             login(request, user)
 

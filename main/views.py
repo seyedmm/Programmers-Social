@@ -15,21 +15,8 @@ from main.models import Person,\
 # Index view
 def index(request):
     if request.user.is_authenticated:
-        # If user has Person model
-        try:
-            # Load the user's person model
-            user = Person.objects.get(username=request.user.username)
-
-        # If user doesnt has Person model
-        except:
-            # Create a new Person model for user
-            user = Person(
-                username=request.user.username,
-                name=request.user.first_name)
-            user.save()
-    
-            # Redirect user to "wellcome" page
-            return HttpResponseRedirect('/wellcome/')
+        # Load the user's person model
+        user = Person.objects.get(username=request.user.username)
             
     else:
         user = None

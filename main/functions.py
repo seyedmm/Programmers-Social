@@ -319,41 +319,55 @@ class mskf():
         context['ads_list'] = ads_list
 
 
-    # Get Github Repository Data
-    def get_repo_data(text):
-        text = text.replace('{ گیت هاب ', '▸').replace(' }', '◂')
-        repos = re.findall(r'▸[^▸◂]*◂', text)
-        for repo_name in repos:
-            from github import Github
-            GITHUB_TOKEN = os.getenv('GITHUB_TOKEN', None)
-            g = Github(GITHUB_TOKEN)
+# Get Github Repository Data
+def get_repo_data(text):
+    text = text.replace('{% گیت هاب ', '▸').replace(' %}', '◂').replace('{٪ گیت هاب ', '▸').replace(' ٪}', '◂')
+    repos = re.findall(r'▸[^▸◂]*◂', text)
+    for repo_name in repos:
+        from github import Github
+        GITHUB_TOKEN = os.getenv('GITHUB_TOKEN', None)
+        g = Github(GITHUB_TOKEN)
+
+        try:
+            repo = g.get_repo(repo_name.replace('▸', '').replace('◂', ''))
+
+            repo_full_name = repo.full_name
+            repo_description = repo.description
+            repo_lang = repo.language
+            repo_stars = repo.stargazers_count
+            repo_owner_avatar = repo.owner.avatar_url
 
             try:
-                repo = g.get_repo(repo_name.replace('▸', '').replace('◂', ''))
-
-                repo_full_name = repo.full_name
-                repo_description = repo.description
-                repo_lang = repo.language
-                repo_stars = repo.stargazers_count
-                repo_owner_avatar = repo.owner.avatar_url
-
-                try:
-                    repo_license = repo.get_license().license.name
-
-                except:
-                    repo_license = 'None'
-
-                repo_html = '<div dir="ltr" class="jumbotron" style="text-align: left; padding: 1rem 1rem; background: var(--light); border: 1px solid var(--border-color);"><h5 style="font-family: Vazir; font-weight: 400;"><img class="avatar border-gray" type="button" src="{repo_owner_avatar}" width="48px" height="48px" style="border-style: solid; border-width: 1px;"><a href="https://github.com/{repo_full_name}/" target="_blank" rel="noopener nofollow"> {repo_full_name}</a></h5><p>{repo_description}</p><span class="badge" style=" font-size: 1em; font-weight: lighter;"><i class="fas fa-code"></i> {repo_lang}</span><span class="badge" style=" font-size: 1em; font-weight: lighter;"><i class="fas fa-balance-scale"></i> {repo_license}</span><span class="badge" style=" font-size: 1em; font-weight: lighter;"><i class="far fa-star"></i> {repo_stars}</span></div>'.format(repo_full_name=repo_full_name,
-                           repo_description=repo_description,
-                           repo_license=repo_license,
-                           repo_lang=repo_lang,
-                           repo_stars=repo_stars,
-                           repo_owner_avatar=repo_owner_avatar
-                           )
+                repo_license = repo.get_license().license.name
 
             except:
-                repo_html = '<a href="{repo_link}" target="_blank" rel="noopener nofollow">{repo_link}</a>'.format(repo_link='https://github.com/' + repo_name.replace('▸', '').replace('◂', ''))
+                repo_license = 'None'
 
-            text = text.replace(repo_name, repo_html)
+            repo_html = f'''<a href="https://github.com/{repo_full_name}/" target="_blank" rel="noopener nofollow">
+                <div dir="ltr" class="jumbotron" style="text-align: left; padding: 1rem 1rem; background: var(--light-hover);">
+                    <h5 style="font-family: Vazir; font-weight: 400;">
+                        <img class="avatar" type="button" src="{repo_owner_avatar}" width="48px" height="48px">
+                        {repo_full_name}
+                    </h5>
+                    <p>{repo_description}</p>
+                    <p>
+                        <span class="badge" style=" font-size: 1em; font-weight: lighter;">
+                            <i class="fas fa-code"></i> {repo_lang}
+                        </span>
+                        <span class="badge" style=" font-size: 1em; font-weight: lighter;">
+                            <i class="fas fa-balance-scale"></i> {repo_license}
+                        </span>
+                        <span class="badge" style=" font-size: 1em; font-weight: lighter;">
+                            <i class="far fa-star"></i> {repo_stars}
+                        </span>
+                    </p>
+                </div>
+            </a>
+            '''.replace('\n', '')
 
-        return text.replace('▸', '{ گیت هاب ').replace('◂', ' }')
+        except:
+            repo_html = '<a href="{repo_link}" target="_blank" rel="noopener nofollow">{repo_link}</a>'.format(repo_link='https://github.com/' + repo_name.replace('▸', '').replace('◂', ''))
+
+        text = text.replace(repo_name, repo_html)
+
+    return text.replace('▸', '{ گیت هاب ').replace('◂', ' }')
