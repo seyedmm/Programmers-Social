@@ -366,6 +366,21 @@ class Cloud(models.Model):
         return 'ابر {}'.format(self.owner.name)
 
 
+def post_save_user_model_receiver(sender, instance, created, *args, **kwargs):
+    if created:
+        try:
+            Cloud.objects.create(owner=instance)
+
+        except:
+            pass
+
+
+post_save.connect(
+    post_save_user_model_receiver,
+    sender=settings.AUTH_USER_MODEL
+)
+
+
 class File(models.Model):
     cloud = models.ForeignKey(
         'Cloud',

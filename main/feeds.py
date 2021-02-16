@@ -5,7 +5,6 @@ from django.urls import reverse
 from django.conf import settings
 
 
-
 class CustomFeed(Atom1Feed):
     def add_item_elements(self, handler, item):
         super().add_item_elements(handler, item)

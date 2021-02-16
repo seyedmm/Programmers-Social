@@ -3,14 +3,7 @@
 from django.contrib import admin
 
 # Models
-from .models import Person,\
-                    Post,\
-                    Comment,\
-                    Ad,\
-                    Skill,\
-                    Notification,\
-                    Cloud,\
-                    File
+from .models import Person, Post, Comment, Ad, Skill, Notification, Cloud, File
 
 
 # Add models to admin panel

@@ -5,9 +5,7 @@ import os
 from random import sample
 
 # Models
-from main.models import Person,\
-                        Notification,\
-                        Ad
+from main.models import Person, Notification, Ad
                         
 
 # Delete all html tags
@@ -371,3 +369,71 @@ def get_repo_data(text):
         text = text.replace(repo_name, repo_html)
 
     return text.replace('▸', '{ گیت هاب ').replace('◂', ' }')
+
+
+
+
+def get_authenticated_user(request):
+    if request.user.is_authenticated:
+        return Person.objects.get(username=request.user.username)
+
+    return None
+
+
+def get_new_notifications(authenticated_user):
+    if authenticated_user != None:
+        return len(
+            Notification.objects.filter(
+                givver=authenticated_user,
+                done=False
+            )
+        )
+    
+    return 0
+
+
+def compress_image(path):
+    from PIL import Image
+    try:
+        file_path = path
+        img = Image.open(file_path)
+        img.save(
+            file_path,
+            quality=50,
+            optimize=True)
+
+    except:
+        pass
+
+
+from bleach.linkifier import Linker
+from six.moves.urllib.parse import urlparse
+
+def set_target(attrs, new=False):
+    p = urlparse(attrs[(None, 'href')])
+    if p.netloc not in ['localhost:8000']:
+        attrs[(None, 'rel')] = 'noopener nofollow'
+        attrs[(None, 'target')] = '_blank'
+        
+    return attrs
+
+linker = Linker(callbacks=[set_target])
+
+
+def translate_to_html(text):
+    import markdown
+
+    return linker.linkify(
+        markdown.markdown(
+            get_repo_data(
+                no_html(text)
+            ),
+            extensions=[
+                'markdown.extensions.codehilite',
+                'markdown.extensions.fenced_code',
+                'markdown.extensions.sane_lists',
+                'markdown.extensions.tables',
+                'markdown.extensions.nl2br',
+            ],
+        )
+    )

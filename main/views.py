@@ -3,23 +3,16 @@
 from django.shortcuts import render, get_object_or_404
 from django.http import HttpResponseRedirect
 from django.core.paginator import Paginator
-from main.functions import mskf
+from main.functions import get_authenticated_user, get_new_notifications
 from random import choice
 
 # Models
-from main.models import Person,\
-                        Post,\
-                        Ad
+from main.models import Person, Post, Ad
 
 
 # Index view
 def index(request):
-    if request.user.is_authenticated:
-        # Load the user's person model
-        user = Person.objects.get(username=request.user.username)
-            
-    else:
-        user = None
+    authenticated_user = get_authenticated_user(request)
 
     # Load all posts order by there publish time
     posts = Post.objects.all().order_by('-publish_time')
@@ -41,14 +34,11 @@ def index(request):
         ad = None
 
     context = {
-        'person': user,
+        'authenticated_user': authenticated_user,
+        'new_notifications': get_new_notifications(authenticated_user),
         'posts': paginate.page(1),
         'ad': ad,
     }
-
-    # Add authenticated user and it's new notifications to context
-    mskf.add_notification_availability_to_context(request, context)
-    mskf.add_authenticated_user_to_context(request, context)
     
     # Show "index" page template to user
     return render(request, 'index/index.html', context)
@@ -56,12 +46,7 @@ def index(request):
 
 # Posts page view
 def posts(request, page):
-    # Try to load authenticated user
-    try:
-        person = get_object_or_404(Person, username=request.user.username)
-
-    except:
-        person = None
+    authenticated_user = get_authenticated_user(request)
 
     # Load all posts order by there publish time
     posts = Post.objects.all().order_by('-publish_time')
@@ -83,14 +68,11 @@ def posts(request, page):
         ad = None
 
     context = {
-        'person': person,
+        'authenticated_user': authenticated_user,
+        'new_notifications': get_new_notifications(authenticated_user),
         'posts': paginate.page(page),
         'ad': ad,
     }
-
-    # Add authenticated user and it's new notifications to context
-    mskf.add_notification_availability_to_context(request, context)
-    mskf.add_authenticated_user_to_context(request, context)
 
     # Show "index" page template to user
     return render(request, 'index/index.html', context)
@@ -98,11 +80,12 @@ def posts(request, page):
 
 # Wellcome page view
 def wellcome(request):
-    context = {}
+    authenticated_user = get_authenticated_user(request)
 
-    # Add authenticated user and it's new notifications to context
-    mskf.add_notification_availability_to_context(request, context)
-    mskf.add_authenticated_user_to_context(request, context)
+    context = {
+        'authenticated_user': authenticated_user,
+        'new_notifications': get_new_notifications(authenticated_user),
+    }
 
     # Show "wellcome" page template to user
     return render(request, 'pages/wellcome.html', context)
@@ -110,11 +93,12 @@ def wellcome(request):
 
 # Support page view
 def support(request):
-    context = {}
+    authenticated_user = get_authenticated_user(request)
 
-    # Add authenticated user and it's new notifications to context
-    mskf.add_notification_availability_to_context(request, context)
-    mskf.add_authenticated_user_to_context(request, context)
+    context = {
+        'authenticated_user': authenticated_user,
+        'new_notifications': get_new_notifications(authenticated_user),
+    }
 
     # Show "supprot" page template to user
     return render(request, 'pages/support.html', context)
@@ -122,22 +106,24 @@ def support(request):
 
 # Rocket page view
 def rocket(request):
-    context = {}
+    authenticated_user = get_authenticated_user(request)
 
-    # Add authenticated user and it's new notifications to context
-    mskf.add_notification_availability_to_context(request, context)
-    mskf.add_authenticated_user_to_context(request, context)
+    context = {
+        'authenticated_user': authenticated_user,
+        'new_notifications': get_new_notifications(authenticated_user),
+    }
 
     # Show "rocket" page template to user
     return render(request, 'pages/rocket.html', context)
 
 
 def page_not_found_view(request, exception=None):
-    context = {}
+    authenticated_user = get_authenticated_user(request)
 
-    # Add authenticated user and it's new notifications to context
-    mskf.add_notification_availability_to_context(request, context)
-    mskf.add_authenticated_user_to_context(request, context)
+    context = {
+        'authenticated_user': authenticated_user,
+        'new_notifications': get_new_notifications(authenticated_user),
+    }
 
     # Show template
     return render(request, 'admin/404.html', context)

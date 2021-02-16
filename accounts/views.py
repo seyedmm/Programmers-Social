@@ -3,7 +3,7 @@
 from django.shortcuts import render
 from django.http import HttpResponseRedirect
 from django.contrib.auth import login
-from main.functions import mskf
+from main.functions import get_authenticated_user, get_new_notifications
 
 # Models
 from main.models import Person
@@ -14,6 +14,11 @@ from .forms import SignUpForm
 
 # Sign up view
 def signup(request):
+    authenticated_user = get_authenticated_user(request)
+
+    if authenticated_user != None:
+        return HttpResponseRedirect('/')
+
     # If form method == POST
     if request.method == 'POST':
         form = SignUpForm(request.POST) # Get Form
@@ -38,12 +43,10 @@ def signup(request):
         form = SignUpForm() # Give form to user
 
     context = {
+        'authenticated_user': authenticated_user,
+        'new_notifications': get_new_notifications(authenticated_user),
         'form': form,
     }
-
-    # Add authenticated user and it's new notifications to context
-    mskf.add_notification_availability_to_context(request, context)
-    mskf.add_authenticated_user_to_context(request, context)
 
     # Show "signup" page template to user
     return render(request, 'registration/signup.html', context)

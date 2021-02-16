@@ -4,14 +4,12 @@ from django.shortcuts import render
 from django.http import HttpResponseRedirect, HttpResponse
 from django.contrib.auth.decorators import login_required
 from django.core.paginator import Paginator
-from main.functions import mskf
+from main.functions import get_authenticated_user, get_new_notifications, compress_image
 from django.core.exceptions import ValidationError
 import os
 
 # Models
-from main.models import Person,\
-                        Cloud,\
-                        File
+from main.models import Person, Cloud, File
 
 # Forms
 from .forms import FileUploadForm
@@ -20,31 +18,18 @@ from .forms import FileUploadForm
 # Cloud Index view
 @login_required
 def cloud_index(request):
-    person = Person.objects.get(username=request.user.username)
-
-    # If user has cloud
-    try:
-        # Load the cloud
-        cloud = Cloud.objects.get(owner=person)
-
-    # If there is no cloud for user
-    except:
-        # Creat a new cloud for user
-        cloud = Cloud(owner=person)
-        cloud.save()
+    authenticated_user = get_authenticated_user(request)
+    cloud = Cloud.objects.get(owner=authenticated_user)
 
     # Get user's cloud uploaded files
     files = File.objects.filter(cloud=cloud).order_by('-id')
 
     context = {
-        'person': person,
+        'authenticated_user': authenticated_user,
+        'new_notifications': get_new_notifications(authenticated_user),
         'cloud': cloud,
         'files': files,
     }
-
-    # Add authenticated user and it's new notifications to context
-    mskf.add_notification_availability_to_context(request, context)
-    mskf.add_authenticated_user_to_context(request, context)
 
     # Show "cloud index" page template to user
     return render(request, 'cloud/cloud_index.html', context)
@@ -53,18 +38,8 @@ def cloud_index(request):
 # Upload file view
 @login_required
 def upload_file(request):
-    person = Person.objects.get(username=request.user.username)
-
-    # If user has cloud
-    try:
-        # Load the cloud
-        cloud = Cloud.objects.get(owner=person)
-
-    # If there is no cloud for user
-    except:
-        # Creat a new cloud for user
-        cloud = Cloud(owner=person)
-        cloud.save()
+    authenticated_user = get_authenticated_user(request)
+    cloud = Cloud.objects.get(owner=authenticated_user)
 
     # If request method == POST
     if request.method == 'POST':
@@ -82,7 +57,7 @@ def upload_file(request):
 
             # If user want to compress the image
             if compress is True:
-                mskf.compress(file.file.path)
+                compress_image(file.file.path)
 
             # calculate file size
             filesize = file.file.size / 1000
@@ -136,15 +111,12 @@ def upload_file(request):
         available_space = True
 
     context = {
+        'authenticated_user': authenticated_user,
+        'new_notifications': get_new_notifications(authenticated_user),
         'form': form,
-        'person': person,
         'cloud': cloud,
         'available_space': available_space,
     }
-
-    # Add authenticated user and it's new notifications to context
-    mskf.add_notification_availability_to_context(request, context)
-    mskf.add_authenticated_user_to_context(request, context)
 
     # Show "upload file" page template to user
     return render(request, 'cloud/upload_file.html', context)

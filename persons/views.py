@@ -3,51 +3,37 @@ from django.http import HttpResponseRedirect
 from django.contrib.auth.decorators import login_required
 from social_django.models import UserSocialAuth
 from django.core.paginator import Paginator
-from main.functions import mskf
+from main.functions import get_authenticated_user, get_new_notifications
 
 # Models
-from main.models import Person,\
-                        Post,\
-                        Skill,\
-                        Notification
+from main.models import Person, Post, Skill, Notification
 
 # Forms
-from .forms import ProfileEditForm,\
-                   RezomeForm
+from .forms import ProfileEditForm, RezomeForm
 
 
 # Index view
 def all_persons(request, page):
-    if request.user.is_authenticated:
-        try:
-            user = Person.objects.get(username = request.user.username)
-
-        except:
-            user = Person(username = request.user.username, name = request.user.first_name)
-            user.save()
-    
-    else:
-        user = None
-    
+    authenticated_user = get_authenticated_user(request)
     persons = Person.objects.all() # Get all persons
 
     paginate = Paginator(persons, 3)
 
     context = {
+        'authenticated_user': authenticated_user,
+        'new_notifications': get_new_notifications(authenticated_user),
         'persons': paginate.page(page),
         'current_url': str('/user/all/%3Fpage=1/').replace('/', '%2F'),
     }
-
-    mskf.add_notification_availability_to_context(request, context)
-    mskf.add_authenticated_user_to_context(request, context)
 
     return render(request, 'person/list.html', context)
 
 
 # Users page view
 def profile_detail(request, username):
-    person = get_object_or_404(Person, username = username) # Get Person
-    posts = Post.objects.filter(author = person).order_by('-publish_time') # Get the Posts
+    authenticated_user = get_authenticated_user(request)
+    person = get_object_or_404(Person, username=username) # Get Person
+    posts = Post.objects.filter(author=person).order_by('-publish_time') # Get the Posts
 
     paginate = Paginator(posts, 3)
     
@@ -56,14 +42,13 @@ def profile_detail(request, username):
         skills_availability = True
 
     context = {
+        'authenticated_user': authenticated_user,
+        'new_notifications': get_new_notifications(authenticated_user),
         'person': person,
         'posts': paginate.page(1),
         'skills_availability': skills_availability,
         'current_url': str(request.path).replace('/', '%2F'),
     }
-
-    mskf.add_notification_availability_to_context(request, context)
-    mskf.add_authenticated_user_to_context(request, context)
 
     return render(request, 'person/profile/detail.html', context)
 
@@ -71,16 +56,16 @@ def profile_detail(request, username):
 # Edit Profile page view
 @login_required
 def edit_profile(request):
-    person = Person.objects.get(username = request.user.username) # Get the Person
+    authenticated_user = get_authenticated_user(request)
 
     try:
-        github_login = request.user.social_auth.get(provider = 'github')
+        github_login = request.user.social_auth.get(provider='github')
 
     except UserSocialAuth.DoesNotExist:
         github_login = None
 
     try:
-        gitlab_login = request.user.social_auth.get(provider = 'gitlab')
+        gitlab_login = request.user.social_auth.get(provider='gitlab')
         
     except UserSocialAuth.DoesNotExist:
         gitlab_login = None
@@ -111,89 +96,87 @@ def edit_profile(request):
             for skill in Skill.objects.all().order_by('name'):
                 SKILL_CHOICES.append('_{}_'.format(skill))
 
-            person.skills.clear()
+            authenticated_user.skills.clear()
 
             try:
                 for skill in SKILL_CHOICES:
                     if skill in skills:
-                        person.skills.add(Skill.objects.get(name=skill.replace('_', '')))
+                        authenticated_user.skills.add(Skill.objects.get(name=skill.replace('_', '')))
             except:
                 pass
 
             # Give new data to person
             if avatar is not None:
                 if avatar is False:
-                    person.avatar = None
+                    authenticated_user.avatar = None
                     
                 else:
-                    person.avatar = avatar
+                    authenticated_user.avatar = avatar
 
-            person.name = name
-            person.public_email = public_email
-            person.mobile = mobile
-            person.description = description
-            person.year_of_born = year_of_born
-            person.gender = gender
-            person.work = work
-            person.github = github
-            person.gitlab = gitlab
-            person.stackowerflow = stackowerflow
-            person.linkedin = linkedin
-            person.dev = dev
-            person.website = website
-            person.save() # Save it
+            authenticated_user.name = name
+            authenticated_user.public_email = public_email
+            authenticated_user.mobile = mobile
+            authenticated_user.description = description
+            authenticated_user.year_of_born = year_of_born
+            authenticated_user.gender = gender
+            authenticated_user.work = work
+            authenticated_user.github = github
+            authenticated_user.gitlab = gitlab
+            authenticated_user.stackowerflow = stackowerflow
+            authenticated_user.linkedin = linkedin
+            authenticated_user.dev = dev
+            authenticated_user.website = website
+            authenticated_user.save() # Save it
             
-            return HttpResponseRedirect('/user/' + person.username)
+            return HttpResponseRedirect('/user/' + authenticated_user.username)
             
 
     # If form method == GET
     else:
         skills = []
-        for skill in person.skills.all().order_by('name'):
+        for skill in authenticated_user.skills.all().order_by('name'):
             skills.append('_{}_'.format(skill))
 
         # Give form to user
         form = ProfileEditForm(initial = {  
-                                            'avatar': person.avatar,
-                                            'name': person.name,
-                                            'public_email': person.public_email,
-                                            'mobile': person.mobile,
-                                            'description': person.description,
-                                            'year_of_born': person.year_of_born,
-                                            'gender': person.gender,
-                                            'work': person.work,
-                                            'skills': skills,
-                                            'github': person.github,
-                                            'gitlab': person.gitlab,
-                                            'stackowerflow': person.stackowerflow,
-                                            'linkedin': person.linkedin,
-                                            'dev': person.dev,
-                                            'website': person.website,
-                                          })
+            'avatar': authenticated_user.avatar,
+            'name': authenticated_user.name,
+            'public_email': authenticated_user.public_email,
+            'mobile': authenticated_user.mobile,
+            'description': authenticated_user.description,
+            'year_of_born': authenticated_user.year_of_born,
+            'gender': authenticated_user.gender,
+            'work': authenticated_user.work,
+            'skills': skills,
+            'github': authenticated_user.github,
+            'gitlab': authenticated_user.gitlab,
+            'stackowerflow': authenticated_user.stackowerflow,
+            'linkedin': authenticated_user.linkedin,
+            'dev': authenticated_user.dev,
+            'website': authenticated_user.website,
+        })
 
     context = {
+        'authenticated_user': authenticated_user,
+        'new_notifications': get_new_notifications(authenticated_user),
         'form': form,
         'github_login': github_login,
         'gitlab_login': gitlab_login,
-        'person': person,
     }
-
-    mskf.add_notification_availability_to_context(request, context)
-    mskf.add_authenticated_user_to_context(request, context)
 
     return render(request, 'person/profile/edit.html', context)
 
 
 # Rezome create view
 def rezome_detail(request, username):
-    person = Person.objects.get(username = username)
+    authenticated_user = get_authenticated_user(request)
+    person = Person.objects.get(username=username)
 
     context = {
+        'authenticated_user': authenticated_user,
+        'new_notifications': get_new_notifications(authenticated_user),
         'person': person,
     }
-
-    mskf.add_notification_availability_to_context(request, context)
-    mskf.add_authenticated_user_to_context(request, context)
 
     return render(request, 'person/rezome/detail.html', context)
 
@@ -201,7 +184,7 @@ def rezome_detail(request, username):
 # Rezome create view
 @login_required
 def edit_rezome(request):
-    person = Person.objects.get(username = request.user.username)
+    authenticated_user = get_authenticated_user(request)
 
     if request.method == 'POST':
         form = RezomeForm(request.POST)
@@ -211,20 +194,21 @@ def edit_rezome(request):
             rezome = rezome.replace('<', '&lt;').replace('>', '&gt;').replace('\n', '<br/>') # Clean the rezome and recognize line breaks
             
 
-            person.rezome = rezome
-            person.save()
+            authenticated_user.rezome = rezome
+            authenticated_user.save()
 
-            return HttpResponseRedirect('/user/' + person.username + '/rezome/')
+            return HttpResponseRedirect('/user/' + authenticated_user.username + '/rezome/')
 
     else:
-        form = RezomeForm(initial = {'rezome': person.rezome.replace('<br/>', '\n').replace('&lt;', '<').replace('&gt;', '>')})
+        form = RezomeForm(initial={
+            'rezome': authenticated_user.rezome.replace('<br/>', '\n').replace('&lt;', '<').replace('&gt;', '>')
+        })
 
     context = {
+        'authenticated_user': authenticated_user,
+        'new_notifications': get_new_notifications(authenticated_user),
         'form': form,
     }
-
-    mskf.add_notification_availability_to_context(request, context)
-    mskf.add_authenticated_user_to_context(request, context)
 
     return render(request, 'person/rezome/edit.html', context)
 
@@ -232,17 +216,16 @@ def edit_rezome(request):
 # All Notifications
 @login_required
 def all_notifications(request, page):
-    person = Person.objects.get(username = request.user.username)
-    notifications = Notification.objects.filter(givver = person).order_by('-id')
+    authenticated_user = get_authenticated_user(request)
+    notifications = Notification.objects.filter(givver=authenticated_user).order_by('-id')
 
     paginate = Paginator(notifications, 3)
 
     context = {
+        'authenticated_user': authenticated_user,
+        'new_notifications': get_new_notifications(authenticated_user),
         'notifications': paginate.page(page),
     }
-
-    mskf.add_notification_availability_to_context(request, context)
-    mskf.add_authenticated_user_to_context(request, context)
 
     return render(request, 'person/notifications/list.html', context)
 
@@ -250,19 +233,18 @@ def all_notifications(request, page):
 # Notifications
 @login_required
 def new_notifications(request):
-    person = Person.objects.get(username = request.user.username)
-    notifications = Notification.objects.filter(givver = person, done = False).order_by('-id')
-
-    context = {
-        'notifications': notifications,
-    }
+    authenticated_user = get_authenticated_user(request)
+    notifications = Notification.objects.filter(givver=authenticated_user, done=False).order_by('-id')
 
     for notification in notifications:
         notification.done = True
         notification.save()
 
-    mskf.add_notification_availability_to_context(request, context)
-    mskf.add_authenticated_user_to_context(request, context)
+    context = {
+        'authenticated_user': authenticated_user,
+        'new_notifications': get_new_notifications(authenticated_user),
+        'notifications': notifications,
+    }
 
     return render(request, 'person/notifications/new.html', context)
 
@@ -270,30 +252,33 @@ def new_notifications(request):
 # Follow Person view
 @login_required
 def follow_person(request, username, url):
-    person = Person.objects.get(username = username)
+    authenticated_user = get_authenticated_user(request)
+    person = Person.objects.get(username=username)
 
-    user = Person.objects.get(username = request.user.username)
+    if person in authenticated_user.following.all():
+        authenticated_user.following.remove(person)
+        authenticated_user.len_following = int(authenticated_user.len_following) - 1
 
-    if person in user.following.all():
-        user.following.remove(person)
-        user.len_following = int(user.len_following) - 1
-
-        person.followers.remove(user)
+        person.followers.remove(authenticated_user)
         person.len_followers = int(person.len_followers) - 1
         
 
     else:
-        user.following.add(person)
-        user.len_following = int(user.len_following) + 1
+        authenticated_user.following.add(person)
+        authenticated_user.len_following = int(authenticated_user.len_following) + 1
 
-        person.followers.add(user)
+        person.followers.add(authenticated_user)
         person.len_followers = int(person.len_followers) + 1
 
-        notif = Notification(givver = person, message = '<a href="/user/{0}/">{1}</a> از حالا شما را دنبال می‌کند'.format(user.username, user.name), notif_type = 'follow')
+        notif = Notification(
+            givver=person,
+            message=f'<a href="/user/{authenticated_user.username}/">{authenticated_user.name}</a> از حالا شما را دنبال می‌کند',
+            notif_type='follow'
+        )
         notif.save()
 
     person.save()
-    user.save()
+    authenticated_user.save()
 
     return HttpResponseRedirect(url.replace('%2F', '/'))
 
@@ -301,17 +286,16 @@ def follow_person(request, username, url):
 # Followed Persons view
 @login_required
 def friends(request, page):
-    person = Person.objects.get(username = request.user.username)
+    authenticated_user = get_authenticated_user(request)
 
-    paginate = Paginator(person.following.all(), 3)
+    paginate = Paginator(authenticated_user.following.all(), 3)
             
     context = {
+        'authenticated_user': authenticated_user,
+        'new_notifications': get_new_notifications(authenticated_user),
         'persons': paginate.page(page),
         'current_url': str('/user/friends/%3Fpage=1/').replace('/', '%2F'),
     }
-
-    mskf.add_notification_availability_to_context(request, context)
-    mskf.add_authenticated_user_to_context(request, context)
 
     return render(request, 'person/friends/list.html', context)
 
@@ -319,31 +303,30 @@ def friends(request, page):
 # Followed Persons Posts view
 @login_required
 def friends_posts(request, page):
-    person = Person.objects.get(username = request.user.username)
+    authenticated_user = get_authenticated_user(request)
 
     posts = []
     all_posts = Post.objects.all().order_by('-publish_time')
     for post in all_posts:
-        if post.author in person.following.all():
+        if post.author in authenticated_user.following.all():
             post.body = post.body.replace('<br/>', ' ')
             posts.append(post)
 
     paginate = Paginator(posts, 3)
             
     context = {
-        'person': person,
+        'authenticated_user': authenticated_user,
+        'new_notifications': get_new_notifications(authenticated_user),
         'posts': paginate.page(page),
     }
-
-    mskf.add_notification_availability_to_context(request, context)
-    mskf.add_authenticated_user_to_context(request, context)
 
     return render(request, 'person/friends/posts.html', context)
 
 
 # Followers view
 def followers(request, username, page):
-    person = Person.objects.get(username = username)
+    authenticated_user = get_authenticated_user(request)
+    person = Person.objects.get(username=username)
 
     followers_available = False
     if len(person.followers.all()) > 0:
@@ -352,21 +335,21 @@ def followers(request, username, page):
     paginate = Paginator(person.followers.all(), 3)
             
     context = {
+        'authenticated_user': authenticated_user,
+        'new_notifications': get_new_notifications(authenticated_user),
         'persons': paginate.page(page),
         'person': person,
         'current_url': str('/user/friends/%3Fpage=1/').replace('/', '%2F'),
         'followers_available': followers_available,
     }
 
-    mskf.add_notification_availability_to_context(request, context)
-    mskf.add_authenticated_user_to_context(request, context)
-
     return render(request, 'person/followers.html', context)
 
 
 # Followers view
 def followings(request, username, page):
-    person = Person.objects.get(username = username)
+    authenticated_user = get_authenticated_user(request)
+    person = Person.objects.get(username=username)
 
     following_available = False
     if len(person.following.all()) > 0:
@@ -375,13 +358,12 @@ def followings(request, username, page):
     paginate = Paginator(person.following.all(), 3)
             
     context = {
+        'authenticated_user': authenticated_user,
+        'new_notifications': get_new_notifications(authenticated_user),
         'persons': paginate.page(page),
         'person': person,
         'current_url': str('/user/friends/%3Fpage=1/').replace('/', '%2F'),
         'following_available': following_available,
     }
-
-    mskf.add_notification_availability_to_context(request, context)
-    mskf.add_authenticated_user_to_context(request, context)
 
     return render(request, 'person/followings.html', context)

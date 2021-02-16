@@ -2,78 +2,45 @@ from django.shortcuts import render, get_object_or_404
 from django.http import HttpResponseRedirect, JsonResponse
 from django.contrib.auth.decorators import login_required
 from django.core.paginator import Paginator
-from main.functions import mskf, no_html, get_repo_data
-
-# Markdown
-import markdown
-from markdown.extensions import codehilite,\
-                                fenced_code,\
-                                sane_lists,\
-                                tables,\
-                                nl2br
+from main.functions import mskf, get_authenticated_user, get_new_notifications, translate_to_html
 
 # Models
-from main.models import Person,\
-                        Post,\
-                        Comment,\
-                        Notification,\
-                        Ad
+from main.models import Person, Post, Comment, Notification, Ad
 
 # Forms
-from .forms import PostForm,\
-                   CommentForm
+from .forms import PostForm, CommentForm
 
-
-from six.moves.urllib.parse import urlparse
-from bleach.linkifier import Linker
-      
-def set_target(attrs, new=False):
-    p = urlparse(attrs[(None, 'href')])
-    if p.netloc not in ['localhost:8000']:
-        attrs[(None, 'rel')] = 'noopener nofollow'
-        attrs[(None, 'target')] = '_blank'
-        
-    return attrs
-
-linker = Linker(callbacks=[set_target])
 
 # All Posts view
 def all_posts(request, username, page):
-    person = Person.objects.get(username = username) # Get the Person
-    posts = Post.objects.filter(author = person).order_by('-publish_time') # Get the Posts
+    authenticated_user = get_authenticated_user(request)
+    person = Person.objects.get(username=username) # Get the Person
+    posts = Post.objects.filter(author=person).order_by('-publish_time') # Get the Posts
 
     paginate = Paginator(posts, 3)
 
     context = {
+        'authenticated_user': authenticated_user,
+        'new_notifications': get_new_notifications(authenticated_user),
         'posts': paginate.page(page),
         'person': person,
     }
-
-    mskf.add_notification_availability_to_context(request, context)
-    mskf.add_authenticated_user_to_context(request, context)
 
     return render(request, 'person/profile/detail.html', context)
 
 
 # Post page view
 def post_detail(request, username, post_id):
-    person = Person.objects.get(username = username) # Get the Person
-    post = get_object_or_404(Post, author = person, id = post_id) # Get the Post
-    comments = Comment.objects.filter(place = post).order_by('id') # Get the Comments
+    authenticated_user = get_authenticated_user(request)
+    person = Person.objects.get(username=username) # Get the Person
+    post = get_object_or_404(Post, author=person, id=post_id) # Get the Post
+    comments = Comment.objects.filter(place=post).order_by('id') # Get the Comments
     len_comments = len(comments) # Get length of comments
-
-    try:
-        user = Person.objects.get(username = request.user.username)
-    
-    except:
-        user = None
 
     post.views = int(post.views) + 1
     post.save()
 
-    authenticated_user = None
-    if request.user.is_authenticated:
-        authenticated_user = Person.objects.get(username = request.user.username)
+    if authenticated_user is not None:
         authenticated_user.viewed_posts.add(post)
         authenticated_user.save()
 
@@ -91,13 +58,17 @@ def post_detail(request, username, post_id):
             # If mode == comment
             if mode == 'comment':
                 # Create a Comment model with form data
-                comment = Comment(place = post, author = user, text = text)
+                comment = Comment(place = post, author = authenticated_user, text = text)
                 comment.save() # Save it
 
                 post.comments = int(post.comments) + 1
                 post.save()
 
-                notif = Notification(givver = post.author, message = '<a href="/user/{0}/">{1}</a> نظری روی مطلب «<a href="/user/{2}/post/{3}/">{4}</a>» شما ارسال کرد'.format(user.username, user.name, post.author.username, post.id, post.title, comment.id), notif_type = 'comment')
+                notif = Notification(
+                    givver=post.author,
+                    message=f'<a href="/user/{authenticated_user.username}/">{authenticated_user.name}</a> نظری روی مطلب «<a href="/user/{post.author.username}/post/{post.id}/">{post.title}</a>» شما ارسال کرد',
+                    notif_type='comment'
+                )
                 notif.save()
 
             else:
@@ -108,7 +79,11 @@ def post_detail(request, username, post_id):
                 comment.replays.add(replay)
                 comment.save()
 
-                notif = Notification(givver = comment.author, message = '<a href="/user/{0}/">{1}</a> پاسخی به <a href="/user/{2}/post/{3}/#comments">نظر</a> شما داد'.format(person.username, person.name, post.author.username, post.id), notif_type = 'replay')
+                notif = Notification(
+                    givver=comment.author,
+                    message=f'<a href="/user/{person.username}/">{person.name}</a> پاسخی به <a href="/user/{post.author.username}/post/{post.id}/#comments">نظر</a> شما داد',
+                    notif_type='replay'
+                )
                 notif.save()
 
             return HttpResponseRedirect('/user/' + post.author.username + '/post/' + str(post.id))
@@ -117,33 +92,16 @@ def post_detail(request, username, post_id):
     else:
         form = CommentForm() # Give form to user
 
-    
-    post_body = linker.linkify(
-        markdown.markdown(
-            get_repo_data(
-                no_html(post.body)
-            ),
-            extensions=[
-                'codehilite',
-                'fenced_code',
-                'sane_lists',
-                'tables',
-                'nl2br',
-                ],
-            )
-        )
-
     context = {
+        'authenticated_user': authenticated_user,
+        'new_notifications': get_new_notifications(authenticated_user),
         'post': post,
-        'post_body': post_body,
+        'post_body': translate_to_html(post.body),
         'comments': comments,
         'len_comments': len_comments,
         'form': form,
-        'person': user,
         'current_url': str(request.path).replace('/', '%2F'),
     }
-    mskf.add_notification_availability_to_context(request, context)
-    mskf.add_authenticated_user_to_context(request, context)
     mskf.add_3_ads_to_context(context)
 
     return render(request, 'post/detail.html', context)
@@ -152,7 +110,7 @@ def post_detail(request, username, post_id):
 # Write post page view
 @login_required
 def new_post(request):
-    person = Person.objects.get(username = request.user.username)
+    authenticated_user = get_authenticated_user(request)
 
     # If form method == POST
     if request.method == 'POST':
@@ -166,15 +124,16 @@ def new_post(request):
             category = form.cleaned_data['category'] # Read category
 
             # Create a Post model with form data
-            post = Post(title = title,\
-                        body = body,\
-                        author = person,\
-                        cover = cover,\
-                        short_description = short_description,\
-                        category = category)
+            post = Post(
+                title=title,
+                body=body,
+                author=authenticated_user,
+                cover=cover,
+                short_description=short_description,
+                category=category
+            )
             post.save() # Save it
             
-
             return HttpResponseRedirect('/user/' + post.author.username + '/post/' + str(post.id))
 
     # If form method == GET
@@ -182,11 +141,10 @@ def new_post(request):
         form = PostForm() # Give form to user
 
     context = {
+        'authenticated_user': authenticated_user,
+        'new_notifications': get_new_notifications(authenticated_user),
         'form': form,
     }
-
-    mskf.add_notification_availability_to_context(request, context)
-    mskf.add_authenticated_user_to_context(request, context)
 
     return render(request, 'post/write.html', context)
 
@@ -194,10 +152,11 @@ def new_post(request):
 # Edit post page view
 @login_required
 def edit_post(request, post_id):
+    authenticated_user = get_authenticated_user(request)
     post = Post.objects.get(id = post_id) # Get the Post
 
     # If registered user is post author
-    if post.author.username == request.user.username:
+    if post.author.username == authenticated_user.username:
         # If form method == POST
         if request.method == 'POST':
             form = PostForm(request.POST) # Get form
@@ -223,36 +182,37 @@ def edit_post(request, post_id):
         # If form method == GET
         else:
             # Give form to user
-            form = PostForm(initial = {
-                                        'title': post.title,
-                                        'body': post.body,
-                                        'cover': post.cover,
-                                        'short_description': post.short_description,
-                                        'category': post.category,
-                                    }) 
+            form = PostForm(initial={
+                'title': post.title,
+                'body': post.body,
+                'cover': post.cover,
+                'short_description': post.short_description,
+                'category': post.category,
+            }) 
 
         context = {
+            'authenticated_user': authenticated_user,
+            'new_notifications': get_new_notifications(authenticated_user),
             'form': form,
             'post': post,
         }
 
-        mskf.add_notification_availability_to_context(request, context)
-        mskf.add_authenticated_user_to_context(request, context)
-
         return render(request, 'post/edit.html', context)
-    
-    # If registered user not post author
-    mskf.add_notification_availability_to_context(request, context)
-    mskf.add_authenticated_user_to_context(request, context)
 
-    return render(request, 'pages/forbidden.html')
+    context = {
+        'authenticated_user': authenticated_user,
+        'new_notifications': get_new_notifications(authenticated_user),
+    }
+
+    return render(request, 'pages/forbidden.html', context)
 
 
 # Post delete view
 @login_required
 def delete_post(request, username, post_id):
-    person = Person.objects.get(username = username)
-    post = get_object_or_404(Post, author = person, id = post_id) # Get the Post
+    authenticated_user = get_authenticated_user(request)
+    person = Person.objects.get(username=username)
+    post = get_object_or_404(Post, author=person, id=post_id) # Get the Post
 
     # If registered user is post author
     if post.author.username == request.user.username:
@@ -265,10 +225,10 @@ def delete_post(request, username, post_id):
         return HttpResponseRedirect('/' + 'user/' + username)
 
     # If registered user not post author
-    context = {}
-
-    mskf.add_notification_availability_to_context(request, context)
-    mskf.add_authenticated_user_to_context(request, context)
+    context = {
+        'authenticated_user': authenticated_user,
+        'new_notifications': get_new_notifications(authenticated_user),
+    }
 
     return render(request, 'pages/forbidden.html', context)
 
@@ -276,11 +236,12 @@ def delete_post(request, username, post_id):
 # Post Comment delete view
 @login_required
 def delete_post_comment(request, username, post_id, comment_id):
-    comment = get_object_or_404(Comment, id = comment_id) # Get the Comment
-    post = get_object_or_404(Post, id = post_id) # Get the Post
+    authenticated_user = get_authenticated_user(request)
+    comment = get_object_or_404(Comment, id=comment_id) # Get the Comment
+    post = get_object_or_404(Post, id=post_id) # Get the Post
 
     # If registered user is comment author
-    if comment.author.username == request.user.username:
+    if comment.author.username == authenticated_user:
         comment.delete() # Delete it
 
         post.comments = int(post.comments) - 1
@@ -289,7 +250,7 @@ def delete_post_comment(request, username, post_id, comment_id):
         return HttpResponseRedirect('/user/' + username + '/post/' + str(post.id))
 
     # Or if registered user is comments post author
-    elif post.author.username == request.user.username:
+    elif post.author.username == authenticated_user:
         comment.delete() # Delete it
 
         post.comments = int(post.comments) - 1
@@ -299,16 +260,18 @@ def delete_post_comment(request, username, post_id, comment_id):
 
     # If registered user not post author
     else:
-        mskf.add_notification_availability_to_context(request, context)
-        mskf.add_authenticated_user_to_context(request, context)
+        context = {
+            'authenticated_user': authenticated_user,
+            'new_notifications': get_new_notifications(authenticated_user),
+        }
 
-        return render(request, 'pages/forbidden.html')
+        return render(request, 'pages/forbidden.html', context)
 
 
 # Like Post view
 @login_required
 def post_like(request, username, post_id):
-    authenticated_user = Person.objects.get(username = request.user.username)
+    authenticated_user = get_authenticated_user(request)
     post = Post.objects.get(id = post_id)
 
     response_data = {}
