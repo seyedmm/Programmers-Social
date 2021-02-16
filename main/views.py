@@ -7,9 +7,7 @@ from main.functions import mskf
 from random import choice
 
 # Models
-from main.models import Person,\
-                        Post,\
-                        Ad
+from main.models import Person,Post,Ad
 
 
 # Index view
