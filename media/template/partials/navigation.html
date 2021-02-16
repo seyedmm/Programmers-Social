@@ -37,7 +37,7 @@
         </div>
             
             <a href="{% url 'person:profile_detail' user.username %}">
-                {% if new_notif %}
+                {% if new_notifications != 0 %}
                     <div class="tooltip" style="margin-left: 15px;">
                         <a class="notification" href="{% url 'person:new_notifications' %}">
                             <span><i class="fas fa-bell"></i>

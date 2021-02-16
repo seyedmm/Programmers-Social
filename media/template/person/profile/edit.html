@@ -115,7 +115,7 @@
 <div class="body">
     <h3><i class="fas fa-user"></i> اطلاعات شخصی</h3><br />
     <label>آواتار:</label>
-    {% if person.avatar.url != None %}
+    {% if authenticated_user.avatar.url != None %}
     <img src="{{ person.avatar.url }}" width="128px" height="128px" class=" border-gray"
         style="border-radius: 100%; border-style: solid; border-width: 1px;">
 
