@@ -933,13 +933,21 @@ table, td, th {
 
 /* The progress bar (scroll indicator) */
 
-.progress-bar {
+.read-progress {
     height: 3px;
     background: var(--primary);
     width: 0%;
     position: sticky;
     top: 56px;
     z-index: 999;
+}
+
+.progress {
+    background-color: var(--light-hover);
+}
+
+.progress-bar {
+    background-color: var(--primary);
 }
 
 html {
