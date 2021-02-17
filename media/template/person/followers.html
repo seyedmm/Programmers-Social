@@ -11,7 +11,7 @@
 <h2>دنبال کنندگان {{ person.name }}</h2><br/>
 
 {% if followers_available %}
-    <ul class="infinite-container" style="list-style-type: none; padding-right: 0px;">
+    <ul class="infinite-container" style="list-style-type: none; padding-right: 0;">
         {% for person in persons.object_list %}
             <li class="infinite-item">
                 <div class="body  border-gray">
@@ -47,7 +47,7 @@
                         </div>
             
                         <div style="display: table-cell; vertical-align: middle; padding-right: 20px;">
-                            <p style="margin-bottom: 0px;">
+                            <p style="margin-bottom: 0;">
                                 <a class="person-name" href="{% url 'person:profile_detail' person.username %}">
                                 
                                     {{ person.name }} 

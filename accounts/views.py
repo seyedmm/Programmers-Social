@@ -16,7 +16,7 @@ from .forms import SignUpForm
 def signup(request):
     authenticated_user = get_authenticated_user(request)
 
-    if authenticated_user != None:
+    if authenticated_user is not None:
         return HttpResponseRedirect('/')
 
     # If form method == POST

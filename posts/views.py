@@ -2,7 +2,7 @@ from django.shortcuts import render, get_object_or_404
 from django.http import HttpResponseRedirect, JsonResponse
 from django.contrib.auth.decorators import login_required
 from django.core.paginator import Paginator
-from main.functions import mskf, get_authenticated_user, get_new_notifications, translate_to_html
+from main.functions import get_authenticated_user, get_new_notifications, translate_to_html, ads_list
 
 # Models
 from main.models import Person, Post, Comment, Notification, Ad
@@ -100,9 +100,9 @@ def post_detail(request, username, post_id):
         'comments': comments,
         'len_comments': len_comments,
         'form': form,
+        'ads_list': ads_list(),
         'current_url': str(request.path).replace('/', '%2F'),
     }
-    mskf.add_3_ads_to_context(context)
 
     return render(request, 'post/detail.html', context)
 
@@ -240,8 +240,8 @@ def delete_post_comment(request, username, post_id, comment_id):
     comment = get_object_or_404(Comment, id=comment_id) # Get the Comment
     post = get_object_or_404(Post, id=post_id) # Get the Post
 
-    # If registered user is comment author
-    if comment.author.username == authenticated_user:
+    # If registered user is comment author or post author
+    if comment.author.username == authenticated_user or post.author.username == authenticated_user:
         comment.delete() # Delete it
 
         post.comments = int(post.comments) - 1
@@ -249,23 +249,12 @@ def delete_post_comment(request, username, post_id, comment_id):
 
         return HttpResponseRedirect('/user/' + username + '/post/' + str(post.id))
 
-    # Or if registered user is comments post author
-    elif post.author.username == authenticated_user:
-        comment.delete() # Delete it
+    context = {
+        'authenticated_user': authenticated_user,
+        'new_notifications': get_new_notifications(authenticated_user),
+    }
 
-        post.comments = int(post.comments) - 1
-        post.save()
-
-        return HttpResponseRedirect('/user/' + username + '/post/' + str(post.id))
-
-    # If registered user not post author
-    else:
-        context = {
-            'authenticated_user': authenticated_user,
-            'new_notifications': get_new_notifications(authenticated_user),
-        }
-
-        return render(request, 'pages/forbidden.html', context)
+    return render(request, 'pages/forbidden.html', context)
 
 
 # Like Post view
