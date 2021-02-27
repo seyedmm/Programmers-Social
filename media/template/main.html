@@ -73,6 +73,8 @@
         }
 
         $(document).on('submit', post_id, function(e){
+            $(".likes_" + post_id).html("<button type=\"submit\" class=\"btn btn-light border-gray\" disabled><span class=\"spinner-border spinner-border-sm\" role=\"status\" aria-hidden=\"true\"></span></button>")
+
             if (post_id != '') {
                 e.preventDefault();
                 $.ajax({

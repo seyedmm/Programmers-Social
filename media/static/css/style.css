@@ -599,6 +599,10 @@ button:hover img {
     }
 }
 
+.mr-sm-2, .mx-sm-2 {
+    margin-right: .5rem!important;
+}
+
 @media only screen and (max-width: 924px) {
     .wrp, .ads-wrp {
         width: 95%;
@@ -952,4 +956,8 @@ table, td, th {
 
 html {
     scroll-behavior: smooth;
+}
+
+.spinner-border {
+    vertical-align: middle;
 }

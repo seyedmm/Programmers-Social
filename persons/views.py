@@ -4,6 +4,7 @@ from django.contrib.auth.decorators import login_required
 from social_django.models import UserSocialAuth
 from django.core.paginator import Paginator
 from main.functions import get_authenticated_user, get_new_notifications
+import os
 
 # Models
 from main.models import Person, Post, Skill, Notification
@@ -108,9 +109,13 @@ def edit_profile(request):
             # Give new data to person
             if avatar is not None:
                 if avatar is False:
+                    os.remove(authenticated_user.avatar.path)
                     authenticated_user.avatar = None
                     
                 else:
+                    if authenticated_user.avatar != '':
+                        os.remove(authenticated_user.avatar.path)
+
                     authenticated_user.avatar = avatar
 
             authenticated_user.name = name

@@ -72,19 +72,29 @@ def post_detail(request, username, post_id):
                 notif.save()
 
             else:
-                replay = Comment(author = authenticated_user, text = text)
+                replay = Comment(author=authenticated_user, text=text)
                 replay.save()
                 
-                comment = Comment.objects.get(id = mode)
+                comment = Comment.objects.get(id=mode)
                 comment.replays.add(replay)
                 comment.save()
 
+                post.comments = int(post.comments) + 1
+                post.save()
+                
                 notif = Notification(
                     givver=comment.author,
-                    message=f'<a href="/user/{person.username}/">{person.name}</a> پاسخی به <a href="/user/{post.author.username}/post/{post.id}/#comments">نظر</a> شما داد',
+                    message=f'<a href="/user/{authenticated_user.username}/">{authenticated_user.name}</a> پاسخی به <a href="/user/{post.author.username}/post/{post.id}/#comments">نظر</a> شما داد',
                     notif_type='replay'
                 )
                 notif.save()
+
+                notif2 = Notification(
+                    givver=post.author,
+                    message=f'<a href="/user/{authenticated_user.username}/">{authenticated_user.name}</a> نظری روی مطلب «<a href="/user/{post.author.username}/post/{post.id}/">{post.title}</a>» شما ارسال کرد',
+                    notif_type='comment'
+                )
+                notif2.save()
 
             return HttpResponseRedirect('/user/' + post.author.username + '/post/' + str(post.id))
 
