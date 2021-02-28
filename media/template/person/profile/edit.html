@@ -53,6 +53,10 @@
 
     <h2>ویرایش پروفایل</h2><br />
 
+    <div class="alert alert-warning" role="alert">
+        <i class="fas fa-exclamation-triangle"></i> <strong>احتیاط کنید!</strong> این اطلاعات به صورت عمومی نمایش داده می‌شوند.
+    </div>
+
     {% if img_obj %}
     <h3>Succesfully uploaded : {{img_obj.title}}</h3>
     <img src="{{ img_obj.image.url}}" alt="connect" style="max-height:300px">
@@ -116,7 +120,7 @@
     <h3><i class="fas fa-user"></i> اطلاعات شخصی</h3><br />
     <label>آواتار:</label>
     {% if authenticated_user.avatar.url != None %}
-    <img src="{{ person.avatar.url }}" width="128px" height="128px" class=" border-gray"
+    <img src="{{ authenticated_user.avatar.url }}" width="128px" height="128px" class=" border-gray"
         style="border-radius: 100%; border-style: solid; border-width: 1px;">
 
     {% else %}
