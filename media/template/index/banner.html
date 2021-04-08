@@ -3,7 +3,7 @@
     <img src="{{ ad.post.cover }}" class="card-img" alt="{{ ad.post.title }}" style="width: 100%; height: 100%; object-fit: cover;">
     <div class="card-img-overlay" style="background: #00000030;">
             {% if ad.post.category != 'غیره' and ad.post.category != None %}
-            <span class="badge badge-light">
+            <span class="badge badge-light" id="hover-category">
                 {{ ad.post.category }}
             </span>
             {% endif %}
