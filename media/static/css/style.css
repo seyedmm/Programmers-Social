@@ -961,3 +961,10 @@ html {
 .spinner-border {
     vertical-align: middle;
 }
+/* hover style for categoty tage */
+#hover-category:hover{
+    color: #fff;
+    background-color:#5115aa;
+
+}
+/* hover style for categoty tage */
